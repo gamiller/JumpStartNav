@@ -6,7 +6,6 @@ import android.content.Intent;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.MovementActivity;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.SpeechTextActivity;
 
 /**
@@ -43,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
          */
         // start math
         if (alarmType == 0) {
-            classtype = MovementActivity.class;
+            classtype = MathActivity.class;
         //start movement
         } else if (alarmType == 1) {
             classtype = MovementActivity.class;

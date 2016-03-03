@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
-            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT, "
-            + COL_TITLE + " TEXT "  + ");";
+            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT NOT NULL, "
+            + COL_TITLE + " TEXT NOT NULL"  + ");";
 
 
     // Constructor
@@ -94,7 +95,8 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     }
 
     // Remove an entry by giving its index
-    public void removeEntry(long rowIndex) {
+    public void removeRecording(long rowIndex) {
+        Log.d("removeRecording()", "removeRecording()" + rowIndex);
         //open the data as writable
         SQLiteDatabase database = this.getWritableDatabase();
 
@@ -209,12 +211,12 @@ class insertRecording extends AsyncTask<sqlObject, Void, Void> {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
 
-        //close the manual entry activity
-        if (context.equals(RecordActivity.mContext)) {
-            ((RecordActivity)context).finish();
-        } else {
-            ((RecordActivity)context).finish();
-        }
+//        //close the manual entry activity
+//        if (context.equals(RecordActivity.mContext)) {
+//            ((RecordActivity)context).finish();
+//        } else {
+//            ((RecordActivity)context).finish();
+//        }
 
 
     }
