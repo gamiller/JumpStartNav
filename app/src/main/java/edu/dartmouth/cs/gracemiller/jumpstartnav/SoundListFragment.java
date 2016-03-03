@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 
 public class SoundListFragment extends Fragment

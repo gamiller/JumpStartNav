@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -223,7 +223,7 @@ class insertRecording extends AsyncTask<sqlObject, Void, Void> {
 }
 
 
-//edu.dartmouth.cs.gracemiller.jumpstartnav.sqlObject which can be passed into the asynctasks
+//edu.dartmouth.cs.gracemiller.jumpstartnav.Model.sqlObject which can be passed into the asynctasks
 //bundles up the context, exercise, and dbhelper
 class sqlObject{
         RecordingEntryDbHelper helper;
