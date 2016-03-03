@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -93,7 +94,8 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     }
 
     // Remove an entry by giving its index
-    public void removeEntry(long rowIndex) {
+    public void removeRecording(long rowIndex) {
+        Log.d("removeRecording()", "removeRecording()" + rowIndex);
         //open the data as writable
         SQLiteDatabase database = this.getWritableDatabase();
 

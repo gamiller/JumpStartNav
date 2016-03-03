@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -38,6 +39,7 @@ public class RecordActivity extends AppCompatActivity {
     private String mAlarmName;
     private boolean mAudioSet, checked;
     private int mAlarmId;
+    private View view;
 
 
     /* QUESTIONS
@@ -240,6 +242,8 @@ public class RecordActivity extends AppCompatActivity {
 
         Toast.makeText(mContext,"Saved!",Toast.LENGTH_SHORT)
                 .show();
+
+
         finish();
     }
 }
