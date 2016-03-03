@@ -23,10 +23,6 @@
     <string name="get_jumpstart_day_text">Get a JumpStart on your day</string>
     <string name="keep_moving_text">Keep Moving!</string>
     <string name="card_delete_button_text">Delete</string>
-    <string-array name="alarm_settings_array">
-        <item>Date</item>
-        <item>Wakeup Activity</item>
-        <item>Ringtone</item>
-        <item>Reminder</item>
-    </string-array>
+    <string name="reminder_dialog_title">Reminder:</string>
+    <string name="reminder_dialog_hint">What do you want to be reminded of?</string>
 </resources>
