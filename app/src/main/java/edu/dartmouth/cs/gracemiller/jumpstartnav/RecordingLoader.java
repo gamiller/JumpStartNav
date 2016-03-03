@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 /**
  * Created by gracemiller on 1/31/16.
@@ -29,9 +30,5 @@ public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>>{
 
         return recordings;
     }
-
-
-
-
 
 }

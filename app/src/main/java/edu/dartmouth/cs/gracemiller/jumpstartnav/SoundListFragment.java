@@ -20,6 +20,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 
 public class SoundListFragment extends Fragment
