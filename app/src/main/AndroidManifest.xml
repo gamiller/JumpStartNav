@@ -28,6 +28,9 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".SpeechTextActivity"></activity>
+        <activity android:name=".MovementActivity"
+            android:screenOrientation="portrait"/>
+        <service android:name="edu.dartmouth.cs.gracemiller.jumpstartnav.SensorsService" />
     </application>
 
 </manifest>
