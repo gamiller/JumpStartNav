@@ -98,8 +98,13 @@ public class MainActivity extends AppCompatActivity
 
         // if StressMeter chosen
         if (id == R.id.nav_alarms) {
+            Fragment mAlarmListFragment = null;
+            mAlarmListFragment = new AlarmFragment();
 
-            // else if results is chosen
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, mAlarmListFragment).commit();
+        // else if results is chosen
         } else if (id == R.id.nav_reminder) {
 
 

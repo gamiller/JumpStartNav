@@ -16,7 +16,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +27,12 @@
         <activity
             android:name=".RecordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".SpeechTextActivity"></activity>
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SpeechTextActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MovementActivity"
+            android:screenOrientation="portrait"/>
+        <service android:name="edu.dartmouth.cs.gracemiller.jumpstartnav.SensorsService" />
     </application>
 
 </manifest>
