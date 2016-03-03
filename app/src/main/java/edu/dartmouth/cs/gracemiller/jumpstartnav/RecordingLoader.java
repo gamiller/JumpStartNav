@@ -27,8 +27,4 @@ public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>>{
             return recordings;
     }
 
-
-
-
-
 }
