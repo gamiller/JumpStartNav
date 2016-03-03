@@ -247,12 +247,12 @@ class insertAlarmTask extends AsyncTask<sqlObjectAlarm, Void, Void> {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
 
-        //close the manual entry activity
-        if (context.equals(EditAlarmActivity.mContext)) {
-            ((EditAlarmActivity)context).finish();
-        } else {
-            ((EditAlarmActivity)context).finish();
-        }
+//        //close the manual entry activity
+//        if (context.equals(EditAlarmActivity.mContext)) {
+//            ((EditAlarmActivity)context).finish();
+//        } else {
+//            ((EditAlarmActivity)context).finish();
+//        }
 
 
     }

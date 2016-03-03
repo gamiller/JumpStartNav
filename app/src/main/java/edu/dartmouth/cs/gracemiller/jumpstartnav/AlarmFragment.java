@@ -2,6 +2,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 
@@ -45,6 +48,7 @@ public class AlarmFragment extends Fragment {
 //    SeekBar mElevationSeekBar;
 
     private Context mContext;
+    private Boolean mOpened = false;
 
     /**
      * Use this factory method to create a new instance of
@@ -78,25 +82,46 @@ public class AlarmFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        CardView primary = (CardView) view.findViewById(R.id.cardview1);
-        final CardView dropDown = (CardView) view.findViewById(R.id.cardview2);
-        dropDown.setVisibility(View.GONE);
+        LinearLayout cardList = (LinearLayout) view.findViewById(R.id.cardContainer);
 
-        primary.setOnClickListener(new View.OnClickListener() {
+        final CardView alarmView = (CardView) view.findViewById(R.id.cardview1);
+        final LinearLayout settingsView = (LinearLayout) view.findViewById(R.id.expandedView);
+        alarmView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dropDown.setVisibility(View.VISIBLE);
-                slide_down(mContext, v);
+                alarmView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                settingsView.setVisibility(View.VISIBLE);
             }
         });
 
-        dropDown.setOnClickListener(new View.OnClickListener() {
+        Button saveButton = (Button) view.findViewById(R.id.cardSaveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                slide_up(mContext, v);
-                dropDown.setVisibility(View.GONE);
+                alarmView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                settingsView.setVisibility(View.GONE);
             }
         });
+
+//        CardView primary = (CardView) view.findViewById(R.id.cardview1);
+//        final CardView dropDown = (CardView) view.findViewById(R.id.cardview2);
+//        dropDown.setVisibility(View.GONE);
+//
+//        primary.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dropDown.setVisibility(View.VISIBLE);
+//                slide_down(mContext, v);
+//            }
+//        });
+//
+//        dropDown.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                slide_up(mContext, v);
+//                dropDown.setVisibility(View.GONE);
+//            }
+//        });
     }
 
     public static void slide_down(Context context, View view) {
