@@ -3,10 +3,14 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +21,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,12 +38,16 @@ import java.util.Calendar;
 
 
 public class AlarmFragment extends Fragment {
+    private View mInflatedView;
     private Context mContext;
     private Boolean mOpened = false;
     private ArrayList<String> alarmSettingsArray = new ArrayList<>();
 
+    private Boolean isActivated;
     private Calendar mDateAndTime = Calendar.getInstance();
-    private long mDateAndTimeMillis;
+    private String mActivityType;
+    private String mRingtone;
+    private String mReminder;
 
     public static AlarmFragment newInstance() {
         AlarmFragment fragment = new AlarmFragment();
@@ -60,7 +73,17 @@ public class AlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alarm, container, false);
+        mInflatedView = inflater.inflate(R.layout.fragment_alarm, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) mInflatedView.findViewById(R.id.add_alarm);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewAlarm();
+            }
+        });
+
+        return mInflatedView;
     }
 
     @Override
@@ -83,8 +106,16 @@ public class AlarmFragment extends Fragment {
                     slide_up(mContext, settingsView);
                     settingsView.setVisibility(View.GONE);
                     mOpened = false;
-                    Toast.makeText(mContext, "Changes Not Saved!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        final Switch alarmSwitch = (Switch) view.findViewById(R.id.alarm_on_switch);
+        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isActivated = isChecked;
             }
         });
 
@@ -94,20 +125,25 @@ public class AlarmFragment extends Fragment {
         settingsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch(position) {
+                switch (position) {
                     case 0:
                         onDateClicked();
-                        View v = settingsList.getChildAt(position);
-                        TextView textView = (TextView) v.findViewById(R.id.settings_list_white_text);
+                        View dateView = settingsList.getChildAt(position);
+                        TextView dateTextView = (TextView) dateView.findViewById(R.id.settings_list_white_text);
                         String date = android.text.format.DateFormat.format("MMM dd yyyy", mDateAndTime).toString();
-                        textView.setText(date);
+                        dateTextView.setText("Date: " + date);
                         break;
                     case 1:
-                        //wakeup
+                        onActivityClicked();
+                        View activityView = settingsList.getChildAt(position);
+                        TextView activityTextView = (TextView) activityView.findViewById(R.id.settings_list_white_text);
+                        activityTextView.setText("Wakeup Activity: " + mActivityType);
+                        break;
                     case 2:
-                        //ringtone
+                        break;
                     case 3:
                         onReminderClicked();
+                        break;
                 }
             }
         });
@@ -117,11 +153,11 @@ public class AlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alarmView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                if(mOpened) {
+                if (mOpened) {
                     slide_up(mContext, settingsView);
                 }
                 mOpened = false;
-                if(!mOpened) {
+                if (!mOpened) {
                     settingsView.setVisibility(View.GONE);
                     Toast.makeText(mContext, "Saved!", Toast.LENGTH_SHORT).show();
                 }
@@ -137,26 +173,53 @@ public class AlarmFragment extends Fragment {
         });
     }
 
+    private void addNewAlarm() {
+        // Create dialog to show current time
+        TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                mDateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                mDateAndTime.set(Calendar.MINUTE, minute);
+                isActivated = true;
+            }
+        };
+
+        new TimePickerDialog(mContext, mTimeListener,
+                mDateAndTime.get(Calendar.HOUR_OF_DAY),
+                mDateAndTime.get(Calendar.MINUTE), true).show();
+    }
+
     private void onActivityClicked() {
         // Create dialog with radio buttons to select wakeup activity
-        AlertDialog.Builder mDurationDialog = new AlertDialog.Builder(mContext);
-        mDurationDialog.setTitle(R.string.duration_dialog_title);
-        final EditText inputText = new EditText(this);
-        inputText.setRawInputType(Configuration.KEYBOARD_12KEY);    // Input in numerical keyboard
-        mDurationDialog.setView(inputText);
-        mDurationDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
+        final AlertDialog.Builder mActivitySelector = new AlertDialog.Builder(mContext);
+        mActivitySelector.setTitle("Wakeup Activity:");
+        final RadioGroup radioGroup = new RadioGroup(mContext);
+        final RadioButton mathButton = new RadioButton(mContext);
+        mathButton.setText("Math Problem");
+        final RadioButton movementButton = new RadioButton(mContext);
+        movementButton.setText("Jumping Jacks");
+        final RadioButton speechButton = new RadioButton(mContext);
+        speechButton.setText("Record Yourself");
+        radioGroup.addView(mathButton);
+        radioGroup.addView(movementButton);
+        radioGroup.addView(speechButton);
+        mActivitySelector.setView(radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case 0:
+                        mActivityType = "Math Problem";
+                        break;
+                    case 1:
+                        mActivityType = "Jumping Jacks";
+                        break;
+                    case 2:
+                        mActivityType = "Record Yourself";
+                        break;
+                }
             }
         });
-        mDurationDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int i) {
-                duration = Double.parseDouble(inputText.getText().toString());
-                duration *= 60.0;
-                dialog.dismiss();
-            }
-        });
-        mDurationDialog.show();
+        mActivitySelector.show();
     }
 
     private void onDateClicked() {
@@ -190,7 +253,7 @@ public class AlarmFragment extends Fragment {
         });
         mReminderDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
-                //comment = inputText.getText().toString();
+                mReminder = inputText.getText().toString();
                 dialog.dismiss();
             }
         });

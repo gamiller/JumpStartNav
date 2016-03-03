@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
+//import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
 
 /**
@@ -122,7 +122,7 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
 
         database.close();
 
-        AlarmScheduler.deleteAlarm(context, (int) rowIndex);
+        //AlarmScheduler.deleteAlarm(context, (int) rowIndex);
 
     }
 
@@ -234,7 +234,7 @@ class insertAlarmTask extends AsyncTask<sqlObjectAlarm, Void, Void> {
 
         //call insert entry from the helper
         insertNum = helper.insertAlarm(alarm);
-        AlarmScheduler.setAlarm(context,(int)insertNum,alarm.getmDateTime());
+        //AlarmScheduler.setAlarm(context,(int)insertNum,alarm.getmDateTime());
 
         return null;
 
