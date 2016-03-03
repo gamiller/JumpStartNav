@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">JumpStartNav</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="readTextString">Read the text:</string>
+    <string name="speechTextString">What you said:</string>
+    <string name="recordText">RECORD</string>
+    <string name="recordingText">Record</string>
+    <string name="stoprecordingText">Stop Recording</string>
+    <string name="recordRing">Record your alarm!</string>
+    <string name="notificationText" />
+    <string name="playButton">PLAY</string>
+    <string name="redoButton">REDO</string>
+</resources>

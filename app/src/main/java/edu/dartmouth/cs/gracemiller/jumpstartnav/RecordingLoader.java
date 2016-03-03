@@ -1,0 +1,33 @@
+package edu.dartmouth.cs.gracemiller.jumpstartnav;
+
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+
+import java.util.ArrayList;
+
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+
+/**
+ * Created by gracemiller on 1/31/16.
+ * create an entryloader which extends asynctaskloader in order to load
+ * the exercises from the database
+ */
+public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>>{
+    public RecordingLoader(Context context) {
+        super(context);
+    }
+
+    @Override
+    public ArrayList<Recording> loadInBackground() {
+            //get a database helper
+            RecordingEntryDbHelper helper = new RecordingEntryDbHelper(getContext());
+            //fetch all of the exercise entries
+            ArrayList<Recording> recordings = helper.fetchRecordings();
+            return recordings;
+    }
+
+
+
+
+
+}
