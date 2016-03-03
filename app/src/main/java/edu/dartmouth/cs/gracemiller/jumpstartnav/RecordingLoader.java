@@ -2,6 +2,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,14 @@ public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>>{
 
     @Override
     public ArrayList<Recording> loadInBackground() {
+        Log.d("loader", "in loader");
             //get a database helper
             RecordingEntryDbHelper helper = new RecordingEntryDbHelper(getContext());
             //fetch all of the exercise entries
             ArrayList<Recording> recordings = helper.fetchRecordings();
-            return recordings;
+        Log.d("loader", "end of loader");
+
+        return recordings;
     }
 
 

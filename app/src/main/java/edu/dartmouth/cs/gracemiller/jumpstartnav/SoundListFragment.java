@@ -6,6 +6,7 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,8 @@ public class SoundListFragment extends Fragment
     public static Context mContext;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
+        Log.d("onCreateView()", "onCreateView()");
+
         //create new view
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);//Make sure you have this line of code.
@@ -100,6 +103,8 @@ public class SoundListFragment extends Fragment
 
     @Override
     public void onResume() {
+        Log.d("onResume()", "onResume()");
+
         super.onResume();
 
         //reloads the list when onResume is called
@@ -108,40 +113,60 @@ public class SoundListFragment extends Fragment
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
+        Log.d("onCreateLoader()", "onCreateLoader()");
+
         // returns an entry loader using context
         return new RecordingLoader(mContext);
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Recording>> loader, ArrayList<Recording> data) {
+        Log.d("onLoadFinished()", "onLoadFinished()");
+
 
         //sets global variable
         myRecordings = data;
 
         if(!data.isEmpty()) {
-            String[] recordingNames = new String[40];
+            Log.d("onLoadFinished()", "not empty");
+
+            //String[] recordingNames = new String[40];
+            ArrayList<String> recordingNames = new ArrayList<String>();
             int i = 0;
             for (Recording recording : data) {
+                Log.d("in recordings", "recording: " + recording.getAlarmName());
                 //recordingNames.add(recording.getAlarmName());
-                recordingNames[i] = recording.getAlarmName();
-                i++;
+                //recordingNames[i] = recording.getAlarmName();
+                //i++;
+                recordingNames.add(recording.getAlarmName());
+                //Log.d("in recordings", "recording: " + recordingNames[i]);
+                Log.d("in recordings", "recording: " + recordingNames.toArray());
+
+
             }
 
             //sets adapter to array list of exercises
 
             // Define a new adapter
             myAdapter = new ArrayAdapter<String>(mContext,
-                    R.layout.fragment_soundlist, recordingNames);
+                    R.layout.listview_layout, recordingNames);
+            Log.d("onLoadFinished()", "got adapter");
+
 
             // Assign the adapter to ListView
             //setListAdapter(mAdapter);
             //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
+            //mListView.setListAdapter(myAdapter);
             mListView.setAdapter(myAdapter);
+            Log.d("onLoadFinished()", "set adapter");
+
         }
     }
 
     @Override
     public void onLoaderReset(Loader<ArrayList<Recording>> loader) {
+        Log.d("onLoaderReset()", "onLoaderReset()");
+
         //reloads exercises into adapter
          myAdapter.clear();
 //        myAdapter.swapCursor(null);

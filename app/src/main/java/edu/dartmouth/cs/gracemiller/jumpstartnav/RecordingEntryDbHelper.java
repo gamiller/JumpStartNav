@@ -35,8 +35,8 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
-            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT, "
-            + COL_TITLE + " TEXT "  + ");";
+            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT NOT NULL, "
+            + COL_TITLE + " TEXT NOT NULL"  + ");";
 
 
     // Constructor
@@ -208,12 +208,12 @@ class insertRecording extends AsyncTask<sqlObject, Void, Void> {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
 
-        //close the manual entry activity
-        if (context.equals(RecordActivity.mContext)) {
-            ((RecordActivity)context).finish();
-        } else {
-            ((RecordActivity)context).finish();
-        }
+//        //close the manual entry activity
+//        if (context.equals(RecordActivity.mContext)) {
+//            ((RecordActivity)context).finish();
+//        } else {
+//            ((RecordActivity)context).finish();
+//        }
 
 
     }
