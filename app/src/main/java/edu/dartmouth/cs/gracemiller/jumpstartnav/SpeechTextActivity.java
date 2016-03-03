@@ -155,12 +155,6 @@ public class SpeechTextActivity extends Activity {
                     recordButton.setChecked(false);
                 }
             }
-//            // MAY MAKE IT CRASH???
-//            if (error == 6) {
-//                recordAudio();
-//            }
-
-            // recordAudio();
         }
         public void onResults(Bundle results)
         {

@@ -1,5 +1,8 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.Classes;
 
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.media.RingtoneManager;
 import java.util.Calendar;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -35,6 +38,7 @@ public class Alarm {
         this.mActive = 0;
         this.mReminder = null;
         this.mRingToneFile = null;
+        this.defaultIndex = RingtoneManager.TYPE_ALARM;
     }
 
 
