@@ -33,6 +33,8 @@
         <activity android:name=".MovementActivity"
             android:screenOrientation="portrait"/>
         <service android:name="edu.dartmouth.cs.gracemiller.jumpstartnav.SensorsService" />
+        <activity android:name=".MathAlarmActivity" />
+
     </application>
 
 </manifest>

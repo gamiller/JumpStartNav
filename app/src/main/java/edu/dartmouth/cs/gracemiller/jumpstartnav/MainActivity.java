@@ -106,7 +106,12 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, mAlarmListFragment).commit();
         // else if results is chosen
         } else if (id == R.id.nav_reminder) {
-
+//            Fragment mReminderFragment = null;
+//            mReminderFragment = new ReminderFragment();
+//
+//            FragmentManager fragmentManager = getFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_holder, mReminderFragment).commit();
 
 
         } else if (id == R.id.nav_addsound){
