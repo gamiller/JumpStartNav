@@ -33,7 +33,9 @@ public class SpeechTextActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_speech_text);
+
 
         mContext = this;
 
@@ -47,6 +49,7 @@ public class SpeechTextActivity extends Activity {
         redoButton = (Button) findViewById(R.id.redoButton);
         textView = (TextView) findViewById(R.id.speechInput);
         readView = (TextView) findViewById(R.id.readTextView);
+        Log.d("onCreate()", "read data is " + readData);
         readView.setText(readData);
 
         recordButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -192,6 +195,7 @@ public class SpeechTextActivity extends Activity {
             Log.d("TAGG", "matches!!");
             // end notification here
             Toast.makeText(this, "matches!", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
             Log.d("TAGG", "doesn't match!! WAKE UP");
             Toast.makeText(this, "Doesn't match.  Try again!", Toast.LENGTH_SHORT).show();

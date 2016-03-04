@@ -13,6 +13,9 @@ import android.widget.ListView;
 
 
 public class TestWakeFragment extends Fragment {
+    String NUM_CORR = "numberCorrect";
+    String NUM_LEFT = "numberLeft";
+    String NUM_WRONG = "numberWrong";
 
     Button mMathButton;
     Button mMoveButton;
@@ -44,8 +47,11 @@ public class TestWakeFragment extends Fragment {
         mMathButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MathAlarmActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(mContext, MathAlarmActivity.class);
+            intent.putExtra(NUM_CORR, 0);
+            intent.putExtra(NUM_WRONG, 0);
+            intent.putExtra(NUM_LEFT, 3);
+            startActivity(intent);
             }
         });
 

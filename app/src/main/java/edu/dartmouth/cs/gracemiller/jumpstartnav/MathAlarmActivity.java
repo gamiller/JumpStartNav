@@ -128,9 +128,9 @@ public class MathAlarmActivity extends AppCompatActivity {
                     Log.d("num corr and to solve", "num correct " + mNumCorrect + "num to solve " + mNumToSolve);
                     if (mNumLeft <= 0) {
                         Log.d("numtosolve0", "last q");
-                        Intent intent = new Intent(mContext, TestWakeFragment.class);
+                        //Intent intent = new Intent(mContext, TestWakeFragment.class);
                         finish();
-                        startActivity(intent);
+                        //startActivity(intent);
                     }else {
                         Intent intent = new Intent(mContext, MathAlarmActivity.class);
                         intent.putExtra(NUM_CORR, mNumCorrect);
