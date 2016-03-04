@@ -23,6 +23,8 @@
     <string name="get_jumpstart_day_text">Get a JumpStart on your day</string>
     <string name="keep_moving_text">Keep Moving!</string>
     <string name="card_delete_button_text">Delete</string>
+    <string name="ringtone_dialog_title">Ringtone:</string>
     <string name="reminder_dialog_title">Reminder:</string>
     <string name="reminder_dialog_hint">What do you want to be reminded of?</string>
+
 </resources>

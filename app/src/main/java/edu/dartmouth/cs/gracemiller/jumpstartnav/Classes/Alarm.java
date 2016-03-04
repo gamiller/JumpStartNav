@@ -37,7 +37,7 @@ public class Alarm {
         this.mRingtoneType = 0;
         this.mActive = 0;
         this.mReminder = null;
-        this.mRingToneFile = null;
+        this.mRingToneFile = "default";
         this.defaultIndex = RingtoneManager.TYPE_ALARM;
     }
 

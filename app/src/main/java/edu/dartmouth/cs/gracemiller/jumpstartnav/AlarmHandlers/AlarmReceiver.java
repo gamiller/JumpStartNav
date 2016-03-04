@@ -34,8 +34,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         index = onAlarm.getDefaultIndex();
 
         //start playing the sound
-        //AlarmPlayer player = new AlarmPlayer();
-        //player.startSound(context,dataSource,index);
+        AlarmPlayer player = new AlarmPlayer();
+        player.startSound(context,dataSource,index);
 
         /*
         Start the designated activity
