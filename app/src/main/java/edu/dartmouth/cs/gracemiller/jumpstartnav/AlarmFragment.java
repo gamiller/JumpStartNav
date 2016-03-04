@@ -33,6 +33,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
+
 
 public class AlarmFragment extends Fragment {
     private View mInflatedView;
@@ -137,6 +143,7 @@ public class AlarmFragment extends Fragment {
                         activityTextView.setText("Wakeup Activity: " + mActivityType);
                         break;
                     case 2:
+                        onRingtoneClicked();
                         break;
                     case 3:
                         onReminderClicked();
@@ -176,6 +183,27 @@ public class AlarmFragment extends Fragment {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 mDateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mDateAndTime.set(Calendar.MINUTE, minute);
+
+                /*
+
+                Added by Tyler - wasn't able to test it
+
+                 */
+
+                // grab data and create alarm object
+                Alarm addAlarm = new Alarm();
+                Calendar setTime = Calendar.getInstance();
+                setTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                setTime.set(Calendar.MINUTE, minute);
+                addAlarm.setmDateTime(setTime);
+
+                // add alarm to database
+                AlarmEntryDbHelper helper = new AlarmEntryDbHelper(mContext);
+                int id = (int) helper.insertAlarm(addAlarm);
+
+                //add alarm to scheduler
+                AlarmScheduler.setAlarm(mContext,id,setTime);
+
                 isActivated = true;
             }
         };
@@ -224,6 +252,7 @@ public class AlarmFragment extends Fragment {
         DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
+
                 mDateAndTime.set(Calendar.YEAR, year);
                 mDateAndTime.set(Calendar.MONTH, monthOfYear);
                 mDateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -234,6 +263,61 @@ public class AlarmFragment extends Fragment {
                 mDateAndTime.get(Calendar.YEAR),
                 mDateAndTime.get(Calendar.MONTH),
                 mDateAndTime.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    // Do we need an async loader here? - we may need to add in default ringtones to database
+    private void onRingtoneClicked() {
+        AlertDialog.Builder mRingtoneDialog = new AlertDialog.Builder(mContext);
+        mRingtoneDialog.setTitle(R.string.ringtone_dialog_title);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                mContext, R.layout.ringtone_listview);
+
+        // get alarms from db
+        RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
+        final ArrayList<Recording> recordings = helper.fetchRecordings();
+
+        for (Recording recording:recordings) {
+            adapter.add(recording.getAlarmName());
+        }
+
+        mRingtoneDialog.setNegativeButton("cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        mRingtoneDialog.setAdapter(adapter,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String alarmName = adapter.getItem(which);
+
+                        Recording recording = recordings.get(which);
+
+                        // need to save this to the temporary object
+                        recording.getFileName();
+
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//                        builder.setMessage(strName);
+//                        builder.setTitle("Your Selected Item is");
+//                        builder.setPositiveButton(
+//                                "Ok",
+//                                new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        dialog.dismiss();
+//                                    }
+//                                });
+//                        builder.show();
+                    }
+                });
+
+        mRingtoneDialog.show();
+
+
     }
 
     private void onReminderClicked() {

@@ -79,7 +79,6 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = DbHelper.getWritableDatabase();
 
 
-
         //create a new content value and put all of the information
         //from the exercise into it
         ContentValues cv = new ContentValues();
