@@ -36,8 +36,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         index = onAlarm.getDefaultIndex();
 
         //start playing the sound
-        AlarmPlayer player = new AlarmPlayer();
-        player.startSound(context,dataSource,index);
+        //AlarmPlayer player = new AlarmPlayer();
+        //player.startSound(context,dataSource,index);
 
         /*
         Start the designated activity
@@ -47,7 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             classtype = MathAlarmActivity.class;
         //start movement
         } else if (alarmType == 1) {
-            classtype = MovementActivity.class;
+            //classtype = MovementActivity.class;
             //start speech to text
         } else if (alarmType == 2) {
             classtype = SpeechTextActivity.class;
