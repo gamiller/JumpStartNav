@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
@@ -40,7 +41,7 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 
-public class AlarmFragment extends Fragment {
+public class AlarmFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<ArrayList<Recording>> {
     private View mInflatedView;
     private Context mContext;
     private Boolean mOpened = false;
@@ -51,6 +52,15 @@ public class AlarmFragment extends Fragment {
     private String mActivityType;
     private String mRingtone;
     private String mReminder;
+
+    private int mSoundSelected =0;
+
+    public static ArrayAdapter<String> myAdapter;
+    public static ListView mListView;
+    RecordingEntryDbHelper helper;
+    Recording mRecording;
+    ArrayList<Recording> myRecordings;
+    public static android.app.LoaderManager loaderManager;
 
     public static AlarmFragment newInstance() {
         AlarmFragment fragment = new AlarmFragment();
@@ -159,6 +169,10 @@ public class AlarmFragment extends Fragment {
                 alarmView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 if (mOpened) {
                     slide_up(mContext, settingsView);
+
+                    //ADD ALARM HERE
+                    //TODO: add alarm here
+
                 }
                 mOpened = false;
                 if (!mOpened) {
@@ -267,55 +281,63 @@ public class AlarmFragment extends Fragment {
 
     // Do we need an async loader here? - we may need to add in default ringtones to database
     private void onRingtoneClicked() {
-        AlertDialog.Builder mRingtoneDialog = new AlertDialog.Builder(mContext);
-        mRingtoneDialog.setTitle(R.string.ringtone_dialog_title);
+        loaderManager = getActivity().getLoaderManager();
+        loaderManager.initLoader(1, null, this).forceLoad();
+       // View mInflateView = inflater.inflate(R.layout.fragment_soundlist, container, false);
+        //mListView = (ListView) mInflateView.findViewById(R.id.recordingEntries);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                mContext, R.layout.ringtone_listview);
 
-        // get alarms from db
-        RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
-        final ArrayList<Recording> recordings = helper.fetchRecordings();
 
-        for (Recording recording:recordings) {
-            adapter.add(recording.getAlarmName());
-        }
-
-        mRingtoneDialog.setNegativeButton("cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        mRingtoneDialog.setAdapter(adapter,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String alarmName = adapter.getItem(which);
-
-                        Recording recording = recordings.get(which);
-
-                        // need to save this to the temporary object
-                        recording.getFileName();
-
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//                        builder.setMessage(strName);
-//                        builder.setTitle("Your Selected Item is");
-//                        builder.setPositiveButton(
-//                                "Ok",
-//                                new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//                        builder.show();
-                    }
-                });
-
-        mRingtoneDialog.show();
+//        //TYLER'S CODE
+//        AlertDialog.Builder mRingtoneDialog = new AlertDialog.Builder(mContext);
+//        mRingtoneDialog.setTitle(R.string.ringtone_dialog_title);
+//
+//        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                mContext, R.layout.ringtone_listview);
+//
+//        // get alarms from db
+//        RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
+//        final ArrayList<Recording> recordings = helper.fetchRecordings();
+//
+//        for (Recording recording:recordings) {
+//            adapter.add(recording.getAlarmName());
+//        }
+//
+//        mRingtoneDialog.setNegativeButton("cancel",
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//        mRingtoneDialog.setAdapter(adapter,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        String alarmName = adapter.getItem(which);
+//
+//                        Recording recording = recordings.get(which);
+//
+//                        // need to save this to the temporary object
+//                        recording.getFileName();
+//
+////                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+////                        builder.setMessage(strName);
+////                        builder.setTitle("Your Selected Item is");
+////                        builder.setPositiveButton(
+////                                "Ok",
+////                                new DialogInterface.OnClickListener() {
+////                                    @Override
+////                                    public void onClick(DialogInterface dialog, int which) {
+////                                        dialog.dismiss();
+////                                    }
+////                                });
+////                        builder.show();
+//                    }
+//                });
+//
+//        mRingtoneDialog.show();
 
 
     }
@@ -361,5 +383,141 @@ public class AlarmFragment extends Fragment {
                 view.startAnimation(a);
             }
         }
+    }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        Log.d("onCreateLoader()", "onCreateLoader()");
+
+        // returns an entry loader using context
+        return new RecordingLoader(mContext);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArrayList<Recording>> loader, ArrayList<Recording> data) {
+        Log.d("onLoadFinished()", "onLoadFinished()");
+
+
+
+        //sets global variable
+        myRecordings = data;
+
+        if(!data.isEmpty()) {
+            Log.d("onLoadFinished()", "not empty");
+
+            //String[] recordingNames = new String[40];
+            final ArrayList<String> recordingNames = new ArrayList<String>();
+            int i = 0;
+            for (Recording recording : data) {
+                Log.d("in recordings", "recording: " + recording.getAlarmName());
+                //recordingNames.add(recording.getAlarmName());
+                //recordingNames[i] = recording.getAlarmName();
+                //i++;
+                recordingNames.add(recording.getAlarmName());
+                //Log.d("in recordings", "recording: " + recordingNames[i]);
+                Log.d("in recordings", "recording: " + recordingNames.toArray());
+
+
+            }
+
+            //sets adapter to array list of exercises
+
+            // Define a new adapter
+            myAdapter = new ArrayAdapter<String>(mContext,
+                    R.layout.check_listview_layout, recordingNames);
+            Log.d("onLoadFinished()", "got adapter");
+
+            AlertDialog.Builder mRingtoneDialog = new AlertDialog.Builder(mContext);
+            mRingtoneDialog.setTitle(R.string.ringtone_dialog_title);
+            ArrayList<Integer> mSelectedItems = new ArrayList();  // Where we track the selected items
+
+
+            mRingtoneDialog.setNegativeButton("cancel",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            mRingtoneDialog.setSingleChoiceItems(myAdapter, mSoundSelected,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.d("checked the item", "checked: " + which);
+
+                            mSoundSelected = which;
+                        }
+
+                    });
+            mRingtoneDialog.setPositiveButton("save",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                        //ARRAY UNCOMMENT
+//            mRingtoneDialog.setAdapter(myAdapter,
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            String alarmName = myAdapter.getItem(which);
+//                            Log.d("alarm name onclick", "alarm name is " + alarmName);
+//                            Recording recording = myRecordings.get(which);
+//
+//                            // need to save this to the temporary object
+//                            recording.getFileName();
+//
+////                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+////                        builder.setMessage(strName);
+////                        builder.setTitle("Your Selected Item is");
+////                        builder.setPositiveButton(
+////                                "Ok",
+////                                new DialogInterface.OnClickListener() {
+////                                    @Override
+////                                    public void onClick(DialogInterface dialog, int which) {
+////                                        dialog.dismiss();
+////                                    }
+////                                });
+////                        builder.show();
+//                        }
+//                    });
+
+            mRingtoneDialog.show();
+
+
+
+
+
+
+
+            // Assign the adapter to ListView
+            //setListAdapter(mAdapter);
+            //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
+            //mListView.setListAdapter(myAdapter);
+            //mListView.setAdapter(myAdapter);
+            Log.d("onLoadFinished()", "set adapter");
+
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<Recording>> loader) {
+        Log.d("onLoaderReset()", "onLoaderReset()");
+
+        //reloads exercises into adapter
+        myAdapter.clear();
+        myAdapter.notifyDataSetChanged();
+
+
+    }
+    @Override
+    public void onResume() {
+        Log.d("onResume()", "onResume()");
+
+        super.onResume();
+
+        //reloads the list when onResume is called
+        //loaderManager.initLoader(1, null, this).forceLoad();
     }
 }
