@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -176,7 +177,7 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
     public Alarm getAlarmFromCursor(Cursor cursor) {
         //create temporary exercise
         Alarm tempAlarm = new Alarm();
-
+        Log.d("getalarmfromcursor", "id is "+ cursor.getLong(cursor.getColumnIndex(COL_ID)));
         // set all of the data in the exercise
         tempAlarm.setId(cursor.getLong(cursor.getColumnIndex(COL_ID)));
         tempAlarm.setmDateTime(getDate(cursor.getLong(cursor.getColumnIndex(COL_TIME))));

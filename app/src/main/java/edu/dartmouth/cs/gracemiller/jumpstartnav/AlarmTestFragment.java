@@ -6,6 +6,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import java.util.Calendar;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 
 
 public class AlarmTestFragment extends Fragment {
@@ -59,22 +62,30 @@ public class AlarmTestFragment extends Fragment {
     }
 
     private void deleteAlarm() {
-        AlarmScheduler.deleteAlarm(getActivity().getApplicationContext(),15);
-        player.stopSound();
+        AlarmScheduler.deleteAlarm(getActivity().getApplicationContext(), 15);
+//        player.stopSound();
     }
 
     private void addAlarm2Schedule() {
         Alarm alarm = new Alarm();
         Calendar time = Calendar.getInstance();
-        time.set(2017,Calendar.MARCH,Calendar.FRIDAY,3,36
-                ,30);
-        time.set(Calendar.HOUR_OF_DAY, 3);
-        time.set(Calendar.AM_PM, 1);
+        time.setTimeInMillis(System.currentTimeMillis());
+//        time.set(Calendar.YEAR,2016);
+//        time.set(Calendar.MONTH,Calendar.MARCH);
+//        time.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
+//        time.set(Calendar.HOUR, 21);
+        time.set(Calendar.MINUTE, 8);
+        time.set(Calendar.SECOND, 00);
+//        time.set(Calendar.AM_PM, 1);
+        Log.d("date", "date is " + time.toString());
         alarm.setmDateTime(time);
 
-        AlarmScheduler.setAlarm(getActivity().getApplicationContext(), 15, time);
+        AlarmEntryDbHelper helper = new AlarmEntryDbHelper(getActivity().getApplicationContext());
+        int id = (int) helper.insertAlarm(alarm);
 
-        player.startSound(getActivity().getApplicationContext(),"default", RingtoneManager.TYPE_ALARM);
+        AlarmScheduler.setAlarm(getActivity().getApplicationContext(), id, time);
+
+//        player.startSound(getActivity().getApplicationContext(),"default", RingtoneManager.TYPE_ALARM);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
