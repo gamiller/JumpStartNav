@@ -50,7 +50,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             classtype = MathAlarmActivity.class;
         //start movement
         } else if (alarmType == 1) {
-            //classtype = MovementActivity.class;
+            classtype = MovementActivity.class;
             //start speech to text
         } else if (alarmType == 2) {
             classtype = SpeechTextActivity.class;

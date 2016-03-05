@@ -159,11 +159,15 @@ public class AlarmFragment extends Fragment  {
                         break;
                     case 2:
                         onRingtoneClicked();
+                        View ringtoneView = settingsList.getChildAt(position);
+                        TextView ringtoneTestView = (TextView) ringtoneView.findViewById(R.id.settings_list_white_text);
+                        ringtoneTestView.setText("Ringtone: " + mRingtone);
                         break;
                     case 3:
                         onReminderClicked();
                         break;
                 }
+
             }
         });
 
@@ -346,6 +350,12 @@ public class AlarmFragment extends Fragment  {
                                 Log.d("checked the item", "checked: " + which);
 
                                 mSoundSelected = which;
+                                RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
+
+                                mRingtone = myRecordings.get(which).getAlarmName();
+                                Log.d("ringtone is", "ringstone is : " + mRingtone);
+
+
                             }
 
                         });
@@ -385,12 +395,76 @@ public class AlarmFragment extends Fragment  {
 
     };
 
+    private LoaderManager.LoaderCallbacks<ArrayList<Recording>> alarmLoaderListener
+            = new LoaderManager.LoaderCallbacks<ArrayList<Recording>>() {
+        @Override
+        public Loader onCreateLoader(int id, Bundle args) {
+            Log.d("onCreateRecLoader()", "onCreateRecordingLoader()");
+
+            // returns an entry loader using context
+            return new AlarmLoader(mContext);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<ArrayList<Recording>> loader, ArrayList<Recording> data) {
+            //sets global variable
+            myRecordings = data;
+
+            if(!data.isEmpty()) {
+                Log.d("onLoadFinished()", "not empty");
+
+                //String[] recordingNames = new String[40];
+                ArrayList<String> recordingNames = new ArrayList<String>();
+                int i = 0;
+                for (Recording recording : data) {
+                    Log.d("in recordings", "recording: " + recording.getAlarmName());
+                    //recordingNames.add(recording.getAlarmName());
+                    //recordingNames[i] = recording.getAlarmName();
+                    //i++;
+                    recordingNames.add(recording.getAlarmName());
+                    //Log.d("in recordings", "recording: " + recordingNames[i]);
+                    Log.d("in recordings", "recording: " + recordingNames.toArray());
+
+
+                }
+
+                //sets adapter to array list of exercises
+
+                // Define a new adapter
+                myAdapter = new ArrayAdapter<String>(mContext,
+                        R.layout.listview_layout, recordingNames);
+                Log.d("onLoadFinished()", "got adapter");
+
+
+                // Assign the adapter to ListView
+                //setListAdapter(mAdapter);
+                //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
+                //mListView.setListAdapter(myAdapter);
+                mListView.setAdapter(myAdapter);
+                Log.d("onLoadFinished()", "set adapter");
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<ArrayList<Recording>> loader) {
+            Log.d("onLoaderReset()", "onLoaderReset()");
+
+            //reloads exercises into adapter
+            myAdapter.clear();
+            myAdapter.notifyDataSetChanged();
+
+
+        }
+
+
+    };
+
     // Do we need an async loader here? - we may need to add in default ringtones to database
     private void onRingtoneClicked() {
         loaderManager = getActivity().getLoaderManager();
         //loaderManager.initLoader(1, null, this).forceLoad();
         loaderManager.initLoader(1, null, recordingLoaderListener).forceLoad();
-        
+
 
 
     }
