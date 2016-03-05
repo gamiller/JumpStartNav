@@ -26,5 +26,9 @@
     <string name="ringtone_dialog_title">Ringtone:</string>
     <string name="reminder_dialog_title">Reminder:</string>
     <string name="reminder_dialog_hint">What do you want to be reminded of?</string>
+    <string name="dreamTitle">~Record your dream~</string>
+    <string name="dreamText">What are you dreaming about?</string>
+    <string name="saveButton">Save</string>
+
 
 </resources>
