@@ -3,6 +3,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.MathAlarmActivity;
@@ -18,6 +19,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     //Receive broadcast
     @Override
     public void onReceive(final Context context, Intent intent) {
+        Log.d("receiving alarm", "receiving alarm");
+
         int id = intent.getIntExtra("id",0);
         startAlarmUnlock(context, id);
     }

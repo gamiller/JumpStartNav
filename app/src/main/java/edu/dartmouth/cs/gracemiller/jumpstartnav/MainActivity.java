@@ -131,6 +131,15 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, testFrag).commit();
 
+        } else if (id == R.id.nav_alarmTest){
+            // create results fragment
+            Fragment alarmTestFrag = null;
+            alarmTestFrag = new AlarmTestFragment();
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, alarmTestFrag).commit();
+
         }
 
         // close navigation drawer

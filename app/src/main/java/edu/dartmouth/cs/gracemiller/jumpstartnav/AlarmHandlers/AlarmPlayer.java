@@ -46,7 +46,7 @@ public class AlarmPlayer {
 
         //create the pattern of vibration
         // Start without a delay, Vibrate for 100 millisecond, Sleep for 100 milliseconds
-        long[] pattern = {0, 100, 100};
+        long[] pattern = {0, 100, 1000};
 
         //repeat the pattern from the beginning
         vibrator.vibrate(pattern, 0);
