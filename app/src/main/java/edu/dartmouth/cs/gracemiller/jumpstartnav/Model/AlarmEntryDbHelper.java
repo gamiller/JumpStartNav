@@ -87,12 +87,9 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         //get the time in milliseconds
         cv.put(DbHelper.COL_TIME, alarm.getmDateTime().getTimeInMillis());
         cv.put(DbHelper.COL_ALARMTYPE, alarm.getmAlarmType());
-        cv.put(DbHelper.COL_RINGTYPE, alarm.getmRingtoneType());
         cv.put(DbHelper.COL_SOUND, alarm.getmRingToneFile());
         cv.put(DbHelper.COL_ACTIVE, alarm.getmActive());
         cv.put(DbHelper.COL_REMINDER, alarm.getmActive());
-        cv.put(DbHelper.COL_MATHQS, alarm.getmMathQs());
-        cv.put(DbHelper.COL_MOVETIME, alarm.getmMoveNum());
         cv.put(DbHelper.COL_DEFINDEX, alarm.getDefaultIndex());
 
 
@@ -182,12 +179,9 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         tempAlarm.setId(cursor.getLong(cursor.getColumnIndex(COL_ID)));
         tempAlarm.setmDateTime(getDate(cursor.getLong(cursor.getColumnIndex(COL_TIME))));
         tempAlarm.setmAlarmType(cursor.getInt(cursor.getColumnIndex(COL_ALARMTYPE)));
-        tempAlarm.setmRingtoneType(cursor.getInt(cursor.getColumnIndex(COL_RINGTYPE)));
         tempAlarm.setmRingToneFile(cursor.getString(cursor.getColumnIndex(COL_SOUND)));
         tempAlarm.setmActive(cursor.getInt(cursor.getColumnIndex(COL_ACTIVE)));
         tempAlarm.setmReminder(cursor.getString(cursor.getColumnIndex(COL_REMINDER)));
-        tempAlarm.setmMathQs(cursor.getInt(cursor.getColumnIndex(COL_MATHQS)));
-        tempAlarm.setmMoveNum(cursor.getInt(cursor.getColumnIndex(COL_MOVETIME)));
         tempAlarm.setDefaultIndex(cursor.getInt(cursor.getColumnIndex(COL_DEFINDEX)));
 
 
