@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
     xmlns:fab="http://schemas.android.com/apk/res-auto">
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_speakers"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="7dp"
         android:scrollbars="vertical">
     </android.support.v7.widget.RecyclerView>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_alarm"
         android:layout_width="wrap_content"
@@ -17,5 +21,6 @@
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_black_24dp"
-        fab:layout_anchor="@android:id/list"/>
-</RelativeLayout>
+        app:anchor="@+id/recycler_view"/>
+
+</FrameLayout>
