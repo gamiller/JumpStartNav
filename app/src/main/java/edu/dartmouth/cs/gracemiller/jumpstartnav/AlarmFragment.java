@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -208,33 +209,6 @@ public class AlarmFragment extends Fragment  {
 //            }
 //        });
 //
-//        Button saveButton = (Button) view.findViewById(R.id.cardSaveButton);
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alarmView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//                if (mOpened) {
-//                    slide_up(mContext, settingsView);
-//
-//                    //ADD ALARM HERE
-//                    //TODO: add alarm here
-//
-//                }
-//                mOpened = false;
-//                if (!mOpened) {
-//                    settingsView.setVisibility(View.GONE);
-//                    Toast.makeText(mContext, "Saved!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//        Button deleteButton = (Button) view.findViewById(R.id.cardDeleteButton);
-//        deleteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
     }
 
     private void addNewAlarm() {
@@ -504,7 +478,7 @@ public class AlarmFragment extends Fragment  {
     private void onRingtoneClicked() {
         loaderManager = getActivity().getLoaderManager();
         //loaderManager.initLoader(1, null, this).forceLoad();
-        loaderManager.initLoader(1, null, recordingLoaderListener).forceLoad();
+        loaderManager.initLoader(4, null, recordingLoaderListener).forceLoad();
 
 
 
