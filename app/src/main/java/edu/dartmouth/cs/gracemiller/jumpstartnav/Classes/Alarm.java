@@ -17,10 +17,7 @@ public class Alarm {
     private long id;
     private Calendar mDateTime;    // When does this alarm happen
 
-    private int mMathQs;
-    private int mMoveNum;
     private int mAlarmType;
-    private int mRingtoneType;
     private String mRingToneFile;
     private int mActive;
     private String mReminder;
@@ -31,10 +28,7 @@ public class Alarm {
         this.id = 0;
         this.mDateTime = Calendar.getInstance();
 
-        this.mMathQs = 3;
-        this.mMoveNum = 5;
         this.mAlarmType = 0;
-        this.mRingtoneType = 0;
         this.mActive = 0;
         this.mReminder = null;
         this.mRingToneFile = "default";
@@ -58,21 +52,9 @@ public class Alarm {
         this.mDateTime = mDateTime;
     }
 
-    public int getmMathQs() {
-        return mMathQs;
-    }
 
-    public void setmMathQs(int mMathQs) {
-        this.mMathQs = mMathQs;
-    }
 
-    public int getmMoveNum() {
-        return mMoveNum;
-    }
 
-    public void setmMoveNum(int mMoveNum) {
-        this.mMoveNum = mMoveNum;
-    }
 
     public int getmAlarmType() {
         return mAlarmType;
@@ -80,14 +62,6 @@ public class Alarm {
 
     public void setmAlarmType(int mAlarmType) {
         this.mAlarmType = mAlarmType;
-    }
-
-    public int getmRingtoneType() {
-        return mRingtoneType;
-    }
-
-    public void setmRingtoneType(int mRingtoneType) {
-        this.mRingtoneType = mRingtoneType;
     }
 
     public String getmRingToneFile() {
