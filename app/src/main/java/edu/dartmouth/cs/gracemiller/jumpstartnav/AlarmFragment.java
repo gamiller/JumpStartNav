@@ -42,7 +42,7 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 
-public class AlarmFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<ArrayList<Recording>> {
+public class AlarmFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<ArrayList<Recording>>   {
     private View mInflatedView;
     private Context mContext;
     private Boolean mOpened = false;
@@ -285,6 +285,7 @@ public class AlarmFragment extends Fragment implements android.app.LoaderManager
     private void onRingtoneClicked() {
         loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(1, null, this).forceLoad();
+        
        // View mInflateView = inflater.inflate(R.layout.fragment_soundlist, container, false);
         //mListView = (ListView) mInflateView.findViewById(R.id.recordingEntries);
 

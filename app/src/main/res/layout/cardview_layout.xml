@@ -1,0 +1,32 @@
+<android.support.v7.widget.CardView
+    android:id="@+id/cardview2"
+    android:layout_width="fill_parent"
+    android:layout_height="110dp"
+    android:elevation="100dp"
+    android:layout_marginTop="2dp"
+    card_view:cardBackgroundColor="@color/colorPrimaryDark"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_vertical|start"
+            android:text="9:30am"
+            android:textColor="@android:color/white"
+            android:textSize="40sp"
+            />
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginLeft="100dp"
+            android:paddingLeft="50dp"
+            android:id="@+id/alarm_on_switch2"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
