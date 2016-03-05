@@ -32,26 +32,25 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
     public static final String COL_ID = "_id";
     public static final String COL_TIME= "date_time";
     public static final String COL_ALARMTYPE = "alarm_type";
-    public static final String COL_RINGTYPE= "ringtone_type";
+    //public static final String COL_RINGTYPE= "ringtone_type";
     public static final String COL_SOUND= "alarm_sound";
     public static final String COL_ACTIVE= "active";
     public static final String COL_REMINDER = "reminder";
-    public static final String COL_MATHQS= "mathq_amount";
-    public static final String COL_MOVETIME = "secs_moving";
+    //public static final String COL_MATHQS= "mathq_amount";
+    //public static final String COL_MOVETIME = "secs_moving";
     public static final String COL_DEFINDEX = "default_index";
 
 
-    public String[] totalColumns = { COL_ID, COL_TIME, COL_ALARMTYPE, COL_RINGTYPE, COL_SOUND,
-            COL_ACTIVE, COL_REMINDER, COL_MATHQS, COL_MOVETIME, COL_DEFINDEX };
+    public String[] totalColumns = { COL_ID, COL_TIME, COL_ALARMTYPE, COL_SOUND,
+            COL_ACTIVE, COL_REMINDER, COL_DEFINDEX };
 
 
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_TIME + " DATETIME NOT NULL, "
-            + COL_ALARMTYPE + " INTEGER NOT NULL, " + COL_RINGTYPE + " INTEGER NOT NULL, " + COL_SOUND
-            + " TEXT, " + COL_ACTIVE + " INTEGER NOT NULL, " + COL_REMINDER + " TEXT, " + COL_MATHQS
-            + " INTEGER," + COL_MOVETIME + " INTEGER, " + COL_DEFINDEX + " INTEGER " + ");";
+            + COL_ALARMTYPE + " INTEGER NOT NULL, " + COL_SOUND
+            + " TEXT, " + COL_ACTIVE + " INTEGER NOT NULL, " + COL_REMINDER + " TEXT, "  + COL_DEFINDEX + " INTEGER " + ");";
 
 
     // Constructor

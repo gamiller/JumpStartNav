@@ -105,6 +105,10 @@ public class AlarmFragment extends Fragment  {
         myAlarm.setmAlarmType(0);
         Calendar cal = Calendar.getInstance();
         myAlarm.setmDateTime(cal);
+        myAlarm.setmActive(0);
+
+        AlarmEntryDbHelper helper = new AlarmEntryDbHelper(mContext);
+        helper.insertAlarm(myAlarm);
 
 
 
