@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -64,9 +66,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     @Override
     public AlarmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
+        final Context context = parent.getContext();
+
         // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cardview_layout, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.cardview_layout, parent, false);
+
         // set the view's size, margins, paddings and layout parameters;
         v.findViewById(R.id.cardView).setBackgroundColor(v.getResources().getColor(R.color.colorPrimaryDark));
 
@@ -77,6 +81,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 cardView.setBackgroundColor(v.getResources().getColor(R.color.colorPrimaryDark));
+                slide_up(context, expandedView);
                 expandedView.setVisibility(View.GONE);
             }
         });
@@ -127,7 +132,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
                 //if (!mOpened) {
                 v.setBackgroundColor(v.getResources().getColor(R.color.colorAccent));
                 v.findViewById(R.id.expandedView).setVisibility(View.VISIBLE);
-                //slide_down(mContext, settingsView);
+                slide_down(v.getContext(), v.findViewById(R.id.expandedView));
                 //mOpened = true;
                 //} else if (mOpened) {
                 //v.setBackgroundColor(R.color.colorPrimaryDark);
@@ -220,5 +225,27 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public static void slide_down(Context context, View view) {
+        Animation a = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+        if(a != null){
+            a.reset();
+            if(view != null){
+                view.clearAnimation();
+                view.startAnimation(a);
+            }
+        }
+    }
+
+    public static void slide_up(Context context, View view) {
+        Animation a = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+        if(a != null){
+            a.reset();
+            if(view != null){
+                view.clearAnimation();
+                view.startAnimation(a);
+            }
+        }
     }
 }

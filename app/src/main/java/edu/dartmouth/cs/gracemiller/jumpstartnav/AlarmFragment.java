@@ -127,6 +127,13 @@ public class AlarmFragment extends Fragment  {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
+        return mInflatedView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         Log.d("getting above fab", "above fab");
         FloatingActionButton fab = (FloatingActionButton) mInflatedView.findViewById(R.id.add_alarm);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -136,14 +143,6 @@ public class AlarmFragment extends Fragment  {
                 addNewAlarm();
             }
         });
-
-
-        return mInflatedView;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
 //        LinearLayout cardList = (LinearLayout) view.findViewById(R.id.cardContainer);
 //
@@ -505,38 +504,16 @@ public class AlarmFragment extends Fragment  {
         mReminderDialog.show();
     }
 
-    public static void slide_down(Context context, View view) {
-        Animation a = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-        if(a != null){
-            a.reset();
-            if(view != null){
-                view.clearAnimation();
-                view.startAnimation(a);
-            }
-        }
+
+    @Override
+    public void onResume() {
+        Log.d("onResume()", "onResume()");
+
+        super.onResume();
+
+        //reloads the list when onResume is called
+        //loaderManager.initLoader(1, null, this).forceLoad();
     }
-
-    public static void slide_up(Context context, View view) {
-        Animation a = AnimationUtils.loadAnimation(context, R.anim.slide_up);
-        if(a != null){
-            a.reset();
-            if(view != null){
-                view.clearAnimation();
-                view.startAnimation(a);
-            }
-        }
-    }
-
-
-            @Override
-        public void onResume() {
-            Log.d("onResume()", "onResume()");
-
-            super.onResume();
-
-            //reloads the list when onResume is called
-            //loaderManager.initLoader(1, null, this).forceLoad();
-        }
 
 
 
