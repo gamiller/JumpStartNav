@@ -106,12 +106,12 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, mAlarmListFragment).commit();
         // else if results is chosen
         } else if (id == R.id.nav_reminder) {
-//            Fragment mReminderFragment = null;
-//            mReminderFragment = new ReminderFragment();
-//
-//            FragmentManager fragmentManager = getFragmentManager();
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_holder, mReminderFragment).commit();
+            Fragment mReminderFragment = null;
+            mReminderFragment = new ReminderFragment();
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, mReminderFragment).commit();
 
 
         } else if (id == R.id.nav_addsound){
@@ -150,13 +150,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
 
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
 
 }
