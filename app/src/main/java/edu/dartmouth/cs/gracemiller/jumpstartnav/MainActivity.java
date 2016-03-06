@@ -2,7 +2,6 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -107,12 +106,12 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, mAlarmListFragment).commit();
         // else if results is chosen
         } else if (id == R.id.nav_reminder) {
-//            Fragment mReminderFragment = null;
-//            mReminderFragment = new ReminderFragment();
-//
-//            FragmentManager fragmentManager = getFragmentManager();
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_holder, mReminderFragment).commit();
+            Fragment mReminderFragment = null;
+            mReminderFragment = new ReminderFragment();
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, mReminderFragment).commit();
 
 
         } else if (id == R.id.nav_addsound){

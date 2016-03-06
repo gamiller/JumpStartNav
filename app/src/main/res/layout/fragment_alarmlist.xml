@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    xmlns:fab="http://schemas.android.com/apk/res-auto">
+    android:descendantFocusability="blocksDescendants"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    tools:context=".AlarmFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
+    <ListView
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:elevation="7dp"
-        android:scrollbars="vertical">
-    </android.support.v7.widget.RecyclerView>
+        android:id="@+id/alarmEntriesList"
+        android:layout_gravity="center_horizontal|top" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_alarm"
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_black_24dp"
-        app:layout_anchor="@+id/recyclerView"/>
+        fab:backgroundTint="@android:color/holo_blue_bright"
+        android:src="@drawable/ic_add_black_24dp" />
 
 </FrameLayout>

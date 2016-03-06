@@ -52,7 +52,7 @@ public class DreamFragment extends android.app.Fragment {
         // set the static variables when created
         mContext = getActivity();
         loaderManager = getActivity().getLoaderManager();
-        loaderManager.initLoader(2, null, dreamLoaderListener).forceLoad();
+        loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
         View mInflateView = inflater.inflate(R.layout.fragment_dream, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.dreamEntries);
 
@@ -82,7 +82,7 @@ public class DreamFragment extends android.app.Fragment {
         super.onResume();
 
         //reloads the list when onResume is called
-        loaderManager.initLoader(2, null, dreamLoaderListener).forceLoad();
+        loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
     }
 
     private LoaderManager.LoaderCallbacks<ArrayList<Dream>> dreamLoaderListener

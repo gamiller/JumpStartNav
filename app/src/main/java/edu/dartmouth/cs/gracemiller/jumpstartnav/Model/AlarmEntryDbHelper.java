@@ -123,6 +123,50 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
 
     }
 
+    public void updateAlarm(Alarm alarm){
+
+        //long insertNum;
+
+        //get the dbhelper
+        AlarmEntryDbHelper DbHelper = this;
+        //Alarm alarm = entry;
+        long alarmId = alarm.getId();
+
+        //open the database
+        SQLiteDatabase database = DbHelper.getWritableDatabase();
+
+
+        //create a new content value and put all of the information
+        //from the exercise into it
+        ContentValues cv = new ContentValues();
+        //get the time in milliseconds
+        cv.put(DbHelper.COL_TIME, alarm.getmDateTime().getTimeInMillis());
+        cv.put(DbHelper.COL_ALARMTYPE, alarm.getmAlarmType());
+        cv.put(DbHelper.COL_SOUND, alarm.getmRingToneFile());
+        cv.put(DbHelper.COL_ACTIVE, alarm.getmActive());
+        cv.put(DbHelper.COL_REMINDER, alarm.getmActive());
+        cv.put(DbHelper.COL_DEFINDEX, alarm.getDefaultIndex());
+
+
+        //insert the cv into the database, and get the number it was
+//        //inserted at
+//        insertNum = database.insert(DbHelper.ENTRIES, null, cv);
+//
+//        Cursor cursor = database.query(DbHelper.ENTRIES,
+//                DbHelper.totalColumns, DbHelper.COL_ID + " = " + insertNum, null,
+//                null, null, null);
+//        cursor.moveToFirst();
+//
+//        //close the database
+//        database.close();
+//
+//        //return the insertNum
+//        return insertNum;
+
+        database.update(ENTRIES, cv, "_id="+alarmId, null);
+        database.close();
+    }
+
     // Query a specific entry by its index.
     public Alarm fetchAlarmByIndex(long rowId) {
 
