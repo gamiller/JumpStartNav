@@ -74,10 +74,6 @@ public class AlarmFragment extends Fragment  {
     ArrayList<Recording> myRecordings;
     public static android.app.LoaderManager loaderManager;
 
-    public  AlarmAdapter mAlarmAdapter;
-    public  RecyclerView mRecyclerView;
-
-    public  RecyclerView.LayoutManager mLayoutManager;
     public AlarmEntryDbHelper mAlarmDbHelper;
 
     //TODO: ALARM LIST IMPLEMENTING
@@ -88,10 +84,6 @@ public class AlarmFragment extends Fragment  {
     AlarmEntryDbHelper alarmHelper;
 
     HashMap<Long, Boolean> mOpenMap = new HashMap<Long, Boolean>();
-
-
-
-
 
     private static final int ALARM_LOADER_ID = 1;
     private static final int RECORDING_LOADER_ID = 2;
@@ -120,34 +112,12 @@ public class AlarmFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        Alarm myAlarm = new Alarm();
-//        myAlarm.setmAlarmType(0);
-//        Calendar cal = Calendar.getInstance();
-//        myAlarm.setmDateTime(cal);
-//        myAlarm.setmActive(0);
-//
-//        AlarmEntryDbHelper helper = new AlarmEntryDbHelper(mContext);
-//        helper.insertAlarm(myAlarm);
-
-
-
-
         // Inflate the layout for this fragment
         mInflatedView = inflater.inflate(R.layout.fragment_alarmlist, container, false);
         mAlarmListView = (ListView) mInflatedView.findViewById(R.id.alarmEntriesList);
 
         loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(1, null, alarmLoaderListener).forceLoad();
-
-        //TODO: uncomment recycler view
-//        mRecyclerView = (RecyclerView) mInflatedView.findViewById(R.id.recyclerView);
-//        mRecyclerView.setHasFixedSize(true);
-//        mLayoutManager = new LinearLayoutManager(mContext);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        //TODO: add listview shit
-
-
 
         mAlarmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -198,10 +168,10 @@ public class AlarmFragment extends Fragment  {
                     mOpen = mOpenMap.get(alarmId);
                 }
 
-                Calendar oldTime = alarm.getmDateTime();
-                mDateAndTime.set(Calendar.HOUR, oldTime.get(Calendar.HOUR));
-                mDateAndTime.set(Calendar.MINUTE, oldTime.get(Calendar.MINUTE));
-                mDateAndTime.set(Calendar.AM_PM, oldTime.get(Calendar.AM_PM));
+//                Calendar oldTime = alarm.getmDateTime();
+//                mDateAndTime.set(Calendar.HOUR, oldTime.get(Calendar.HOUR));
+//                mDateAndTime.set(Calendar.MINUTE, oldTime.get(Calendar.MINUTE));
+//                mDateAndTime.set(Calendar.AM_PM, oldTime.get(Calendar.AM_PM));
 
 
                 final CardView cardView = (CardView) view.findViewById(R.id.cardView);
@@ -255,21 +225,30 @@ public class AlarmFragment extends Fragment  {
                 });
 
                 if (!mOpen) {
-                    TextView dateText = (TextView) cardView.findViewById(R.id.alarm_date_textview);
-                    dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", oldDate).toString());
+                    boolean otherAlarmOpen = false;
+                    for (long i = 0; i < mOpenMap.size(); i++) {
+                        if(mOpenMap.containsKey(i) && mOpenMap.get(i)) {
+                            otherAlarmOpen = mOpenMap.get(i);
+                            Toast.makeText(mContext, "Cannot edit two alarms at once", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
 
-                    TextView wakeupActivityText = (TextView) cardView.findViewById(R.id.alarm_wakeup_activity_textview);
-                    wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
+                    if(!otherAlarmOpen) {
+                        TextView dateText = (TextView) cardView.findViewById(R.id.alarm_date_textview);
+                        dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", oldDate).toString());
 
-                    TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
-                    ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
+                        TextView wakeupActivityText = (TextView) cardView.findViewById(R.id.alarm_wakeup_activity_textview);
+                        wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
 
-                    expandedView.setVisibility(View.VISIBLE);
-                    cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
-                    slide_down(mContext, expandedView);
-                    //mOpened = true;
-                    mOpenMap.put(alarmId, true);
+                        TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
+                        ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
 
+                        expandedView.setVisibility(View.VISIBLE);
+                        cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
+                        slide_down(mContext, expandedView);
+                        mOpenMap.put(alarmId, true);
+                    }
                 } else if (mOpen) {
                     cardView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     slide_up(mContext, expandedView);
@@ -284,7 +263,6 @@ public class AlarmFragment extends Fragment  {
                     TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
                     ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
 
-                    //mOpened = false;
                     mOpenMap.put(alarmId, false);
                     Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_LONG).show();
                 }
@@ -297,8 +275,6 @@ public class AlarmFragment extends Fragment  {
                         onDateClicked(time, dateTextView);
                         String date = android.text.format.DateFormat.format("MMM dd yyyy", mDateAndTime).toString();
                         dateTextView.setText("Date: " + date);
-                        //newAlarm.setmDateTime(mDateAndTime);
-                        //setNewDate(alarmId, mDateAndTime);
                     }
                 });
 
@@ -332,25 +308,8 @@ public class AlarmFragment extends Fragment  {
                         reminderTextView.setText("Reminder");
                     }
                 });
-
-
             }
-
         });
-
-
-
-
-
-
-//        AlarmListAdapter aListAdapter = new AlarmListAdapter(mContext, R.layout.cardview_layout);
-
-//        for (int i = 0; i < 10; i++) {
-//            Card card = new Card("Card " + (i+1) + " Line 1", "Card " + (i+1) + " Line 2");
-//            cardArrayAdapter.add(card);
-//        }
-//        listView.setAdapter(cardArrayAdapter);
-
 
         Log.d("getting above fab", "above fab");
         FloatingActionButton fab = (FloatingActionButton) mInflatedView.findViewById(R.id.add_alarm);
@@ -361,8 +320,6 @@ public class AlarmFragment extends Fragment  {
                 addNewAlarm();
             }
         });
-
-
         return mInflatedView;
     }
 
@@ -371,7 +328,6 @@ public class AlarmFragment extends Fragment  {
         Alarm oldAlarm = helper.fetchAlarmByIndex(position);
 
         Alarm alarm = new Alarm();
-        //alarm = oldAlarm;
         alarm.setId(oldAlarm.getId());
         alarm.setmDateTime(oldAlarm.getmDateTime());
         alarm.setmActive(oldAlarm.getmActive());
@@ -384,6 +340,7 @@ public class AlarmFragment extends Fragment  {
         if(isActivated){
             active = 1;
         }
+
         alarm.setmActive(active);
         int alarmType = 0;
         switch(mActivityType) {
@@ -397,96 +354,16 @@ public class AlarmFragment extends Fragment  {
         alarm.setmAlarmType(alarmType);
         alarm.setmRingToneFile(mRingtone);
         alarm.setmReminder(mReminder);
-        //helper.removeAlarm(position);
         helper.updateAlarm(alarm);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-
-
-//        LinearLayout cardList = (LinearLayout) view.findViewById(R.id.cardContainer);
-//
-//        final CardView alarmView = (CardView) view.findViewById(R.id.cardview);
-//        final LinearLayout settingsView = (LinearLayout) view.findViewById(R.id.expandedView);
-//        alarmView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!mOpened) {
-//                    alarmView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-//                    settingsView.setVisibility(View.VISIBLE);
-//                    slide_down(mContext, settingsView);
-//                    mOpened = true;
-//                } else if (mOpened) {
-//                    alarmView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//                    slide_up(mContext, settingsView);
-//                    settingsView.setVisibility(View.GONE);
-//                    mOpened = false;
-//                    Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//
-//        final Switch alarmSwitch = (Switch) view.findViewById(R.id.alarm_on_switch);
-//        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                isActivated = isChecked;
-//            }
-//        });
-//
-//        final ListView settingsList = (ListView) view.findViewById(R.id.alarmOptions);
-//        settingsList.setAdapter(new ArrayAdapter<String>(mContext, R.layout.alarm_settings_list_text,
-//                R.id.settings_list_white_text, alarmSettingsArray));
-//        settingsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                switch (position) {
-//                    case 0:
-//                        onDateClicked();
-//                        View dateView = settingsList.getChildAt(position);
-//                        TextView dateTextView = (TextView) dateView.findViewById(R.id.settings_list_white_text);
-//                        String date = android.text.format.DateFormat.format("MMM dd yyyy", mDateAndTime).toString();
-//                        dateTextView.setText("Date: " + date);
-//                        break;
-//                    case 1:
-//                        onActivityClicked();
-//                        View activityView = settingsList.getChildAt(position);
-//                        TextView activityTextView = (TextView) activityView.findViewById(R.id.settings_list_white_text);
-//                        activityTextView.setText("Wakeup Activity: " + mActivityType);
-//                        break;
-//                    case 2:
-//                        onRingtoneClicked();
-//                        View ringtoneView = settingsList.getChildAt(position);
-//                        TextView ringtoneTestView = (TextView) ringtoneView.findViewById(R.id.settings_list_white_text);
-//                        ringtoneTestView.setText("Ringtone: " + mRingtone);
-//                        break;
-//                    case 3:
-//                        onReminderClicked();
-//                        break;
-//                }
-//
-//            }
-//        });
-//
-    }
-
     private void addNewAlarm() {
-        Log.d("addNewAlarm()", "add");
+
         // Create dialog to show current time
         TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 mDateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 mDateAndTime.set(Calendar.MINUTE, minute);
-
-                /*
-
-                Added by Tyler - wasn't able to test it
-
-                 */
 
                 // grab data and create alarm object
                 Alarm addAlarm = new Alarm();
@@ -514,8 +391,6 @@ public class AlarmFragment extends Fragment  {
         new TimePickerDialog(mContext, mTimeListener,
                 mDateAndTime.get(Calendar.HOUR_OF_DAY),
                 mDateAndTime.get(Calendar.MINUTE), true).show();
-
-
     }
 
     private void onActivityClicked(final TextView view, final int oldAlarmType) {
