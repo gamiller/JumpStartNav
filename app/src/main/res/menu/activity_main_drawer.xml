@@ -20,6 +20,9 @@
         <item
             android:id="@+id/nav_alarmTest"
             android:title="Test Making Alarm" />
+        <item
+            android:id="@+id/nav_dreams"
+            android:title="Your Dreams" />
     </group>
 
 

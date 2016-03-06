@@ -27,6 +27,7 @@ public class AlarmLoader extends AsyncTaskLoader<ArrayList<Alarm>>{
             //fetch all of the exercise entries
             ArrayList<Alarm> recordings = helper.fetchAlarms();
         Log.d("loader", "end of loader");
+        helper.close();
 
         return recordings;
     }

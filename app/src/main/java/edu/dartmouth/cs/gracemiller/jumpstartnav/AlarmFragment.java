@@ -498,6 +498,7 @@ public class AlarmFragment extends Fragment  {
                 // add alarm to database
                 AlarmEntryDbHelper helper = new AlarmEntryDbHelper(mContext);
                 int id = (int) helper.insertAlarm(addAlarm);
+                helper.close();
 
                 //add alarm to scheduler
                 AlarmScheduler.setAlarm(mContext,id,setTime);
@@ -687,6 +688,7 @@ public class AlarmFragment extends Fragment  {
                                 Log.d("ringtone is", "ringtone is : " + mRingtone);
 
 
+                                helper.close();
                             }
 
                         });

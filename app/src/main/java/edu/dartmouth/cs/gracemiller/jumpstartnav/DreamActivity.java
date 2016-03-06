@@ -286,6 +286,7 @@ public class DreamActivity extends AppCompatActivity {
 
         DreamDbHelper helper = new DreamDbHelper(mContext);
         int id = (int) helper.insertDream(dream);
+        helper.close();
 
         Toast.makeText(mContext,"Saved!",Toast.LENGTH_SHORT)
                 .show();
