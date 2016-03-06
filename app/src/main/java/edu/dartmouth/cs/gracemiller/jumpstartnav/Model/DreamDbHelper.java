@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
 
 
-    public String[] totalColumns = { COL_ID, COL_DREAM};
+    public String[] totalColumns = { COL_ID, COL_DATE, COL_NAME, COL_DREAM};
 
 
     // SQL query to create the table for the first time
@@ -130,6 +131,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
     // Query the entire table, return all rows
     public ArrayList<Dream> fetchDreams() {
+        Log.d("fetch dreams", "fetch dreams");
         //get readable database
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -156,6 +158,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
     //get a exercise from a cursor
     public Dream getDreamFromCursor(Cursor cursor) {
+        Log.d("get dream from cursotr", "get dream");
         //create temporary exercise
         Dream tempDream = new Dream();
 

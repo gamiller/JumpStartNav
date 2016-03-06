@@ -145,6 +145,7 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
 
     // Query the entire table, return all rows
     public ArrayList<Alarm> fetchAlarms() {
+        Log.d("get yo alarm", "alarm");
         //get readable database
         SQLiteDatabase database = this.getReadableDatabase();
 

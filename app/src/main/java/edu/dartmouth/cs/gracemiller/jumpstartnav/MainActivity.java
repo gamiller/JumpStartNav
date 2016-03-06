@@ -2,6 +2,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -141,6 +142,15 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, alarmTestFrag).commit();
 
+        }else if (id == R.id.nav_dreams){
+            // create results fragment
+            Fragment dreamFrag = null;
+            dreamFrag = new DreamFragment();
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, dreamFrag).commit();
+
         }
 
         // close navigation drawer
@@ -157,6 +167,41 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+
+//    //when the service is running a notification appears to tell if the tracking is running
+//    private void setUpNotification() {
+//        int notifyId = 1;
+//
+//
+//        //set up intent filter
+//        IntentFilter mFilter = new IntentFilter();
+//        mFilter.addAction("TrackingServiceAction");
+//        registerReceiver(tsReceiver, mFilter);
+//
+//        //create pending intent
+//        Intent mapIntent = new Intent(this,MapDisplayActivity.class);
+//        PendingIntent returnIntent = PendingIntent.getActivity(this, 0, mapIntent, 0);
+//
+//        //create the notificaiton
+//        Notification notification = new Notification.Builder(this)
+//                .setOngoing(true) //cant swipe the notification away
+//                .setContentTitle("My Runs 4").setContentText("Recording your path now")
+//                .setSmallIcon(R.drawable.default_profile).setContentIntent(returnIntent).build();
+//
+//
+//        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//
+//        // set flags
+//        notification.flags = notification.flags
+//                | Notification.FLAG_ONGOING_EVENT;
+//
+//        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//
+//        //notify the user that the app is running in the background
+//        mNotificationManager.notify(notifyId, notification);
+//
+//    }
 
 
 }

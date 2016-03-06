@@ -46,6 +46,12 @@ public class SoundListFragment extends Fragment
     public static android.app.LoaderManager loaderManager;
     public static Context mContext;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         Log.d("onCreateView()", "onCreateView()");
 
@@ -60,7 +66,7 @@ public class SoundListFragment extends Fragment
         // set the static variables when created
         mContext = getActivity();
         loaderManager = getActivity().getLoaderManager();
-        loaderManager.initLoader(1, null, this).forceLoad();
+        loaderManager.initLoader(3, null, this).forceLoad();
         View mInflateView = inflater.inflate(R.layout.fragment_soundlist, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.recordingEntries);
 
@@ -148,7 +154,7 @@ public class SoundListFragment extends Fragment
         super.onResume();
 
         //reloads the list when onResume is called
-        loaderManager.initLoader(1, null, this).forceLoad();
+        loaderManager.initLoader(3, null, this).forceLoad();
     }
 
     @Override

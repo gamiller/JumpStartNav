@@ -7,9 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Dream;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.DreamDbHelper;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 /**
  * Created by gracemiller on 1/31/16.
@@ -30,9 +28,11 @@ public class DreamLoader extends AsyncTaskLoader<ArrayList<Dream>> {
         //get a database helper
         DreamDbHelper helper = new DreamDbHelper(mContext);
         //fetch all of the exercise entries
+        Log.d("database for dreams", ""+ helper.getDatabaseName());
         ArrayList<Dream> dreams = helper.fetchDreams();
         Log.d("loader", "end of loader");
 
+        helper.close();
         return dreams;
     }
 
