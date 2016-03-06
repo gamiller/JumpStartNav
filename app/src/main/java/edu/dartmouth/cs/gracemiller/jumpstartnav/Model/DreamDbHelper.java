@@ -6,40 +6,45 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.RecordActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Dream;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DreamActivity;
 
 /**
  * Created by TAlbarran on 1/30/16.
  */
-public class RecordingEntryDbHelper extends SQLiteOpenHelper {
+public class DreamDbHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "recordings.db";
+    public static final String DB_NAME = "dreams.db";
     public static final int VERSION = 1;
     public Context context;
 
-    public static final String ENTRIES = "alarms";
+    public static final String ENTRIES = "dreams";
     public static final String COL_ID = "_id";
-    public static final String COL_FILE= "file_name";
-    public static final String COL_TITLE= "recording_title";
+    public static final String COL_DREAM= "dream";
+    public static final String COL_DATE = "date";
+    public static final String COL_NAME = "name";
 
-    public String[] totalColumns = { COL_ID, COL_FILE, COL_TITLE};
+
+
+
+    public String[] totalColumns = { COL_ID, COL_DREAM};
 
 
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
-            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT NOT NULL, "
-            + COL_TITLE + " TEXT NOT NULL"  + ");";
+            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_DATE + " DATETIME NOT NULL, "
+            + COL_NAME + " TEXT, " + COL_DREAM + " TEXT "  + ");";
 
 
     // Constructor
-    public RecordingEntryDbHelper(Context context) {
+    public DreamDbHelper(Context context) {
         // DATABASE_NAME is, of course the name of the database, which is defined as a tring constant
         // DATABASE_VERSION is the version of database, which is defined as an integer constant
         super(context, DB_NAME, null, VERSION);
@@ -53,13 +58,13 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     }
 
     // Insert a item given each column value
-    public long insertRecording(Recording entry) {
+    public long insertDream(Dream entry) {
 
         long insertNum;
 
         //get the dbhelper
-        RecordingEntryDbHelper DbHelper = this;
-        Recording recording = entry;
+        DreamDbHelper DbHelper = this;
+        Dream dream = entry;
 
         //open the database
         SQLiteDatabase database = DbHelper.getWritableDatabase();
@@ -70,10 +75,9 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         //from the exercise into it
         ContentValues cv = new ContentValues();
         //get the time in milliseconds
-        cv.put(DbHelper.COL_FILE, recording.getFileName());
-        cv.put(DbHelper.COL_TITLE, recording.getAlarmName());
-
-
+        cv.put(DbHelper.COL_DREAM, dream.getDream());
+        cv.put(DbHelper.COL_DATE, dream.getDate().getTimeInMillis());
+        cv.put(DbHelper.COL_NAME, dream.getDreamName());
 
         //insert the cv into the database, and get the number it was
         //inserted at
@@ -92,8 +96,7 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     }
 
     // Remove an entry by giving its index
-    public void removeRecording(long rowIndex) {
-        Log.d("removeRecording()", "removeRecording()" + rowIndex);
+    public void removeEntry(long rowIndex) {
         //open the data as writable
         SQLiteDatabase database = this.getWritableDatabase();
 
@@ -106,7 +109,7 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     }
 
     // Query a specific entry by its index.
-    public Recording fetchRecordingByIndex(long rowId) {
+    public Dream fetchDreamByIndex(long rowId) {
 
         //open the database
         SQLiteDatabase database = this.getReadableDatabase();
@@ -119,18 +122,18 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         //create a temporary exercise from the cursor to return
-        Recording tempRecording = getRecordingFromCursor(cursor);
+        Dream tempDream = getDreamFromCursor(cursor);
         database.close();
-        return tempRecording;
+        return tempDream;
 
     }
 
     // Query the entire table, return all rows
-    public ArrayList<Recording> fetchRecordings() {
+    public ArrayList<Dream> fetchDreams() {
         //get readable database
         SQLiteDatabase database = this.getReadableDatabase();
 
-        ArrayList<Recording> alarms = new ArrayList<Recording>();
+        ArrayList<Dream> dreams = new ArrayList<Dream>();
 
         //get a cursor for the table
         Cursor cursor = database.query(this.ENTRIES,
@@ -140,28 +143,30 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             //for each item create a new exercise
-            Recording tempRecording = getRecordingFromCursor(cursor);
-            alarms.add(tempRecording);
+            Dream tempDream = getDreamFromCursor(cursor);
+            dreams.add(tempDream);
             cursor.moveToNext();
         }
         // close the cursor and database
         cursor.close();
         database.close();
-        return alarms;
+        return dreams;
 
     }
 
     //get a exercise from a cursor
-    public Recording getRecordingFromCursor(Cursor cursor) {
+    public Dream getDreamFromCursor(Cursor cursor) {
         //create temporary exercise
-        Recording tempRecording = new Recording();
+        Dream tempDream = new Dream();
 
         // set all of the data in the exercise
-        tempRecording.setId(cursor.getInt(cursor.getColumnIndex(COL_ID)));
-        tempRecording.setAlarmName(cursor.getString(cursor.getColumnIndex(COL_TITLE)));
-        tempRecording.setFileName(cursor.getString(cursor.getColumnIndex(COL_FILE)));
+        tempDream.setId(cursor.getInt(cursor.getColumnIndex(COL_ID)));
+        tempDream.setDream(cursor.getString(cursor.getColumnIndex(COL_DREAM)));
+        tempDream.setDate(getDate(cursor.getLong(cursor.getColumnIndex(COL_DATE))));
+        tempDream.setDreamName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
 
-        return tempRecording;
+
+        return tempDream;
     }
 
 
@@ -172,30 +177,39 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
 
 
 
+    //get a calender instance from milliseconds
+    //used with help from http://stackoverflow.com/questions/18929929/convert-timestamp-into-current-date-in-android
+    private Calendar getDate(long time) {
+        //get an instance
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        //set the calender
+        cal.setTimeInMillis(time);
+        return cal;
+    }
 
 
 }
 
 //insert your task into the database
-class insertRecording extends AsyncTask<sqlObject, Void, Void> {
+class insertDream extends AsyncTask<sqlObjectDream, Void, Void> {
     private long insertNum;
     private Context context;
-    RecordingEntryDbHelper helper;
+    DreamDbHelper helper;
 
     //construct the async task
-    public insertRecording(Context context) {
+    public insertDream(Context context) {
         this.context = context;
     }
 
 
     @Override
-    protected Void doInBackground(sqlObject...params){
+    protected Void doInBackground(sqlObjectDream...params){
         //get the vairables from the object
         helper = params[0].helper;
-        Recording recording = params[0].recording;
+        Dream dream = params[0].dream;
 
         //call insert entry from the helper
-        insertNum = helper.insertRecording(recording);
+        insertNum = helper.insertDream(dream);
 
         return null;
 
@@ -208,12 +222,12 @@ class insertRecording extends AsyncTask<sqlObject, Void, Void> {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
 
-//        //close the manual entry activity
-//        if (context.equals(RecordActivity.mContext)) {
-//            ((RecordActivity)context).finish();
-//        } else {
-//            ((RecordActivity)context).finish();
-//        }
+        //close the manual entry activity
+        if (context.equals(DreamActivity.mContext)) {
+            ((DreamActivity)context).finish();
+        } else {
+            ((DreamActivity)context).finish();
+        }
 
 
     }
@@ -223,17 +237,18 @@ class insertRecording extends AsyncTask<sqlObject, Void, Void> {
 }
 
 
+
 //edu.dartmouth.cs.gracemiller.jumpstartnav.Model.sqlObject which can be passed into the asynctasks
 //bundles up the context, exercise, and dbhelper
-class sqlObject{
-        RecordingEntryDbHelper helper;
-        Recording recording;
+class sqlObjectDream{
+        DreamDbHelper helper;
+        Dream dream;
         Context context;
 
 
-        sqlObject(RecordingEntryDbHelper helper, Recording recording, Context context){
+        sqlObjectDream(DreamDbHelper helper, Dream dream, Context context){
             this.helper = helper;
-            this.recording = recording;
+            this.dream = dream;
             this.context = context;
         }
 
