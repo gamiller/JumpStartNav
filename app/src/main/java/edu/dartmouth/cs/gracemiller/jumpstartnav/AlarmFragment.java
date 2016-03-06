@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
@@ -8,8 +9,12 @@ import android.app.LoaderManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
@@ -61,7 +67,11 @@ public class AlarmFragment extends Fragment  {
     private Calendar mDateAndTime = Calendar.getInstance();
     private String mActivityType = "";
     private String mRingtone = "";
+    private String mRingtoneName = "default";
     private String mReminder="";
+    private int mDefindex = RingtoneManager.TYPE_ALARM;
+
+    private TextView currentRingtoneTV;
 
     private int mSoundSelected =0;
 
@@ -102,6 +112,20 @@ public class AlarmFragment extends Fragment  {
 
     public AlarmFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+
+            Uri ringtoneURI = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            mDefindex = 3;
+
+            mRingtone = ringtoneURI.toString();
+            mRingtoneName = "default";
+            updateTextView(mRingtoneName);
+
+        }
     }
 
     @Override
@@ -284,7 +308,7 @@ public class AlarmFragment extends Fragment  {
                         String oldRingtone = alarm.getmRingToneFile();
                         mRingtone = oldRingtone;
                         onRingtoneClicked(ringtoneTextView);
-                        ringtoneTextView.setText("Ringtone: " + mRingtone);
+                        ringtoneTextView.setText("Ringtone: " + mRingtoneName);
                     }
                 });
 
@@ -362,6 +386,7 @@ public class AlarmFragment extends Fragment  {
         alarm.setmAlarmType(alarmType);
         alarm.setmRingToneFile(mRingtone);
         alarm.setmReminder(mReminder);
+        alarm.setDefaultIndex(mDefindex);
         //helper.removeAlarm(position);
         helper.updateAlarm(alarm);
     }
@@ -630,7 +655,7 @@ public class AlarmFragment extends Fragment  {
 
                 AlertDialog.Builder mRingtoneDialog = new AlertDialog.Builder(mContext);
                 mRingtoneDialog.setTitle(R.string.ringtone_dialog_title);
-                ArrayList<Integer> mSelectedItems = new ArrayList();  // Where we track the selected items
+                final ArrayList<Integer> mSelectedItems = new ArrayList();  // Where we track the selected items
 
 
                 mRingtoneDialog.setNegativeButton("cancel",
@@ -644,16 +669,9 @@ public class AlarmFragment extends Fragment  {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 Log.d("checked the item", "checked: " + which);
-
                                 mSoundSelected = which;
-                                RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
-
-                                mRingtone = myRecordings.get(which).getAlarmName();
-                                Log.d("ringtone is", "ringtone is : " + mRingtone);
-
-
-                                helper.close();
                             }
 
                         });
@@ -661,6 +679,17 @@ public class AlarmFragment extends Fragment  {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+
+                                RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
+
+                                mRingtone = myRecordings.get(mSoundSelected).getFileName();
+                                Log.d("ringtone is", "ringtone is : " + mRingtone);
+
+                                helper.close();
+
+                                mRingtoneName = myRecordings.get(mSoundSelected).getAlarmName();
+                                updateTextView(mRingtoneName);
                                 dialog.dismiss();
                             }
                         });
@@ -842,11 +871,65 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
 
     // Do we need an async loader here? - we may need to add in default ringtones to database
     private void onRingtoneClicked(final TextView view) {
-        loaderManager = getActivity().getLoaderManager();
-        //loaderManager.initLoader(1, null, this).forceLoad();
-        loaderManager.initLoader(4, null, recordingLoaderListener).forceLoad();
 
-        view.setText("Ringtone: " + mRingtone);
+        currentRingtoneTV = view;
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_twobutton_recording, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder.setCancelable(true)
+                .setView(dialogView);
+        builder.setNegativeButton("CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+
+        Button DefaultButton =  (Button) dialogView.findViewById(R.id.button_play_dialog);
+        Button CustomButton =  (Button) dialogView.findViewById(R.id.button_delete_dialog);
+        DefaultButton.setText("Default");
+        CustomButton.setText("Custom");
+
+
+        final AlertDialog alert = builder.create();
+
+        DefaultButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Load default ringtone list
+                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Alarm Ringtone");
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+                startActivityForResult(intent, 2);
+                alert.dismiss();
+            }
+        });
+
+        CustomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loaderManager = getActivity().getLoaderManager();
+                //loaderManager.initLoader(1, null, this).forceLoad();
+                loaderManager.initLoader(4, null, recordingLoaderListener).forceLoad();
+
+                mRingtoneName = "custom";
+                updateTextView(mRingtoneName);
+                alert.dismiss();
+            }
+        });
+        alert.show();
+
+
+        view.setText("Ringtone: " + mRingtoneName);
+    }
+
+    private void updateTextView (String name) {
+        currentRingtoneTV.setText("Ringtone: " + name);
     }
 
     private void onReminderClicked(String oldReminder) {

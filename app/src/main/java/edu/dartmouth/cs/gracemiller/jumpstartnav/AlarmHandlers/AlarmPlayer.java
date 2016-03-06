@@ -26,8 +26,9 @@ public class AlarmPlayer {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-            if (dataSource.equals("default")) {
-                notification = RingtoneManager.getDefaultUri(defaultIndex);
+            if (defaultIndex == 3) {
+//                notification = RingtoneManager.getDefaultUri(defaultIndex);
+                notification = Uri.parse(dataSource);
                 mediaPlayer.setDataSource(context, notification);
             } else {
                 mediaPlayer.setDataSource(dataSource);
