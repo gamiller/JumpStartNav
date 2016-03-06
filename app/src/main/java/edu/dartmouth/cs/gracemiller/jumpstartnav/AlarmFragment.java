@@ -45,6 +45,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -73,7 +75,7 @@ public class AlarmFragment extends Fragment  {
 
     private TextView currentRingtoneTV;
 
-    private int mSoundSelected =0;
+    private int mSoundSelected = 0;
 
     public static ArrayAdapter<String> myAdapter;
     public static ListView mListView;
@@ -180,17 +182,31 @@ public class AlarmFragment extends Fragment  {
                 final Alarm alarm = mDataset.get(position);
                 final long alarmId = alarm.getId();
 
+                Calendar oldDate = Calendar.getInstance();
+                int oldHour = alarm.getmDateTime().get(Calendar.HOUR);
+                int oldMinute = alarm.getmDateTime().get(Calendar.MINUTE);
+                int oldAP = alarm.getmDateTime().get(Calendar.AM_PM);
+                oldDate.set(Calendar.HOUR, oldHour);
+                oldDate.set(Calendar.MINUTE, oldMinute);
+                oldDate.set(Calendar.AM_PM, oldAP);
+
+                String oldAlarmType = "";
+                String oldAlarmRingtone =alarm.getmRingToneFile();
+
                 mRingtone = alarm.getmRingToneFile();
 
                 switch (alarm.getmAlarmType()) {
                     case 0:
                         mActivityType = "Math Problem";
+                        oldAlarmType = "Math Problem";
                         break;
                     case 1:
                         mActivityType = "Jumping Jacks";
+                        oldAlarmType = "Jumping Jacks";
                         break;
                     case 2:
                         mActivityType = "Record Yourself";
+                        oldAlarmType = "Record Yourself";
                         break;
                 }
 
@@ -262,17 +278,36 @@ public class AlarmFragment extends Fragment  {
                     }
                 });
 
-                if (mOpen == false) {
+                if (!mOpen) {
+                    TextView dateText = (TextView) cardView.findViewById(R.id.alarm_date_textview);
+                    dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", oldDate).toString());
+
+                    TextView wakeupActivityText = (TextView) cardView.findViewById(R.id.alarm_wakeup_activity_textview);
+                    wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
+
+                    TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
+                    ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
+
                     expandedView.setVisibility(View.VISIBLE);
                     cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
                     slide_down(mContext, expandedView);
                     //mOpened = true;
                     mOpenMap.put(alarmId, true);
 
-                } else if (mOpen == true) {
+                } else if (mOpen) {
                     cardView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     slide_up(mContext, expandedView);
                     expandedView.setVisibility(View.GONE);
+
+                    TextView dateText = (TextView) cardView.findViewById(R.id.alarm_date_textview);
+                    dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", oldDate).toString());
+
+                    TextView wakeupActivityText = (TextView) cardView.findViewById(R.id.alarm_wakeup_activity_textview);
+                    wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
+
+                    TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
+                    ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
+
                     //mOpened = false;
                     mOpenMap.put(alarmId, false);
                     Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_LONG).show();
