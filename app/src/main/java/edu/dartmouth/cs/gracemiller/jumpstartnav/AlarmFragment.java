@@ -69,7 +69,7 @@ public class AlarmFragment extends Fragment  {
     private Calendar mDateAndTime = Calendar.getInstance();
     private String mActivityType = "";
     private String mRingtone = "";
-    private String mRingtoneName = "default";
+    private String mRingtoneName = "Default";
     private String mReminder="";
     private int mDefindex = RingtoneManager.TYPE_ALARM;
 
@@ -116,7 +116,7 @@ public class AlarmFragment extends Fragment  {
             mDefindex = 3;
 
             mRingtone = ringtoneURI.toString();
-            mRingtoneName = "default";
+            mRingtoneName = "Default";
             updateTextView(mRingtoneName);
 
         }
@@ -149,22 +149,20 @@ public class AlarmFragment extends Fragment  {
 
                 Log.d("onalarmclick", "in onalarmclick()");
 
-                final Alarm alarm = mDataset.get(position);
-                final long alarmId = alarm.getId();
+                final Alarm alarmPre = mDataset.get(position);
+                final long alarmId = alarmPre.getId();
+                alarmHelper = new AlarmEntryDbHelper(mContext);
+                final Alarm alarm = alarmHelper.fetchAlarmByIndex(alarmId);
 
-                Calendar oldDate = Calendar.getInstance();
-                int oldHour = alarm.getmDateTime().get(Calendar.HOUR);
-                int oldMinute = alarm.getmDateTime().get(Calendar.MINUTE);
-                int oldAP = alarm.getmDateTime().get(Calendar.AM_PM);
-                oldDate.set(Calendar.HOUR, oldHour);
-                oldDate.set(Calendar.MINUTE, oldMinute);
-                oldDate.set(Calendar.AM_PM, oldAP);
+                if(alarm.getmActive() == 0) {
+                    isActivated = false;
+                } else {
+                    isActivated = true;
+                }
+
+                mDateAndTime = alarm.getmDateTime();
 
                 String oldAlarmType = "";
-                String oldAlarmRingtone =alarm.getmRingToneFile();
-
-                mRingtone = alarm.getmRingToneFile();
-
                 switch (alarm.getmAlarmType()) {
                     case 0:
                         mActivityType = "Math Problem";
@@ -180,22 +178,19 @@ public class AlarmFragment extends Fragment  {
                         break;
                 }
 
-                mDateAndTime.set(Calendar.HOUR, alarm.getmDateTime().get(Calendar.HOUR));
-                mDateAndTime.set(Calendar.MINUTE, alarm.getmDateTime().get(Calendar.MINUTE));
-                mDateAndTime.set(Calendar.AM_PM, alarm.getmDateTime().get(Calendar.AM_PM));
+                mReminder = alarm.getmReminder();
 
 
-                alarmHelper = new AlarmEntryDbHelper(mContext);
+                String oldAlarmRingtone = alarm.getmRingToneFile();
+
+                mRingtone = alarm.getmRingToneFile();
+
+
                 Log.d("hit alarm", "alarm hit is position " + position + " and id " + alarmId);
                 boolean mOpen = false;
                 if (mOpenMap.containsKey(alarmId)) {
                     mOpen = mOpenMap.get(alarmId);
                 }
-
-//                Calendar oldTime = alarm.getmDateTime();
-//                mDateAndTime.set(Calendar.HOUR, oldTime.get(Calendar.HOUR));
-//                mDateAndTime.set(Calendar.MINUTE, oldTime.get(Calendar.MINUTE));
-//                mDateAndTime.set(Calendar.AM_PM, oldTime.get(Calendar.AM_PM));
 
 
                 final CardView cardView = (CardView) view.findViewById(R.id.cardView);
@@ -250,17 +245,20 @@ public class AlarmFragment extends Fragment  {
 
                 if (!mOpen) {
                     boolean otherAlarmOpen = false;
-                    for (long i = 0; i < mOpenMap.size(); i++) {
-                        if(mOpenMap.containsKey(i) && mOpenMap.get(i)) {
+                    //for (long i = 0; i < mOpenMap.size(); i++) {
+                    for (long i : mOpenMap.keySet()) {
+                        if (mOpenMap.get(i)) {
                             otherAlarmOpen = mOpenMap.get(i);
-                            Toast.makeText(mContext, "Cannot edit two alarms at once", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Cannot edit two alarms at once\nClose open alarm",
+                                    Toast.LENGTH_SHORT).show();
                             break;
                         }
                     }
+                    //}
 
-                    if(!otherAlarmOpen) {
+                    if (!otherAlarmOpen) {
                         TextView dateText = (TextView) cardView.findViewById(R.id.alarm_date_textview);
-                        dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", oldDate).toString());
+                        dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", mDateAndTime).toString());
 
                         TextView wakeupActivityText = (TextView) cardView.findViewById(R.id.alarm_wakeup_activity_textview);
                         wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
@@ -279,7 +277,7 @@ public class AlarmFragment extends Fragment  {
                     expandedView.setVisibility(View.GONE);
 
                     TextView dateText = (TextView) cardView.findViewById(R.id.alarm_date_textview);
-                    dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", oldDate).toString());
+                    dateText.setText("Date: " + android.text.format.DateFormat.format("MMM dd yyyy", mDateAndTime).toString());
 
                     TextView wakeupActivityText = (TextView) cardView.findViewById(R.id.alarm_wakeup_activity_textview);
                     wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
@@ -288,7 +286,7 @@ public class AlarmFragment extends Fragment  {
                     ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
 
                     mOpenMap.put(alarmId, false);
-                    Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_SHORT).show();
                 }
 
                 final TextView dateTextView = (TextView) cardView.findViewById(R.id.alarm_date_textview);
@@ -327,8 +325,7 @@ public class AlarmFragment extends Fragment  {
                 reminderTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String oldReminder = alarm.getmReminder();
-                        onReminderClicked(oldReminder);
+                        onReminderClicked(mReminder);
                         reminderTextView.setText("Reminder");
                     }
                 });
@@ -360,12 +357,23 @@ public class AlarmFragment extends Fragment  {
         alarm.setmAlarmType(oldAlarm.getmAlarmType());
 
         alarm.setmDateTime(mDateAndTime);
-        int active = 0;
-        if(isActivated){
+
+        int active;
+        if(isActivated && alarm.getmActive() == 0){
             active = 1;
+            AlarmScheduler.deleteAlarm(mContext,(int) alarm.getId());
+            AlarmScheduler.setAlarm(mContext, (int) alarm.getId(), alarm.getmDateTime());
+            alarm.setmActive(active);
+        } else if (!isActivated && alarm.getmActive() == 1){
+            AlarmScheduler.deleteAlarm(mContext,(int) alarm.getId());
+            active = 0;
+            alarm.setmActive(active);
+        } else {
+            AlarmScheduler.deleteAlarm(mContext,(int) alarm.getId());
+            AlarmScheduler.setAlarm(mContext,(int)alarm.getId(),alarm.getmDateTime());
+            alarm.setmActive(oldAlarm.getmActive());
         }
 
-        alarm.setmActive(active);
         int alarmType = 0;
         switch(mActivityType) {
             case "Jumping Jacks":
@@ -394,9 +402,12 @@ public class AlarmFragment extends Fragment  {
                 // grab data and create alarm object
                 Alarm addAlarm = new Alarm();
                 Calendar setTime = Calendar.getInstance();
+                setTime.setTimeInMillis(System.currentTimeMillis());
                 setTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 setTime.set(Calendar.MINUTE, minute);
                 addAlarm.setmDateTime(setTime);
+                addAlarm.setmReminder("");
+                addAlarm.setmActive(1);
 
                 // add alarm to database
                 AlarmEntryDbHelper helper = new AlarmEntryDbHelper(mContext);
@@ -429,19 +440,7 @@ public class AlarmFragment extends Fragment  {
 
         AlertDialog.Builder mActivityDialog = new AlertDialog.Builder(mContext);
         mActivityDialog.setTitle("WakeUp Activity Type");
-        ArrayList<Integer> mSelectedItems = new ArrayList();  // Where we track the selected items
-//        final String oldActivityType = oldAlarmType;
-//
-//        int mActivitySelected = 0;
-//        switch (oldActivityType) {
-//            case "Jumping Jacks":
-//                mActivitySelected = 1;
-//                break;
-//            case "Record Yourself":
-//                mActivitySelected = 2;
-//                break;
-//        }
-        int mActivitySelected = oldAlarmType;
+        ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
         mActivityDialog.setNegativeButton("cancel",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -460,7 +459,7 @@ public class AlarmFragment extends Fragment  {
                         dialog.dismiss();
                     }
                 });
-        mActivityDialog.setSingleChoiceItems(myAdapter, mActivitySelected,
+        mActivityDialog.setSingleChoiceItems(myAdapter, oldAlarmType,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -535,7 +534,6 @@ public class AlarmFragment extends Fragment  {
         public void onLoadFinished(Loader<ArrayList<Recording>> loader, ArrayList<Recording> data) {
             Log.d("onLoadFinished()", "onLoadFinished()");
 
-
             //sets global variable
             myRecordings = data;
 
@@ -553,11 +551,7 @@ public class AlarmFragment extends Fragment  {
                     recordingNames.add(recording.getAlarmName());
                     //Log.d("in recordings", "recording: " + recordingNames[i]);
                     Log.d("in recordings", "recording: " + recordingNames.toArray());
-
-
                 }
-
-                //sets adapter to array list of exercises
 
                 // Define a new adapter
                 myAdapter = new ArrayAdapter<String>(mContext,
@@ -566,10 +560,9 @@ public class AlarmFragment extends Fragment  {
 
                 AlertDialog.Builder mRingtoneDialog = new AlertDialog.Builder(mContext);
                 mRingtoneDialog.setTitle(R.string.ringtone_dialog_title);
-                final ArrayList<Integer> mSelectedItems = new ArrayList();  // Where we track the selected items
+                final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
 
-
-                mRingtoneDialog.setNegativeButton("cancel",
+                mRingtoneDialog.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -586,7 +579,7 @@ public class AlarmFragment extends Fragment  {
                             }
 
                         });
-                mRingtoneDialog.setPositiveButton("save",
+                mRingtoneDialog.setPositiveButton("Save",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -604,18 +597,11 @@ public class AlarmFragment extends Fragment  {
                                 dialog.dismiss();
                             }
                         });
-
-
                 mRingtoneDialog.show();
 
-
-                // Assign the adapter to ListView
-                //setListAdapter(mAdapter);
-                //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
-                //mListView.setListAdapter(myAdapter);
-                //mListView.setAdapter(myAdapter);
                 Log.d("onLoadFinished()", "set adapter");
-
+            } else {
+                Toast.makeText(mContext, "No custom ringtones found", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -626,8 +612,6 @@ public class AlarmFragment extends Fragment  {
             //reloads exercises into adapter
             myAdapter.clear();
             myAdapter.notifyDataSetChanged();
-
-
         }
 
 
@@ -699,6 +683,7 @@ public class AlarmFragment extends Fragment  {
 //
 //
 //    };
+
 private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
         = new LoaderManager.LoaderCallbacks<ArrayList<Alarm>>() {
     @Override
@@ -752,18 +737,10 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
                 mCardView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             }
             aListAdapter.add(mCardView);
-
         }
 
-
-        // Assign the adapter to ListView
-        //setListAdapter(mAdapter);
-        //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
-        //mListView.setListAdapter(myAdapter);
         mAlarmListView.setAdapter(aListAdapter);
         Log.d("onalarmLoadFinished()", "set adapter");
-
-
     }
 
     @Override
@@ -773,8 +750,6 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
         //reloads exercises into adapter
         // mAlarmAdapter.clear();
         aListAdapter.notifyDataSetChanged();
-
-
     }
 
 
@@ -828,7 +803,7 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
                 //loaderManager.initLoader(1, null, this).forceLoad();
                 loaderManager.initLoader(4, null, recordingLoaderListener).forceLoad();
 
-                mRingtoneName = "custom";
+                mRingtoneName = "Custom";
                 updateTextView(mRingtoneName);
                 alert.dismiss();
             }
@@ -861,6 +836,7 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
         mReminderDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 mReminder = inputText.getText().toString();
+                Log.d("mReminder text is now", "" + mReminder);
                 dialog.dismiss();
             }
         });

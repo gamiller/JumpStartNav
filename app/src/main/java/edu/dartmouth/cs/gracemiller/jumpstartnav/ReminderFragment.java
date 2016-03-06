@@ -92,7 +92,9 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
                 //recordingNames.add(recording.getAlarmName());
                 //recordingNames[i] = recording.getAlarmName();
                 //i++;
-                alarmReminders.add(alarm.getmReminder());
+                if(alarm.getmActive() == 1) {
+                    alarmReminders.add(alarm.getmReminder());
+                }
                 //Log.d("in recordings", "recording: " + recordingNames[i]);
                 //Log.d("in recordings", "recording: " + recordingNames.toArray());
             }

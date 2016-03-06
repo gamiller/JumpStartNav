@@ -13,7 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+
 public class MovementActivity extends AppCompatActivity {
+
+    private int mId;
+    private AlarmPlayer player;
 
     private SensorsService mSensorService;
     private SensorsService.SensorBinder mBinder;
@@ -52,6 +57,12 @@ public class MovementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movement);
+
+        Intent recvIntent = getIntent();
+        mId = recvIntent.getIntExtra("id",0);
+
+        player = new AlarmPlayer(this,mId);
+//        player.startSound();
 
         mMotivateText = (TextView) findViewById(R.id.movementText);
         mTimerText = (TextView) findViewById(R.id.timerText);
@@ -107,6 +118,7 @@ public class MovementActivity extends AppCompatActivity {
             public void onFinish() {
                 Toast.makeText(getApplicationContext(),
                         "Done!", Toast.LENGTH_SHORT).show();
+                player.stopSound();
                 finish();
             }
         };

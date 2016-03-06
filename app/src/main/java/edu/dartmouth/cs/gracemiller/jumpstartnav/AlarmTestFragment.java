@@ -38,7 +38,7 @@ public class AlarmTestFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_alarm_test, container, false);
-        player = new AlarmPlayer();
+//        player = new AlarmPlayer(getContext(),);
 
         addbutton = (Button) v.findViewById(R.id.addbutton);
         addbutton.setOnClickListener(new View.OnClickListener() {

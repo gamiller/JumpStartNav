@@ -147,8 +147,6 @@ public class DreamFragment extends android.app.Fragment {
             //reloads exercises into adapter
             myAdapter.clear();
             myAdapter.notifyDataSetChanged();
-
-
         }
     };
 }

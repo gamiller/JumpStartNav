@@ -29,6 +29,8 @@
     <string name="dreamTitle">~Record your dream~</string>
     <string name="dreamText">What are you dreaming about?</string>
     <string name="saveButton">Save</string>
+    <string name="wakeup_text">Rise and Shine!</string>
+    <string name="remindersday_label">Your reminders for the day:</string>
 
 
 </resources>

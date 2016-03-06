@@ -88,8 +88,9 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         cv.put(DbHelper.COL_ALARMTYPE, alarm.getmAlarmType());
         cv.put(DbHelper.COL_SOUND, alarm.getmRingToneFile());
         cv.put(DbHelper.COL_ACTIVE, alarm.getmActive());
-        cv.put(DbHelper.COL_REMINDER, alarm.getmActive());
+        cv.put(DbHelper.COL_REMINDER, alarm.getmReminder());
         cv.put(DbHelper.COL_DEFINDEX, alarm.getDefaultIndex());
+        Log.d("adding alarm reminder", " " + alarm.getmReminder());
 
 
         //insert the cv into the database, and get the number it was
@@ -144,8 +145,10 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         cv.put(DbHelper.COL_ALARMTYPE, alarm.getmAlarmType());
         cv.put(DbHelper.COL_SOUND, alarm.getmRingToneFile());
         cv.put(DbHelper.COL_ACTIVE, alarm.getmActive());
-        cv.put(DbHelper.COL_REMINDER, alarm.getmActive());
+        cv.put(DbHelper.COL_REMINDER, alarm.getmReminder());
         cv.put(DbHelper.COL_DEFINDEX, alarm.getDefaultIndex());
+        Log.d("updating alarm reminder", " " + alarm.getmReminder());
+
 
 
         //insert the cv into the database, and get the number it was
@@ -227,6 +230,7 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         tempAlarm.setmActive(cursor.getInt(cursor.getColumnIndex(COL_ACTIVE)));
         tempAlarm.setmReminder(cursor.getString(cursor.getColumnIndex(COL_REMINDER)));
         tempAlarm.setDefaultIndex(cursor.getInt(cursor.getColumnIndex(COL_DEFINDEX)));
+        Log.d("fetching alarm reminder", ""+cursor.getString(cursor.getColumnIndex(COL_REMINDER)) );
 
 
         return tempAlarm;
@@ -317,5 +321,3 @@ class sqlObjectAlarm {
 
 
 }
-
-

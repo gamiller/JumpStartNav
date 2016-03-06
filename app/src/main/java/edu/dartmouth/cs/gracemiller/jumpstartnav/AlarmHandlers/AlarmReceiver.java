@@ -15,6 +15,9 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.SpeechTextActivity;
  * Created by TAlbarran on 3/2/16.
  */
 public class AlarmReceiver extends BroadcastReceiver {
+    String NUM_CORR = "numberCorrect";
+    String NUM_LEFT = "numberLeft";
+    String NUM_WRONG = "numberWrong";
 
     //Receive broadcast
     @Override
@@ -38,9 +41,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         dataSource = onAlarm.getmRingToneFile();
         index = onAlarm.getDefaultIndex();
 
-        //start playing the sound
-        AlarmPlayer player = new AlarmPlayer();
-        player.startSound(context,dataSource,index);
+//        //start playing the sound
+//        AlarmPlayer player = new AlarmPlayer();
+//        player.startSound(context,dataSource,index);
 
         /*
         Start the designated activity
@@ -56,8 +59,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             classtype = SpeechTextActivity.class;
         }
 
+
         Intent unlockIntent = new Intent(context,classtype);
+        unlockIntent.putExtra(NUM_CORR, 0);
+        unlockIntent.putExtra(NUM_WRONG, 0);
+        unlockIntent.putExtra(NUM_LEFT, 3);
+
         unlockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        unlockIntent.putExtra("id",id);
         context.startActivity(unlockIntent);
 
     }

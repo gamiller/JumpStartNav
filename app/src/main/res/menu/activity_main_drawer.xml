@@ -15,14 +15,15 @@
             android:icon="@drawable/ic_mic_black_24dp"
             android:title="Your Alarm Recordings" />
         <item
+            android:id="@+id/nav_dreams"
+            android:icon="@drawable/ic_cloud_black_24dp"
+            android:title="Your Dreams" />
+        <item
             android:id="@+id/nav_testWake"
             android:title="Test Alarm Actvities" />
         <item
             android:id="@+id/nav_alarmTest"
             android:title="Test Making Alarm" />
-        <item
-            android:id="@+id/nav_dreams"
-            android:title="Your Dreams" />
     </group>
 
 
