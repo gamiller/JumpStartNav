@@ -307,6 +307,13 @@ public class AlarmFragment extends Fragment {
                 if (alarm.getmRingToneFile().equals(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())) {
                     oldAlarmRingtone = "Default";
                 }
+
+
+                if (alarm.getDefaultIndex() == 3) {
+                    mRingtoneName = "default";
+                } else {
+                    mRingtoneName = "custom";
+                }
                 mRingtone = alarm.getmRingToneFile();
                 mReminder = alarm.getmReminder();
 
@@ -385,7 +392,7 @@ public class AlarmFragment extends Fragment {
                         wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
 
                         TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
-                        ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
+                        ringtoneText.setText("Ringtone: " + mRingtoneName);
 
                         expandedView.setVisibility(View.VISIBLE);
                         cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
@@ -405,7 +412,7 @@ public class AlarmFragment extends Fragment {
                     wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
 
                     TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
-                    ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
+                    ringtoneText.setText("Ringtone: " + mRingtoneName);
 
                     mOpenMap.put(alarmId, false);
                     Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_SHORT).show();

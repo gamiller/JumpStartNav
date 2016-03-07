@@ -1,6 +1,8 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
@@ -77,11 +79,13 @@ public class DreamFragment extends android.app.Fragment {
         @Override
         public void onLoaderReset(Loader<ArrayList<Dream>> loader) {
             //reloads exercises into adapter
+            myAdapter.notifyDataSetChanged();
 
-            if (myAdapter != null) {
-                myAdapter.clear();
-                myAdapter.notifyDataSetChanged();
-            }
+
+//            if (myAdapter != null) {
+//                myAdapter.clear();
+//                myAdapter.notifyDataSetChanged();
+//            }
         }
     };
 
@@ -130,6 +134,7 @@ public class DreamFragment extends android.app.Fragment {
     public void onResume() {
         super.onResume();
 
+
         //reloads the list when onResume is called
         loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
     }
@@ -137,6 +142,10 @@ public class DreamFragment extends android.app.Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
+            FragmentTransaction tr = getFragmentManager().beginTransaction();
+            Fragment mdeleteDream = new DreamFragment();
+            tr.replace(R.id.fragment_holder, mdeleteDream).commit();
+
             onResume();
         }
     }
