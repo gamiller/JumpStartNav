@@ -304,17 +304,22 @@ public class AlarmFragment extends Fragment {
 //                RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
 //                ArrayList<Recording> recordings = helper.fetchRecordings();
 
-                if (alarm.getmRingToneFile().equals(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())) {
+//                if (alarm.getmRingToneFile().equals(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())) {
+//                    oldAlarmRingtone = "Default";
+//                }
+
+                int defIndex = alarm.getDefaultIndex();
+
+                if (defIndex == 3) {
                     oldAlarmRingtone = "Default";
-                }
-
-
-                if (alarm.getDefaultIndex() == 3) {
-                    mRingtoneName = "default";
+                    mRingtone = "Default";
                 } else {
-                    mRingtoneName = "custom";
+                    oldAlarmRingtone = "Custom";
+                    mRingtone = "Custom";
+
                 }
-                mRingtone = alarm.getmRingToneFile();
+
+                //mRingtone = alarm.getmRingToneFile();
                 mReminder = alarm.getmReminder();
 
                 boolean mOpen = false;
@@ -392,7 +397,7 @@ public class AlarmFragment extends Fragment {
                         wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
 
                         TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
-                        ringtoneText.setText("Ringtone: " + mRingtoneName);
+                        ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
 
                         expandedView.setVisibility(View.VISIBLE);
                         cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
@@ -412,7 +417,7 @@ public class AlarmFragment extends Fragment {
                     wakeupActivityText.setText("Wakeup Activity: " + oldAlarmType);
 
                     TextView ringtoneText = (TextView) cardView.findViewById(R.id.alarm_ringtone_textview);
-                    ringtoneText.setText("Ringtone: " + mRingtoneName);
+                    ringtoneText.setText("Ringtone: " + oldAlarmRingtone);
 
                     mOpenMap.put(alarmId, false);
                     Toast.makeText(mContext, "Changes Not Saved", Toast.LENGTH_SHORT).show();

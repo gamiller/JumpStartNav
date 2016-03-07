@@ -111,4 +111,9 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+//    public void selectFragment(int position){
+//        .setCurrentItem(position, true);
+//// true is to animate the transaction
+//    }
 }

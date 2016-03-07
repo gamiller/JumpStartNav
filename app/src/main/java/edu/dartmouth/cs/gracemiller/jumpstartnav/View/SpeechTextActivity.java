@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
@@ -41,6 +42,14 @@ public class SpeechTextActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_text);
+
+        Random numRand = new Random();
+        int num1 = numRand.nextInt(4 - 1 + 0) + 0;
+
+        String[] readText = getResources().getStringArray(R.array.speech_text_array);
+
+        readData = readText[num1];
+
 
         mContext = this;
 

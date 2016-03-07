@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Dream;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.MainActivity;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.DreamDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
@@ -81,6 +83,10 @@ public class DisplayDreamActivity extends AppCompatActivity {
         DreamDbHelper helper = new DreamDbHelper(getApplicationContext());
         helper.removeEntry((long) mId);
         helper.close();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
 
         finish();
 

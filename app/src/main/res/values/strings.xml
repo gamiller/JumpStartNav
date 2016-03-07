@@ -52,4 +52,12 @@
     <string name="nav_subheader_text">Get a JumpStart on your day!</string>
     <string name="dreamTitleDisplay">Dream:</string>
 
+    <string-array name="speech_text_array">
+        <item>catfish are the only animals that naturally have an odd number of whiskers</item>
+        <item>i wondered why the baseball was getting bigger then it hit me</item>
+        <item>sea otters hold hands when they sleep so they don’t drift away from each other</item>
+        <item>i can not believe I got fired from the calendar factory all I did was take a day off</item>
+        <item>squirrels plant thousands of new trees each year simply by forgetting where they put their acorns</item>
+    </string-array>
+
 </resources>

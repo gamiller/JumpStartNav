@@ -2,6 +2,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
@@ -132,6 +133,7 @@ public class DreamFragment extends android.app.Fragment {
 
     @Override
     public void onResume() {
+        Log.d("onResume()", "onResume()");
         super.onResume();
 
 
@@ -141,13 +143,35 @@ public class DreamFragment extends android.app.Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            FragmentTransaction tr = getFragmentManager().beginTransaction();
-            Fragment mdeleteDream = new DreamFragment();
-            tr.replace(R.id.fragment_holder, mdeleteDream).commit();
+        //if (requestCode == 1) {
+            Log.d("in request code", "in request");
+//            FragmentTransaction tr = getFragmentManager().beginTransaction();
+//            Fragment mdeleteDream = new DreamFragment();
+//            tr.replace(R.id.fragment_holder, mdeleteDream).commit();
 
-            onResume();
-        }
+
+//        Fragment frg = null;
+//        frg = getFragmentManager().findFragmentByTag("Your_Fragment_TAG");
+//        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.detach(frg);
+//        ft.attach(frg);
+//        loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
+
+
+//        Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.dreamFrag);
+//            FragmentTransaction fragTransaction =  (getActivity()).getFragmentManager().beginTransaction();
+//            fragTransaction.detach(currentFragment);
+//            fragTransaction.attach(currentFragment);
+//            fragTransaction.commit();
+
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.fragment_holder, this).commit();
+
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.detach(this).attach(this).commit();
+            //onResume();
+        //}
     }
 
 
