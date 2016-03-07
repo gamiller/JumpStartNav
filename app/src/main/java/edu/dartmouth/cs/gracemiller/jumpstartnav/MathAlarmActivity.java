@@ -149,7 +149,9 @@ public class MathAlarmActivity extends AppCompatActivity {
                         Log.d("numtosolve0", "last q");
                         //Intent intent = new Intent(mContext, TestWakeFragment.class);
                         player.stopSound();
-                        finish();
+                        Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
+                        i.putExtra("id", (long)id);
+                        startActivity(i);
                         //startActivity(intent);
                     }else {
                         player.stopSound();

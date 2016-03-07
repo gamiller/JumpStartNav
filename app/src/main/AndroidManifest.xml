@@ -19,7 +19,8 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,15 +37,16 @@
         <activity
             android:name=".MovementActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".MathAlarmActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DisplayDreamActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AlarmReminderViewActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".SensorsService" />
 
-        <activity android:name=".MathAlarmActivity" />
-
-        <receiver android:name=".AlarmHandlers.AlarmReceiver"></receiver>
-
-        <activity android:name=".DisplayDreamActivity"></activity>
-        <activity android:name=".AlarmReminderViewActivity"></activity>
+        <receiver android:name=".AlarmHandlers.AlarmReceiver"/>
     </application>
 
 </manifest>

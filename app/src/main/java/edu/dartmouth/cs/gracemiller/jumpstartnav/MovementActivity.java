@@ -16,6 +16,7 @@ import android.widget.Toast;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
 
 public class MovementActivity extends AppCompatActivity {
+    private Context mContext;
 
     private int mId;
     private AlarmPlayer player;
@@ -57,6 +58,8 @@ public class MovementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movement);
+
+        mContext = this;
 
         Intent recvIntent = getIntent();
         mId = recvIntent.getIntExtra("id",0);
@@ -119,7 +122,9 @@ public class MovementActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Done!", Toast.LENGTH_SHORT).show();
                 player.stopSound();
-                finish();
+                Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
+                i.putExtra("id", (long)mId);
+                startActivity(i);
             }
         };
 

@@ -28,6 +28,9 @@ public class AlarmReminderViewActivity extends AppCompatActivity {
 
         Alarm alarm = helper.fetchAlarmByIndex(alarmId);
         String reminder = alarm.getmReminder();
+        if (alarm.getmReminder().equals("")) {
+            reminder = "No Reminders";
+        }
 
         reminderText = (TextView) findViewById(R.id.textView_remindersDay);
         reminderText.setText(reminder);
@@ -36,7 +39,7 @@ public class AlarmReminderViewActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, AlarmFragment.class);
+                Intent intent = new Intent(mContext, MainActivity.class);
                 startActivity(intent);
             }
         });

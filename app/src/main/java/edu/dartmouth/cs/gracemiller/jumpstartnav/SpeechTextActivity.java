@@ -208,7 +208,9 @@ public class SpeechTextActivity extends Activity {
             // end notification here
             Toast.makeText(this, "matches!", Toast.LENGTH_SHORT).show();
             player.stopSound();
-            finish();
+            Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
+            i.putExtra("id", (long)mId);
+            startActivity(i);
         } else {
             Log.d("TAGG", "doesn't match!! WAKE UP");
             Toast.makeText(this, "Doesn't match.  Try again!", Toast.LENGTH_SHORT).show();
