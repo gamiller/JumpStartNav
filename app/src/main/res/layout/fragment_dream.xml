@@ -11,6 +11,4 @@ tools:context="edu.dartmouth.cs.gracemiller.jumpstartnav.DreamFragment">
     android:id="@+id/dreamEntries"
     android:layout_gravity="center_horizontal|top" />
 
-<include layout="@layout/content_main" />
-
 </FrameLayout>

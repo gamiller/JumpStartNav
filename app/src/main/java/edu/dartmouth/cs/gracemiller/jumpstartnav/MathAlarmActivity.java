@@ -13,8 +13,14 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
+
 public class MathAlarmActivity extends AppCompatActivity {
 
+    private int id;
+    private AlarmPlayer player;
     private EditText mAnswerText;
     private Button mSubmitButton;
     private TextView mEquationText, mCorrectText, mWrongText, mNumLeftText;
@@ -45,6 +51,19 @@ public class MathAlarmActivity extends AppCompatActivity {
 //            mNumWrong = 0;
 //        }
         Intent i = getIntent();
+        id = i.getIntExtra("id",0);
+
+        AlarmEntryDbHelper helper = new AlarmEntryDbHelper(this);
+        Alarm onAlarm = helper.fetchAlarmByIndex((long) id);
+        String dataSource = onAlarm.getmRingToneFile();
+        int index = onAlarm.getDefaultIndex();
+
+        //start playing the sound
+        player = new AlarmPlayer(this,id);
+//        player.startSound(context,dataSource,index);
+//        player.startSound();
+
+
 //        if(i != null) {
             mNumCorrect = i.getIntExtra(NUM_CORR, 0);
             mNumWrong = i.getIntExtra(NUM_WRONG, 0);
@@ -129,13 +148,16 @@ public class MathAlarmActivity extends AppCompatActivity {
                     if (mNumLeft <= 0) {
                         Log.d("numtosolve0", "last q");
                         //Intent intent = new Intent(mContext, TestWakeFragment.class);
+                        player.stopSound();
                         finish();
                         //startActivity(intent);
                     }else {
+                        player.stopSound();
                         Intent intent = new Intent(mContext, MathAlarmActivity.class);
                         intent.putExtra(NUM_CORR, mNumCorrect);
                         intent.putExtra(NUM_WRONG, mNumWrong);
                         intent.putExtra(NUM_LEFT, mNumLeft);
+                        intent.putExtra("id",id);
                         finish();
 
                         startActivity(intent);
@@ -147,10 +169,12 @@ public class MathAlarmActivity extends AppCompatActivity {
                     Log.d("num corr and to solve", "num correct " + mNumCorrect + "num to solve " + mNumToSolve);
                     //recreate();
                     mWrongText.setText("Wrong Answers: " + mNumWrong);
+                    player.stopSound();
                     Intent intent = new Intent(mContext, MathAlarmActivity.class);
                     intent.putExtra(NUM_CORR, mNumCorrect);
                     intent.putExtra(NUM_WRONG, mNumWrong);
                     intent.putExtra(NUM_LEFT, mNumLeft);
+                    intent.putExtra("id",id);
                     finish();
 
                     startActivity(intent);

@@ -6,57 +6,104 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.util.Log;
+
+import java.io.IOException;
+
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 
 /**
  * Created by TAlbarran on 3/2/16.
  */
 public class AlarmPlayer {
-        static MediaPlayer mediaPlayer;
-        static Vibrator vibrator;
+        private MediaPlayer mediaPlayer;
+        private Vibrator vibrator;
         Uri notification;
 
+    public AlarmPlayer(Context context, int id) {
+        this.notification = notification;
+        this.vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+        AlarmEntryDbHelper helper = new AlarmEntryDbHelper(context);
+        Alarm alarm = helper.fetchAlarmByIndex((long) id);
+        String filename = alarm.getmRingToneFile();
+
+        mediaPlayer = new MediaPlayer();
+
+        if (alarm.getDefaultIndex() == 3) {
+            try {
+//                Uri soundUri = Uri.parse(alarm.getmRingToneFile());
+//                this.mediaPlayer = (MediaPlayer.create(context, soundUri));
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                Log.d("default", "default default");
+                mediaPlayer.setDataSource(context,Uri.parse(filename));
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mediaPlayer.start();
+                        startSound();
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                this.mediaPlayer.setDataSource(filename);
+                Log.d("custom", "custom custom");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     //start the vibration and sound to play until task is accomplished
-    public void startSound(Context context,String dataSource, int defaultIndex){
+    public void startSound() { //(Context context,String dataSource, int defaultIndex){
         //ringtone/vibration
 
         try {
             //get the uri of the ringtone to be played
             //create the media player, set the audio stream
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//            mediaPlayer = new MediaPlayer();
+//            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-            if (dataSource.equals("default")) {
-                notification = RingtoneManager.getDefaultUri(defaultIndex);
-                mediaPlayer.setDataSource(context, notification);
-            } else {
-                mediaPlayer.setDataSource(dataSource);
-            }
+//            if (defaultIndex == 3) {
+////                notification = RingtoneManager.getDefaultUri(defaultIndex);
+//                notification = Uri.parse(dataSource);
+//                mediaPlayer.setDataSource(context, notification);
+//            } else {
+//                mediaPlayer.setDataSource(dataSource);
+//            }
 
+            Log.d("playing sound", "playing sound");
             //start the media player
-            mediaPlayer.prepare();
-            mediaPlayer.start();
+            this.mediaPlayer.prepare();
+            this.mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
 
         }
 
         // Get instance of Vibrator from current Context
-        vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+//        vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         //create the pattern of vibration
         // Start without a delay, Vibrate for 100 millisecond, Sleep for 100 milliseconds
         long[] pattern = {0, 100, 1000};
 
         //repeat the pattern from the beginning
-        vibrator.vibrate(pattern, 0);
+        this.vibrator.vibrate(pattern, 0);
 
     }
 
     public void stopSound() {
-        mediaPlayer.stop();
-        mediaPlayer.release();
-        vibrator.cancel();
+        this.mediaPlayer.stop();
+        this.mediaPlayer.release();
+        this.vibrator.cancel();
     }
 
 

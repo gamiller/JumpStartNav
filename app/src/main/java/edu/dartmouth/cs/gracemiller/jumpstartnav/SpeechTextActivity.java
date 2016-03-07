@@ -3,6 +3,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -17,7 +18,13 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+
 public class SpeechTextActivity extends Activity {
+
+    private int mId;
+    private AlarmPlayer player;
+
     SpeechRecognizer mRecognizer;
     ToggleButton recordButton;
     TextView textView;
@@ -36,6 +43,11 @@ public class SpeechTextActivity extends Activity {
         //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_speech_text);
 
+        Intent intent = getIntent();
+        mId = intent.getIntExtra("id",0);
+
+        player = new AlarmPlayer(this,mId);
+        player.startSound();
 
         mContext = this;
 
@@ -195,6 +207,7 @@ public class SpeechTextActivity extends Activity {
             Log.d("TAGG", "matches!!");
             // end notification here
             Toast.makeText(this, "matches!", Toast.LENGTH_SHORT).show();
+            player.stopSound();
             finish();
         } else {
             Log.d("TAGG", "doesn't match!! WAKE UP");

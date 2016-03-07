@@ -28,13 +28,13 @@ public class AlarmScheduler {
 
         //create pending intent
         PendingIntent pi = PendingIntent.getBroadcast(context, id, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT); //set pending intent to call EMAAlarmReceiver.
+                PendingIntent.FLAG_UPDATE_CURRENT); //set pending intent to call EMAAlarmReceiver.
 
 
-//        // WHAT IS THIS FOR??
-//        if(dateTime.getTimeInMillis() < System.currentTimeMillis()) {
-//            dateTime.add(Calendar.DATE, 1);
-//        }
+        // add for next day if alarm was already set
+        if(dateTime.getTimeInMillis() < System.currentTimeMillis()) {
+            dateTime.add(Calendar.DATE, 1);
+        }
 
         // create alarm manager and set alarm with pending intent
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -61,27 +61,28 @@ public class AlarmScheduler {
     }
 
     public static void deleteAlarm(Context context, int id) {
+        Log.d("deleting alarm", "deleting");
         Intent intent = new Intent(context, AlarmReceiver.class);
 
         PendingIntent deleteIntent = PendingIntent.getBroadcast(context, id, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT); //set pending intent to call EMAAlarmReceiver.
+                PendingIntent.FLAG_UPDATE_CURRENT); //set pending intent to call EMAAlarmReceiver.
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(deleteIntent);
 
-        int i,sum;
-        i=0;
-        sum=0;
-        while (i != -1) {
-            AlarmManager.AlarmClockInfo info = alarmManager.getNextAlarmClock();
-            if (info == (null)) {
-                i = -1;
-            } else {
-                sum++;
-            }
-        }
-
-        Toast.makeText(context, sum + " alarms left", Toast.LENGTH_SHORT);
+//        int i,sum;
+//        i=0;
+//        sum=0;
+//        while (i != -1) {
+//            AlarmManager.AlarmClockInfo info = alarmManager.getNextAlarmClock();
+//            if (info == (null)) {
+//                i = -1;
+//            } else {
+//                sum++;
+//            }
+//        }
+//
+//        Toast.makeText(context, sum + " alarms left", Toast.LENGTH_SHORT);
 
     }
 

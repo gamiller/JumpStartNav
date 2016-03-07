@@ -24,9 +24,12 @@ public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>>{
         Log.d("loader", "in loader");
             //get a database helper
             RecordingEntryDbHelper helper = new RecordingEntryDbHelper(getContext());
+        Log.d("database name recording", "" + helper.getDatabaseName());
             //fetch all of the exercise entries
             ArrayList<Recording> recordings = helper.fetchRecordings();
         Log.d("loader", "end of loader");
+
+        helper.close();
 
         return recordings;
     }

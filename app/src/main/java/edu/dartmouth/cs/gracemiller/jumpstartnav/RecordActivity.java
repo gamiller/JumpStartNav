@@ -239,6 +239,7 @@ public class RecordActivity extends AppCompatActivity {
 
         RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
         helper.insertRecording(recording);
+        helper.close();
 
         Toast.makeText(mContext,"Saved!",Toast.LENGTH_SHORT)
                 .show();

@@ -44,15 +44,14 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);//Make sure you have this line of code.
 
-
-
         // set the static variables when created
         mContext = getActivity();
+
         loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(5, null, this).forceLoad();
+
         View mInflateView = inflater.inflate(R.layout.fragment_reminder, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.reminderEntries);
-
 
         return mInflateView;
     }
@@ -88,17 +87,16 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
 
             //String[] recordingNames = new String[40];
             ArrayList<String> alarmReminders = new ArrayList<String>();
-            int i = 0;
             for (Alarm alarm : myAlarms) {
                 //Log.d("in recordings", "recording: " + recording.getAlarmName());
                 //recordingNames.add(recording.getAlarmName());
                 //recordingNames[i] = recording.getAlarmName();
                 //i++;
-                alarmReminders.add(alarm.getmReminder());
+                if(alarm.getmActive() == 1) {
+                    alarmReminders.add(alarm.getmReminder());
+                }
                 //Log.d("in recordings", "recording: " + recordingNames[i]);
                 //Log.d("in recordings", "recording: " + recordingNames.toArray());
-
-
             }
 
             //sets adapter to array list of exercises
@@ -115,7 +113,6 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
             //mListView.setListAdapter(myAdapter);
             mListView.setAdapter(myAdapter);
             Log.d("onLoadFinished()", "set adapter");
-
         }
     }
 
@@ -126,7 +123,5 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
         //reloads exercises into adapter
         myAdapter.clear();
         myAdapter.notifyDataSetChanged();
-
-
     }
 }

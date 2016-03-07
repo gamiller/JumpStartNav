@@ -43,7 +43,7 @@
 
         <receiver android:name=".AlarmHandlers.AlarmReceiver" />
 
-        <activity android:name=".DisplayDreamActivity" />
+        <activity android:name=".DisplayDreamActivity"></activity>
         <activity android:name=".AlarmReminderViewActivity"></activity>
     </application>
 

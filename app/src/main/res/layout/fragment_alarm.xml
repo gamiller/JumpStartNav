@@ -9,7 +9,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:elevation="7dp"
         android:scrollbars="vertical">
     </android.support.v7.widget.RecyclerView>
@@ -21,6 +21,6 @@
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_black_24dp"
-        app:anchor="@+id/recycler_view"/>
+        app:layout_anchor="@+id/recyclerView"/>
 
 </FrameLayout>
