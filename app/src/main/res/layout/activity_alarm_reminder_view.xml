@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmReminderViewActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wakeup_text"
+        android:id="@+id/risenshinetext"
+        android:layout_marginTop="99dp"
+        android:textColor="#05cbea"
+        android:textSize="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remindersday_label"
+        android:id="@+id/reminderdaytext"
+        android:layout_below="@+id/risenshinetext"
+        android:layout_centerHorizontal="true"
+        android:textColor="#1771de"
+        android:textSize="25dp"
+        android:paddingTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Reminders"
+        android:id="@+id/textView_remindersDay"
+        android:layout_below="@+id/reminderdaytext"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp"
+        android:textSize="15dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back To Alarms"
+        android:id="@+id/button_dayReminder"
+        android:layout_below="@+id/textView_remindersDay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
+        android:background="#2f77e5"
+        android:textColor="#ffffff" />
+</RelativeLayout>

@@ -41,9 +41,10 @@
 
         <activity android:name=".MathAlarmActivity" />
 
-        <receiver android:name=".AlarmHandlers.AlarmReceiver"></receiver>
+        <receiver android:name=".AlarmHandlers.AlarmReceiver" />
 
-        <activity android:name=".DisplayDreamActivity"></activity>
+        <activity android:name=".DisplayDreamActivity" />
+        <activity android:name=".AlarmReminderViewActivity"></activity>
     </application>
 
 </manifest>
