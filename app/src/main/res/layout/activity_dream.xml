@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:paddingBottom="@dimen/activity_vertical_margin"
-android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
-android:paddingTop="@dimen/activity_vertical_margin"
-tools:context="edu.dartmouth.cs.gracemiller.jumpstart.DreamActivity">
-
-<LinearLayout
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.dartmouth.cs.gracemiller.jumpstart.DreamActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dreamTitle"
-        android:id="@+id/readLabel"
-        android:textSize="20dp"
-        android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
-    <Space
-        android:layout_width="16dp"
-        android:layout_height="18dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dreamTitle"
+            android:id="@+id/readLabel"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dreamText"
-        android:id="@+id/speechLabel"
-        android:textSize="20dp" />
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="18dp" />
 
-    <Space
-        android:layout_width="23dp"
-        android:layout_height="20px"
-        android:layout_weight="0.12" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dreamText"
+            android:id="@+id/speechLabel"
+            android:textSize="20sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dreamInput"
-        android:text=""
-        android:inputType="none"
-        android:clickable="false"
-        android:textSize="16dp" />
+        <Space
+            android:layout_width="23dp"
+            android:layout_height="20px"
+            android:layout_weight="0.12" />
 
-    <Space
-        android:layout_width="20px"
-        android:layout_height="150px" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreamInput"
+            android:text=""
+            android:inputType="none"
+            android:clickable="false"
+            android:textSize="16dp" />
 
-    <ToggleButton
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/recordText"
-        android:id="@+id/DreamRecord"
-        android:textOff="@string/recordingText"
-        android:textOn="@string/stoprecordingText"
-        android:checked="false" />
+        <Space
+            android:layout_width="20px"
+            android:layout_height="150px" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/redoButton"
-        android:id="@+id/dreamRedo" />
+        <ToggleButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recordText"
+            android:id="@+id/DreamRecord"
+            android:textOff="@string/recordingText"
+            android:textOn="@string/stoprecordingText"
+            android:checked="false" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/saveButton"
-        android:id="@+id/saveButtonDream" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/redoButton"
+            android:id="@+id/dreamRedo" />
 
-</LinearLayout>
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/saveButton"
+            android:id="@+id/saveButtonDream" />
+
+    </LinearLayout>
 
 </RelativeLayout>

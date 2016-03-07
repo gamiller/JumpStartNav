@@ -1,28 +1,19 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
-
-
 public class GettingStartedFragment extends Fragment {
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_getting_started_fraget, container, false);
+        return inflater.inflate(R.layout.fragment_getting_started, container, false);
     }
-
-
 }

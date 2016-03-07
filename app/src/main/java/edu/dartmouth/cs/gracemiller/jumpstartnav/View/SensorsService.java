@@ -25,13 +25,10 @@ public class SensorsService extends Service implements SensorEventListener {
     public static final int ACCELEROMETER_BUFFER_CAPACITY = 2048;
     public static final int ACCELEROMETER_BLOCK_CAPACITY = 64;
     private static final int mFeatLen = ACCELEROMETER_BLOCK_CAPACITY + 2;
-
+    private static ArrayBlockingQueue<Double> mAccBuffer;
     private SensorManager mSensorMan;
     private ReadFromQueueTask mReadFromQueueTask;
     private IBinder mBinder = new SensorBinder();
-
-    private static ArrayBlockingQueue<Double> mAccBuffer;
-
     private int mMovementType;
     private int mLastMovement = -1;
 
@@ -44,7 +41,7 @@ public class SensorsService extends Service implements SensorEventListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String otherService = Context.SENSOR_SERVICE;
-        mSensorMan = (SensorManager)getSystemService(otherService);
+        mSensorMan = (SensorManager) getSystemService(otherService);
 
         // get device sensor
         mSensorMan.registerListener(this, mSensorMan.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
@@ -53,11 +50,10 @@ public class SensorsService extends Service implements SensorEventListener {
         // async task to pull from buffered list of readings
         // following code modified from stackoverflow - honeycomb update issue
         mReadFromQueueTask = new ReadFromQueueTask();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            mReadFromQueueTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
-        }
-        else{
-            mReadFromQueueTask.execute((Void[])null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mReadFromQueueTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        } else {
+            mReadFromQueueTask.execute((Void[]) null);
         }
 
         return START_STICKY;
@@ -85,11 +81,9 @@ public class SensorsService extends Service implements SensorEventListener {
             // if no space is currently available. When using a
             // capacity-restricted queue, it is generally preferable to use
             // offer.
-
             try {
                 mAccBuffer.add(Double.valueOf(m));
             } catch (IllegalStateException e) {
-
                 // Exception happens when reach the capacity.
                 // Doubling the buffer. ListBlockingQueue has no such issue,
                 // But generally has worse performance
@@ -99,14 +93,13 @@ public class SensorsService extends Service implements SensorEventListener {
                 mAccBuffer.drainTo(newBuf);
                 mAccBuffer = newBuf;
                 mAccBuffer.add(Double.valueOf(m));
-
             }
         }
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
 
     @Nullable
     @Override
@@ -117,6 +110,7 @@ public class SensorsService extends Service implements SensorEventListener {
     // AsyncTask to read values from queue
     // modified from MyRunsDataCollector
     private class ReadFromQueueTask extends AsyncTask<Void, Void, Void> {
+
         @Override
         protected Void doInBackground(Void... params) {
             // make feature vector of features
@@ -161,7 +155,7 @@ public class SensorsService extends Service implements SensorEventListener {
                                 .toArray());
                         featureVector.clear();
 
-                        if(mLastMovement == -1) {
+                        if (mLastMovement == -1) {
                             mLastMovement = value;
                             Intent i = new Intent();
                             i.setAction("edu.dartmouth.cs.gracemiller.jumpstart.MOVEMENT_CHANGE");

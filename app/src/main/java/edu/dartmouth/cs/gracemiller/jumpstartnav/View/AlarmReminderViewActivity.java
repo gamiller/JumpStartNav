@@ -22,13 +22,14 @@ public class AlarmReminderViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_reminder_view);
-        mContext = this;
 
+        mContext = this;
         AlarmEntryDbHelper helper = new AlarmEntryDbHelper(this);
 
         long alarmId = getIntent().getLongExtra("id", -1);
 
         Alarm alarm = helper.fetchAlarmByIndex(alarmId);
+
         String reminder = alarm.getmReminder();
         if (alarm.getmReminder().equals("")) {
             reminder = "No Reminders";
@@ -45,6 +46,5 @@ public class AlarmReminderViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }

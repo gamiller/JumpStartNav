@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,35 +23,26 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "alarms.db";
     public static final int VERSION = 1;
-    public Context context;
-
-
-    
-
     public static final String ENTRIES = "alarms";
     public static final String COL_ID = "_id";
-    public static final String COL_TIME= "date_time";
+    public static final String COL_TIME = "date_time";
     public static final String COL_ALARMTYPE = "alarm_type";
-    //public static final String COL_RINGTYPE= "ringtone_type";
-    public static final String COL_SOUND= "alarm_sound";
-    public static final String COL_ACTIVE= "active";
+    public static final String COL_SOUND = "alarm_sound";
+    public static final String COL_ACTIVE = "active";
     public static final String COL_REMINDER = "reminder";
-    //public static final String COL_MATHQS= "mathq_amount";
-    //public static final String COL_MOVETIME = "secs_moving";
     public static final String COL_DEFINDEX = "default_index";
-
-
-    public String[] totalColumns = { COL_ID, COL_TIME, COL_ALARMTYPE, COL_SOUND,
-            COL_ACTIVE, COL_REMINDER, COL_DEFINDEX };
-
 
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_TIME + " DATETIME NOT NULL, "
-            + COL_ALARMTYPE + " INTEGER NOT NULL, " + COL_SOUND
-            + " TEXT, " + COL_ACTIVE + " INTEGER NOT NULL, " + COL_REMINDER + " TEXT, "  + COL_DEFINDEX + " INTEGER " + ");";
+            + COL_ALARMTYPE + " INTEGER NOT NULL, " + COL_SOUND + " TEXT, "
+            + COL_ACTIVE + " INTEGER NOT NULL, " + COL_REMINDER + " TEXT, " + COL_DEFINDEX
+            + " INTEGER " + ");";
 
+    public Context context;
+    public String[] totalColumns = {COL_ID, COL_TIME, COL_ALARMTYPE, COL_SOUND, COL_ACTIVE,
+            COL_REMINDER, COL_DEFINDEX};
 
     // Constructor
     public AlarmEntryDbHelper(Context context) {
@@ -80,7 +70,6 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         //open the database
         SQLiteDatabase database = DbHelper.getWritableDatabase();
 
-
         //create a new content value and put all of the information
         //from the exercise into it
         ContentValues cv = new ContentValues();
@@ -91,16 +80,13 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         cv.put(DbHelper.COL_ACTIVE, alarm.getmActive());
         cv.put(DbHelper.COL_REMINDER, alarm.getmReminder());
         cv.put(DbHelper.COL_DEFINDEX, alarm.getDefaultIndex());
-        Log.d("adding alarm reminder", " " + alarm.getmReminder());
-
 
         //insert the cv into the database, and get the number it was
         //inserted at
         insertNum = database.insert(DbHelper.ENTRIES, null, cv);
 
-        Cursor cursor = database.query(DbHelper.ENTRIES,
-                DbHelper.totalColumns, DbHelper.COL_ID + " = " + insertNum, null,
-                null, null, null);
+        Cursor cursor = database.query(DbHelper.ENTRIES, DbHelper.totalColumns, DbHelper.COL_ID
+                + " = " + insertNum, null, null, null, null);
         cursor.moveToFirst();
 
         //close the database
@@ -116,18 +102,12 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
 
         //delete the given row item from the database
-        database.delete(this.ENTRIES, this.COL_ID
-                + " = " + rowIndex, null);
+        database.delete(this.ENTRIES, this.COL_ID + " = " + rowIndex, null);
 
         database.close();
-
-        //AlarmScheduler.deleteAlarm(context, (int) rowIndex);
-
     }
 
-    public void updateAlarm(Alarm alarm){
-
-        //long insertNum;
+    public void updateAlarm(Alarm alarm) {
 
         //get the dbhelper
         AlarmEntryDbHelper DbHelper = this;
@@ -136,7 +116,6 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
 
         //open the database
         SQLiteDatabase database = DbHelper.getWritableDatabase();
-
 
         //create a new content value and put all of the information
         //from the exercise into it
@@ -148,26 +127,8 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         cv.put(DbHelper.COL_ACTIVE, alarm.getmActive());
         cv.put(DbHelper.COL_REMINDER, alarm.getmReminder());
         cv.put(DbHelper.COL_DEFINDEX, alarm.getDefaultIndex());
-        Log.d("updating alarm reminder", " " + alarm.getmReminder());
 
-
-
-        //insert the cv into the database, and get the number it was
-//        //inserted at
-//        insertNum = database.insert(DbHelper.ENTRIES, null, cv);
-//
-//        Cursor cursor = database.query(DbHelper.ENTRIES,
-//                DbHelper.totalColumns, DbHelper.COL_ID + " = " + insertNum, null,
-//                null, null, null);
-//        cursor.moveToFirst();
-//
-//        //close the database
-//        database.close();
-//
-//        //return the insertNum
-//        return insertNum;
-
-        database.update(ENTRIES, cv, "_id="+alarmId, null);
+        database.update(ENTRIES, cv, "_id=" + alarmId, null);
         database.close();
     }
 
@@ -188,12 +149,11 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         Alarm tempAlarm = getAlarmFromCursor(cursor);
         database.close();
         return tempAlarm;
-
     }
 
     // Query the entire table, return all rows
     public ArrayList<Alarm> fetchAlarms() {
-        Log.d("get yo alarm", "alarm");
+
         //get readable database
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -215,14 +175,14 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return alarms;
-
     }
 
     //get a exercise from a cursor
     public Alarm getAlarmFromCursor(Cursor cursor) {
+
         //create temporary exercise
         Alarm tempAlarm = new Alarm();
-        Log.d("getalarmfromcursor", "id is "+ cursor.getLong(cursor.getColumnIndex(COL_ID)));
+
         // set all of the data in the exercise
         tempAlarm.setId(cursor.getLong(cursor.getColumnIndex(COL_ID)));
         tempAlarm.setmDateTime(getDate(cursor.getLong(cursor.getColumnIndex(COL_TIME))));
@@ -231,8 +191,6 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         tempAlarm.setmActive(cursor.getInt(cursor.getColumnIndex(COL_ACTIVE)));
         tempAlarm.setmReminder(cursor.getString(cursor.getColumnIndex(COL_REMINDER)));
         tempAlarm.setDefaultIndex(cursor.getInt(cursor.getColumnIndex(COL_DEFINDEX)));
-        Log.d("fetching alarm reminder", ""+cursor.getString(cursor.getColumnIndex(COL_REMINDER)) );
-
 
         return tempAlarm;
     }
@@ -248,30 +206,24 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int pVersion,int nVersion) {
-
+    public void onUpgrade(SQLiteDatabase db, int pVersion, int nVersion) {
     }
-
-
-
-
-
 }
 
 //insert your task into the database
 class insertAlarmTask extends AsyncTask<sqlObjectAlarm, Void, Void> {
+
+    AlarmEntryDbHelper helper;
     private long insertNum;
     private Context context;
-    AlarmEntryDbHelper helper;
 
     //construct the async task
     public insertAlarmTask(Context context) {
         this.context = context;
     }
 
-
     @Override
-    protected Void doInBackground(sqlObjectAlarm...params){
+    protected Void doInBackground(sqlObjectAlarm... params) {
         //get the vairables from the object
         helper = params[0].helper;
         Alarm alarm = params[0].alarm;
@@ -281,44 +233,28 @@ class insertAlarmTask extends AsyncTask<sqlObjectAlarm, Void, Void> {
         //AlarmScheduler.setAlarm(context,(int)insertNum,alarm.getmDateTime());
 
         return null;
-
-
     }
 
 
     @Override
-    protected void onPostExecute(Void unused){
+    protected void onPostExecute(Void unused) {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
-
-//        //close the manual entry activity
-//        if (context.equals(EditAlarmActivity.mContext)) {
-//            ((EditAlarmActivity)context).finish();
-//        } else {
-//            ((EditAlarmActivity)context).finish();
-//        }
-
-
     }
-
-
-
 }
 
 
 //sqlObject which can be passed into the asynctasks
 //bundles up the context, exercise, and dbhelper
 class sqlObjectAlarm {
+
     AlarmEntryDbHelper helper;
     Alarm alarm;
     Context context;
-
 
     sqlObjectAlarm(AlarmEntryDbHelper helper, Alarm alarm, Context context) {
         this.helper = helper;
         this.alarm = alarm;
         this.context = context;
     }
-
-
 }

@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".View.DreamFragment">
 
-<ListView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/dreamEntries"
-    android:layout_gravity="center_horizontal|top" />
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dreamEntries"
+        android:layout_gravity="center_horizontal|top" />
 
 </FrameLayout>

@@ -1,8 +1,10 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 /**
- * Created by gbzales on 3/2/16.
+ * Auto-created classifier by Weka program to match accelerometer movements with
+ * jumping jacks and sleeping motions. Used by MovementActivity.java.
  */
+
 class WekaClassifier {
 
     public static double classify(Object[] i)

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,26 +22,18 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "dreams.db";
     public static final int VERSION = 1;
-    public Context context;
-
     public static final String ENTRIES = "dreams";
     public static final String COL_ID = "_id";
-    public static final String COL_DREAM= "dream";
+    public static final String COL_DREAM = "dream";
     public static final String COL_DATE = "date";
     public static final String COL_NAME = "name";
-
-
-
-
-    public String[] totalColumns = { COL_ID, COL_DATE, COL_NAME, COL_DREAM};
-
-
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_DATE + " DATETIME NOT NULL, "
-            + COL_NAME + " TEXT, " + COL_DREAM + " TEXT "  + ");";
-
+            + COL_NAME + " TEXT, " + COL_DREAM + " TEXT " + ");";
+    public Context context;
+    public String[] totalColumns = {COL_ID, COL_DATE, COL_NAME, COL_DREAM};
 
     // Constructor
     public DreamDbHelper(Context context) {
@@ -69,8 +60,6 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
         //open the database
         SQLiteDatabase database = DbHelper.getWritableDatabase();
-
-
 
         //create a new content value and put all of the information
         //from the exercise into it
@@ -131,7 +120,6 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
     // Query the entire table, return all rows
     public ArrayList<Dream> fetchDreams() {
-        Log.d("fetch dreams", "fetch dreams");
         //get readable database
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -158,7 +146,6 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
     //get a exercise from a cursor
     public Dream getDreamFromCursor(Cursor cursor) {
-        Log.d("get dream from cursotr", "get dream");
         //create temporary exercise
         Dream tempDream = new Dream();
 
@@ -168,17 +155,12 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         tempDream.setDate(getDate(cursor.getLong(cursor.getColumnIndex(COL_DATE))));
         tempDream.setDreamName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
 
-
         return tempDream;
     }
 
-
     @Override
-    public void onUpgrade(SQLiteDatabase db, int pVersion,int nVersion) {
-
+    public void onUpgrade(SQLiteDatabase db, int pVersion, int nVersion) {
     }
-
-
 
     //get a calender instance from milliseconds
     //used with help from http://stackoverflow.com/questions/18929929/convert-timestamp-into-current-date-in-android
@@ -189,24 +171,21 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         cal.setTimeInMillis(time);
         return cal;
     }
-
-
 }
 
 //insert your task into the database
 class insertDream extends AsyncTask<sqlObjectDream, Void, Void> {
+    DreamDbHelper helper;
     private long insertNum;
     private Context context;
-    DreamDbHelper helper;
 
     //construct the async task
     public insertDream(Context context) {
         this.context = context;
     }
 
-
     @Override
-    protected Void doInBackground(sqlObjectDream...params){
+    protected Void doInBackground(sqlObjectDream... params) {
         //get the vairables from the object
         helper = params[0].helper;
         Dream dream = params[0].dream;
@@ -215,48 +194,34 @@ class insertDream extends AsyncTask<sqlObjectDream, Void, Void> {
         insertNum = helper.insertDream(dream);
 
         return null;
-
-
     }
 
-
     @Override
-    protected void onPostExecute(Void unused){
+    protected void onPostExecute(Void unused) {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
 
         //close the manual entry activity
         if (context.equals(DreamActivity.mContext)) {
-            ((DreamActivity)context).finish();
+            ((DreamActivity) context).finish();
         } else {
-            ((DreamActivity)context).finish();
+            ((DreamActivity) context).finish();
         }
-
-
     }
-
-
-
 }
-
-
 
 //edu.dartmouth.cs.gracemiller.jumpstartnav.Model.sqlObject which can be passed into the asynctasks
 //bundles up the context, exercise, and dbhelper
-class sqlObjectDream{
-        DreamDbHelper helper;
-        Dream dream;
-        Context context;
+class sqlObjectDream {
+    DreamDbHelper helper;
+    Dream dream;
+    Context context;
 
-
-        sqlObjectDream(DreamDbHelper helper, Dream dream, Context context){
-            this.helper = helper;
-            this.dream = dream;
-            this.context = context;
-        }
-
-
-
+    sqlObjectDream(DreamDbHelper helper, Dream dream, Context context) {
+        this.helper = helper;
+        this.dream = dream;
+        this.context = context;
+    }
 }
 
 

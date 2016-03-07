@@ -4,6 +4,7 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes;
  * Created by TAlbarran on 3/2/16.
  */
 public class Recording {
+
     int id;
     String fileName;
     String alarmName;

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,22 +19,19 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "recordings.db";
     public static final int VERSION = 1;
-    public Context context;
-
     public static final String ENTRIES = "alarms";
     public static final String COL_ID = "_id";
-    public static final String COL_FILE= "file_name";
-    public static final String COL_TITLE= "recording_title";
-
-    public String[] totalColumns = { COL_ID, COL_FILE, COL_TITLE};
-
+    public static final String COL_FILE = "file_name";
+    public static final String COL_TITLE = "recording_title";
 
     // SQL query to create the table for the first time
     // Data types are defined below
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT NOT NULL, "
-            + COL_TITLE + " TEXT NOT NULL"  + ");";
+            + COL_TITLE + " TEXT NOT NULL" + ");";
 
+    public Context context;
+    public String[] totalColumns = {COL_ID, COL_FILE, COL_TITLE};
 
     // Constructor
     public RecordingEntryDbHelper(Context context) {
@@ -63,16 +59,12 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         //open the database
         SQLiteDatabase database = DbHelper.getWritableDatabase();
 
-
-
         //create a new content value and put all of the information
         //from the exercise into it
         ContentValues cv = new ContentValues();
         //get the time in milliseconds
         cv.put(DbHelper.COL_FILE, recording.getFileName());
         cv.put(DbHelper.COL_TITLE, recording.getAlarmName());
-
-
 
         //insert the cv into the database, and get the number it was
         //inserted at
@@ -92,7 +84,6 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
 
     // Remove an entry by giving its index
     public void removeRecording(long rowIndex) {
-        Log.d("removeRecording()", "removeRecording()" + rowIndex);
         //open the data as writable
         SQLiteDatabase database = this.getWritableDatabase();
 
@@ -101,7 +92,6 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
                 + " = " + rowIndex, null);
 
         database.close();
-
     }
 
     // Query a specific entry by its index.
@@ -121,7 +111,6 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         Recording tempRecording = getRecordingFromCursor(cursor);
         database.close();
         return tempRecording;
-
     }
 
     // Query the entire table, return all rows
@@ -147,7 +136,6 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return alarms;
-
     }
 
     //get a exercise from a cursor
@@ -165,30 +153,23 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
 
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int pVersion,int nVersion) {
-
+    public void onUpgrade(SQLiteDatabase db, int pVersion, int nVersion) {
     }
-
-
-
-
-
 }
 
 //insert your task into the database
 class insertRecording extends AsyncTask<sqlObject, Void, Void> {
+    RecordingEntryDbHelper helper;
     private long insertNum;
     private Context context;
-    RecordingEntryDbHelper helper;
 
     //construct the async task
     public insertRecording(Context context) {
         this.context = context;
     }
 
-
     @Override
-    protected Void doInBackground(sqlObject...params){
+    protected Void doInBackground(sqlObject... params) {
         //get the vairables from the object
         helper = params[0].helper;
         Recording recording = params[0].recording;
@@ -197,47 +178,29 @@ class insertRecording extends AsyncTask<sqlObject, Void, Void> {
         insertNum = helper.insertRecording(recording);
 
         return null;
-
-
     }
 
 
     @Override
-    protected void onPostExecute(Void unused){
+    protected void onPostExecute(Void unused) {
         //toast out which entry was created
         Toast.makeText(context, "Entry #" + insertNum + "saved.", Toast.LENGTH_SHORT).show();
-
-//        //close the manual entry activity
-//        if (context.equals(RecordActivity.mContext)) {
-//            ((RecordActivity)context).finish();
-//        } else {
-//            ((RecordActivity)context).finish();
-//        }
-
-
     }
-
-
-
 }
 
 
 //edu.dartmouth.cs.gracemiller.jumpstartnav.Model.sqlObject which can be passed into the asynctasks
 //bundles up the context, exercise, and dbhelper
-class sqlObject{
-        RecordingEntryDbHelper helper;
-        Recording recording;
-        Context context;
+class sqlObject {
+    RecordingEntryDbHelper helper;
+    Recording recording;
+    Context context;
 
-
-        sqlObject(RecordingEntryDbHelper helper, Recording recording, Context context){
-            this.helper = helper;
-            this.recording = recording;
-            this.context = context;
-        }
-
-
-
+    sqlObject(RecordingEntryDbHelper helper, Recording recording, Context context) {
+        this.helper = helper;
+        this.recording = recording;
+        this.context = context;
+    }
 }
 
 

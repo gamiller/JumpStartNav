@@ -10,15 +10,6 @@ public class Dream {
     private int id;
     private String dream;
     private Calendar date;
-
-    public String getDreamName() {
-        return dreamName;
-    }
-
-    public void setDreamName(String dreamName) {
-        this.dreamName = dreamName;
-    }
-
     private String dreamName;
 
     public Dream() {
@@ -26,6 +17,14 @@ public class Dream {
         this.dream = "";
         this.date = Calendar.getInstance();
         this.date.setTimeInMillis(System.currentTimeMillis());
+    }
+
+    public String getDreamName() {
+        return dreamName;
+    }
+
+    public void setDreamName(String dreamName) {
+        this.dreamName = dreamName;
     }
 
     public int getId() {
@@ -51,5 +50,4 @@ public class Dream {
     public void setDate(Calendar date) {
         this.date = date;
     }
-
 }

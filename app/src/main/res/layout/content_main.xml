@@ -12,7 +12,6 @@
     tools:context="edu.dartmouth.cs.gracemiller.jumpstartnav.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

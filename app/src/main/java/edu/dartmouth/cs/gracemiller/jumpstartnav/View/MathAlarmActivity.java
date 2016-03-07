@@ -20,6 +20,10 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class MathAlarmActivity extends AppCompatActivity {
 
+    int mCurrAnswer = 0;
+    String NUM_CORR = "numberCorrect";
+    String NUM_LEFT = "numberLeft";
+    String NUM_WRONG = "numberWrong";
     private int id;
     private AlarmPlayer player;
     private EditText mAnswerText;
@@ -28,31 +32,15 @@ public class MathAlarmActivity extends AppCompatActivity {
     private int mSolution = 0;
     private int mNumCorrect, mNumWrong, mNumLeft, mNumToSolve;
     private Context mContext = this;
-    int mCurrAnswer = 0;
-    String NUM_CORR = "numberCorrect";
-    String NUM_LEFT = "numberLeft";
-    String NUM_WRONG = "numberWrong";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("onCreate()", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_math_alarm);
 
-//        // Check whether we're recreating a previously destroyed instance
-//        if (savedInstanceState != null) {
-//            // Restore value of members from saved state
-//            mNumCorrect = savedInstanceState.getInt("NUM_CORR");
-//            mNumLeft = savedInstanceState.getInt("NUM_LEFT");
-//            mNumWrong = savedInstanceState.getInt("NUM_WRONG");
-//        } else {
-//            // Probably initialize members with default values for a new instance
-//
-//            mNumCorrect = 0;
-//            mNumLeft = 5;
-//            mNumWrong = 0;
-//        }
         Intent i = getIntent();
-        id = i.getIntExtra("id",0);
+        id = i.getIntExtra("id", 0);
 
         AlarmEntryDbHelper helper = new AlarmEntryDbHelper(this);
         Alarm onAlarm = helper.fetchAlarmByIndex((long) id);
@@ -60,25 +48,13 @@ public class MathAlarmActivity extends AppCompatActivity {
         int index = onAlarm.getDefaultIndex();
 
         //start playing the sound
-        player = new AlarmPlayer(this,id);
+        player = new AlarmPlayer(this, id);
 //        player.startSound(context,dataSource,index);
 //        player.startSound();
 
-
-//        if(i != null) {
-            mNumCorrect = i.getIntExtra(NUM_CORR, 0);
-            mNumWrong = i.getIntExtra(NUM_WRONG, 0);
-            mNumLeft = i.getIntExtra(NUM_LEFT, 0);
-        Log.d("onCreate()", "NUM_CORR" + mNumCorrect);
-        Log.d("onCreate()", "NUM_WRONG" + mNumWrong);
-        Log.d("onCreate()", "NUM_Left" + mNumLeft);
-
-
-//        }else{
-//            mNumCorrect = 0;
-//            mNumLeft = 5;
-//            mNumWrong = 0;
-//        }
+        mNumCorrect = i.getIntExtra(NUM_CORR, 0);
+        mNumWrong = i.getIntExtra(NUM_WRONG, 0);
+        mNumLeft = i.getIntExtra(NUM_LEFT, 0);
 
         mAnswerText = (EditText) findViewById(R.id.answerBox);
         mEquationText = (TextView) findViewById(R.id.mathproblem);
@@ -91,39 +67,36 @@ public class MathAlarmActivity extends AppCompatActivity {
         mNumLeftText.setText("Problems Remaining: " + mNumLeft);
 
 
-
-        char[] operations = {'+', '-' , '*'};
+        char[] operations = {'+', '-', '*'};
         //find random number between 1-3 to decide if add, subtract, mult
         Random random = new Random();
         int operation = random.nextInt(2 - 0 + 1) + 0;
         //if 1 or 2 then chose two numbers between 1-1000
         int num1 = 0;
         int num2 = 0;
-        if(operation != 2) {
+        if (operation != 2) {
             Random numRand = new Random();
             num1 = numRand.nextInt(1000 - 1 + 1) + 1;
             num2 = numRand.nextInt(1000 - 1 + 1) + 1;
-            if(num2 > num1){
+            if (num2 > num1) {
                 int temp = num1;
                 num1 = num2;
                 num2 = temp;
             }
 
-        }else{
+        } else {
             //else chose two numbers between 1 and 20
             Random numRand = new Random();
             num1 = numRand.nextInt(20 - 1 + 1) + 1;
             num2 = numRand.nextInt(20 - 1 + 1) + 1;
         }
 
-
-
         //int mSolution = 0;
-        if(operation == 0){
+        if (operation == 0) {
             mSolution = num1 + num2;
-        }else if(operation ==1){
+        } else if (operation == 1) {
             mSolution = num1 - num2;
-        }else{
+        } else {
             mSolution = num1 * num2;
         }
 
@@ -137,6 +110,9 @@ public class MathAlarmActivity extends AppCompatActivity {
             //when it is clicked, exit the app
             @Override
             public void onClick(View v) {
+                mCurrAnswer = Integer.valueOf(mAnswerText.getText().toString());
+
+                if (checkAnswer(mCurrAnswer)) {
 
                 boolean check = false;
 
@@ -150,19 +126,16 @@ public class MathAlarmActivity extends AppCompatActivity {
                 Log.d("correct answer is", "correct answer is" + mSolution);
                 if (check) {
                     Toast.makeText(mContext, "CORRECT", Toast.LENGTH_SHORT).show();
-                    Log.d("checkAnswer", "answer is correct");
                     mNumLeft--;
                     mNumCorrect++;
-                    Log.d("num corr and to solve", "num correct " + mNumCorrect + "num to solve " + mNumToSolve);
+
                     if (mNumLeft <= 0) {
-                        Log.d("numtosolve0", "last q");
-                        //Intent intent = new Intent(mContext, TestWakeFragment.class);
                         player.stopSound();
                         Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
                         i.putExtra("id", (long) id);
                         startActivity(i);
-                        //startActivity(intent);
-                    }else {
+
+                    } else {
                         player.stopSound();
                         Intent intent = new Intent(mContext, MathAlarmActivity.class);
                         intent.putExtra(NUM_CORR, mNumCorrect);
@@ -174,42 +147,36 @@ public class MathAlarmActivity extends AppCompatActivity {
                         Alarm alarm = helper.fetchAlarmByIndex((long) id);
                         alarm.setmActive(0);
                         helper.updateAlarm(alarm);
+                        helper.close();
 
+                        intent.putExtra("id", id);
                         finish();
 
                         startActivity(intent);
                     }
+
                 } else {
                     Toast.makeText(mContext, "WRONG", Toast.LENGTH_SHORT).show();
-                    Log.d("checkAnswer", "wrong answer");
+
                     mNumWrong++;
-                    Log.d("num corr and to solve", "num correct " + mNumCorrect + "num to solve " + mNumToSolve);
-                    //recreate();
                     mWrongText.setText("Wrong Answers: " + mNumWrong);
+
                     player.stopSound();
                     Intent intent = new Intent(mContext, MathAlarmActivity.class);
                     intent.putExtra(NUM_CORR, mNumCorrect);
                     intent.putExtra(NUM_WRONG, mNumWrong);
                     intent.putExtra(NUM_LEFT, mNumLeft);
-                    intent.putExtra("id",id);
+                    intent.putExtra("id", id);
                     finish();
 
                     startActivity(intent);
-
                 }
-                //finish();
-
             }
         });
-
-
-
-
     }
 
-
-    private boolean checkAnswer(int answer){
-        if(answer == mSolution){
+    private boolean checkAnswer(int answer) {
+        if (answer == mSolution) {
             return true;
         }
         return false;
@@ -217,15 +184,12 @@ public class MathAlarmActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        Log.d("onSaveInstanceState()", "onSaveInstanceState()");
         // Save the user's current game state
         savedInstanceState.putInt("NUM_LEFT", mNumLeft);
         savedInstanceState.putInt("NUM_WRONG", mNumWrong);
         savedInstanceState.putInt("NUM_CORR", mNumCorrect);
 
-
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
-
 }
