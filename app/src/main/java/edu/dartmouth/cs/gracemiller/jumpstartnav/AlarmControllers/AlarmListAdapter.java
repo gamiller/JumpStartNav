@@ -21,17 +21,8 @@ public class AlarmListAdapter  extends ArrayAdapter<CardView> {
     private List<CardView> cardList = new ArrayList<CardView>();
     private ArrayList<Alarm> mDataset;
 
-//    public AlarmListAdapter(Context context, int resource, List<CardView> objects, List<CardView> cardList) {
-//        super(context, resource, objects);
-//        this.cardList = cardList;
-//    }
-//    public AlarmListAdapter(Context context, int textViewResourceId, ArrayList<Alarm> myDataset) {
-//        super(context, textViewResourceId);
-//    }
-
     public AlarmListAdapter(Context context, int resource,  ArrayList<Alarm> myDataset) {
         super(context, resource);
-        this.cardList = cardList;
         mDataset = myDataset;
 
     }
@@ -49,43 +40,22 @@ public class AlarmListAdapter  extends ArrayAdapter<CardView> {
         public TextView mWakeupActivity;
         public TextView mRingtone;
         public TextView mReminder;
-
-//        public ViewHolder(View v) {
-//            super(v);
-//            mCardView = (CardView) v.findViewById(R.id.cardView);
-//            mAlarmTime = (TextView) v.findViewById(R.id.alarm_time);
-//            mActiveSwitch = (Switch) v.findViewById(R.id.alarm_on_switch);
-//            mAlarmDate = (TextView) v.findViewById(R.id.alarm_date_textview);
-//            mWakeupActivity = (TextView) v.findViewById(R.id.alarm_wakeup_activity_textview);
-//            mRingtone = (TextView) v.findViewById(R.id.alarm_ringtone_textview);
-//            mReminder = (TextView) v.findViewById(R.id.alarm_reminder_textview);
-//        }
     }
-
-
-
-
 
     @Override
     public void add(CardView object)
     {
-        Log.d("AlarmListAdapter", "add()");
-        //object.setBackgroundColor();
         cardList.add(object);
         super.add(object);
     }
 
     @Override
     public int getCount() {
-        Log.d("AlarmListAdapter", "getCount()");
-
         return this.cardList.size();
     }
 
     @Override
     public CardView getItem(int index) {
-        Log.d("AlarmListAdapter", "getItem()");
-
         return this.cardList.get(index);
     }
 

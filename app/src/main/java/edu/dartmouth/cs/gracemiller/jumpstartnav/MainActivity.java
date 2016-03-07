@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.View.AlarmFragment;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.View.DreamFragment;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.View.GettingStartedFragment;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.View.ReminderFragment;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.View.SoundListFragment;
 
@@ -41,21 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-//        // instantiate grid view
-//        Fragment fragment = null;
-//        fragment = new GridViewFragment();
-//
-//        // create grid view fragment
-//        if (fragment != null) {
-//            FragmentManager fragmentManager = getFragmentManager();
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_holder, fragment).commit();
-//        } else {
-//            // error in creating fragment
-//            Log.d("MainActivity", "Error in creating fragment");
-//        }
     }
 
     @Override
@@ -128,41 +114,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    
-
-//    //when the service is running a notification appears to tell if the tracking is running
-//    private void setUpNotification() {
-//        int notifyId = 1;
-//
-//
-//        //set up intent filter
-//        IntentFilter mFilter = new IntentFilter();
-//        mFilter.addAction("TrackingServiceAction");
-//        registerReceiver(tsReceiver, mFilter);
-//
-//        //create pending intent
-//        Intent mapIntent = new Intent(this,MapDisplayActivity.class);
-//        PendingIntent returnIntent = PendingIntent.getActivity(this, 0, mapIntent, 0);
-//
-//        //create the notificaiton
-//        Notification notification = new Notification.Builder(this)
-//                .setOngoing(true) //cant swipe the notification away
-//                .setContentTitle("My Runs 4").setContentText("Recording your path now")
-//                .setSmallIcon(R.drawable.default_profile).setContentIntent(returnIntent).build();
-//
-//
-//        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//
-//        // set flags
-//        notification.flags = notification.flags
-//                | Notification.FLAG_ONGOING_EVENT;
-//
-//        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//
-//        //notify the user that the app is running in the background
-//        mNotificationManager.notify(notifyId, notification);
-//
-//    }
-
-
 }

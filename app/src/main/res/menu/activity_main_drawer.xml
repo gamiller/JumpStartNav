@@ -22,13 +22,6 @@
             android:id="@+id/nav_instructions"
             android:icon="@drawable/ic_gettingstarted"
             android:title="Getting Started" />
-        <item
-            android:id="@+id/nav_testWake"
-            android:title="Test Alarm Actvities" />
-        <item
-            android:id="@+id/nav_alarmTest"
-            android:title="Test Making Alarm" />
     </group>
-
 
 </menu>
