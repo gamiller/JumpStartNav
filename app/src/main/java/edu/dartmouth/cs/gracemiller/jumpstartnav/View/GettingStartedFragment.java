@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
+/*
+fragment loads the gettingstarted tab which is instructions on how to use the app
+ */
 public class GettingStartedFragment extends Fragment {
 
     @Override

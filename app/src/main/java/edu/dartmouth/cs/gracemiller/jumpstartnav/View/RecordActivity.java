@@ -27,6 +27,9 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Recording;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
+/*
+Activity to record an entry for the sound database
+ */
 public class RecordActivity extends AppCompatActivity {
     public static Context mContext;
     private ToggleButton mRecordButton;
@@ -42,12 +45,7 @@ public class RecordActivity extends AppCompatActivity {
     private View view;
 
 
-    /* QUESTIONS
-        HOW do I get the filename?? how will I handle that???
 
-        How do I handle overwriting a file????
-
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +59,7 @@ public class RecordActivity extends AppCompatActivity {
         mRecorder = null;
         mPlayer = null;
 
-        // get id
-//        Intent startIntent = getIntent();
-//        mAlarmId = startIntent.getIntExtra("alarm_id",-1);
+        // get id for the recording to be saved under
         Random random = new Random();
         int operation = random.nextInt(10000000 - 1 + 1) + 1;
 

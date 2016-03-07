@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Recording;
 
 /**
- * Created by TAlbarran on 1/30/16.
+ * Recording DatabaseHelper to deal with storing all recordings created by the user
  */
 public class RecordingEntryDbHelper extends SQLiteOpenHelper {
 
@@ -24,8 +24,7 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     public static final String COL_FILE = "file_name";
     public static final String COL_TITLE = "recording_title";
 
-    // SQL query to create the table for the first time
-    // Data types are defined below
+    // create table which holds the file string and the title of the recording
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_FILE + " TEXT NOT NULL, "
             + COL_TITLE + " TEXT NOT NULL" + ");";
@@ -33,7 +32,7 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     public Context context;
     public String[] totalColumns = {COL_ID, COL_FILE, COL_TITLE};
 
-    // Constructor
+    // Constructor for the database
     public RecordingEntryDbHelper(Context context) {
         // DATABASE_NAME is, of course the name of the database, which is defined as a tring constant
         // DATABASE_VERSION is the version of database, which is defined as an integer constant
@@ -127,7 +126,7 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         //move the cursor over the items starting at the top
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            //for each item create a new exercise
+            //for each item create a new recording
             Recording tempRecording = getRecordingFromCursor(cursor);
             alarms.add(tempRecording);
             cursor.moveToNext();
@@ -138,9 +137,9 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
         return alarms;
     }
 
-    //get a exercise from a cursor
+    //get a recording from a cursor
     public Recording getRecordingFromCursor(Cursor cursor) {
-        //create temporary exercise
+        //create temporary recording
         Recording tempRecording = new Recording();
 
         // set all of the data in the exercise
@@ -157,7 +156,7 @@ public class RecordingEntryDbHelper extends SQLiteOpenHelper {
     }
 }
 
-//insert your task into the database
+//insert your recording into the database
 class insertRecording extends AsyncTask<sqlObject, Void, Void> {
     RecordingEntryDbHelper helper;
     private long insertNum;

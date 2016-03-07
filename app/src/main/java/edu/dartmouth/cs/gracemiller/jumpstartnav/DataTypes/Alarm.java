@@ -5,17 +5,17 @@ import android.media.RingtoneManager;
 import java.util.Calendar;
 
 /**
- * Created by TAlbarran on 3/2/16.
+ * An Alarm class to hold information associated with an alarm
  */
 public class Alarm {
 
     private long id;
     private Calendar mDateTime;    // When the alarm happens
-    private int mAlarmType;
-    private String mRingToneFile;
-    private int mActive;
-    private String mReminder;
-    private int defaultIndex;
+    private int mAlarmType;         //if you wake up to jumpjacks, speechtotext, or voicerecording
+    private String mRingToneFile;   //string of name of file for ringtone
+    private int mActive;            //0 if not active, 1 if active
+    private String mReminder;       //reminder for the alarm
+    private int defaultIndex;       //0 if default alarm, 1 if custom
 
     public Alarm() {
         this.id = 0;
@@ -27,6 +27,7 @@ public class Alarm {
         this.defaultIndex = 3;
     }
 
+    //getters and setters
     public long getId() {
         return id;
     }

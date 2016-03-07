@@ -17,7 +17,10 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers.AlarmLoader;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
-
+/*
+fragment which loads all reminders that are active (turned on) in the alarm fragment as long
+as those alarms have reminders that are not empty
+ */
 public class ReminderFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<ArrayList<Alarm>> {
     // have static variables for maintaining context when switching
     // tabs and orientation
@@ -35,6 +38,7 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
         loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(5, null, this).forceLoad();
 
+        //inflate the list of reminders
         View mInflateView = inflater.inflate(R.layout.fragment_reminder, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.reminderEntries);
 
@@ -60,11 +64,15 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
         //sets global variable
         myAlarms = data;
 
+        //this is a list of alarms
         if (!data.isEmpty()) {
             ArrayList<String> alarmReminders = new ArrayList<String>();
 
+            //for each alarm
             for (Alarm alarm : myAlarms) {
+                //if the alarm is active and the reminder associated is not empty
                 if ((alarm.getmActive()) == 1 && !alarm.getmReminder().isEmpty()) {
+                    //get the date and time and the reminder to put in the list
                     Calendar time = alarm.getmDateTime();
                     String date = android.text.format.DateFormat.format("MMM dd yyyy", time).toString();
                     String reminderString = (date + ": " + alarm.getmReminder());

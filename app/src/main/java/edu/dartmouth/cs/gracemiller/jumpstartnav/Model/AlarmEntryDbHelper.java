@@ -14,10 +14,9 @@ import java.util.Locale;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
 
-//import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
 
 /**
- * Created by TAlbarran on 3/2/16.
+ * A Database helper for the alarm entries to store, remove, add, query, update the objects
  */
 public class AlarmEntryDbHelper extends SQLiteOpenHelper {
 
@@ -32,8 +31,8 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
     public static final String COL_REMINDER = "reminder";
     public static final String COL_DEFINDEX = "default_index";
 
-    // SQL query to create the table for the first time
-    // Data types are defined below
+    // Table of alarms holds the time and date, alarm activity type, string of file for sound
+    //whether the alarm is active, a rmeinder, and if the ringtone is default or custom
     public static final String CREATE_DB = "CREATE TABLE IF NOT EXISTS " + ENTRIES + " ("
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_TIME + " DATETIME NOT NULL, "
             + COL_ALARMTYPE + " INTEGER NOT NULL, " + COL_SOUND + " TEXT, "
@@ -107,18 +106,18 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    //update an already stored alarm
     public void updateAlarm(Alarm alarm) {
 
         //get the dbhelper
         AlarmEntryDbHelper DbHelper = this;
-        //Alarm alarm = entry;
         long alarmId = alarm.getId();
 
         //open the database
         SQLiteDatabase database = DbHelper.getWritableDatabase();
 
         //create a new content value and put all of the information
-        //from the exercise into it
+        //from the alarm into it
         ContentValues cv = new ContentValues();
         //get the time in milliseconds
         cv.put(DbHelper.COL_TIME, alarm.getmDateTime().getTimeInMillis());
@@ -145,7 +144,7 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         //move to the first column in that row
         cursor.moveToFirst();
 
-        //create a temporary exercise from the cursor to return
+        //create a temporary alarm from the cursor to return
         Alarm tempAlarm = getAlarmFromCursor(cursor);
         database.close();
         return tempAlarm;
@@ -166,7 +165,7 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         //move the cursor over the items starting at the top
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            //for each item create a new exercise
+            //for each item create a new alarm
             Alarm tempAlarm = getAlarmFromCursor(cursor);
             alarms.add(tempAlarm);
             cursor.moveToNext();
@@ -177,13 +176,13 @@ public class AlarmEntryDbHelper extends SQLiteOpenHelper {
         return alarms;
     }
 
-    //get a exercise from a cursor
+    //get a alarm from a cursor
     public Alarm getAlarmFromCursor(Cursor cursor) {
 
-        //create temporary exercise
+        //create temporary alarm
         Alarm tempAlarm = new Alarm();
 
-        // set all of the data in the exercise
+        // set all of the data in the alarm
         tempAlarm.setId(cursor.getLong(cursor.getColumnIndex(COL_ID)));
         tempAlarm.setmDateTime(getDate(cursor.getLong(cursor.getColumnIndex(COL_TIME))));
         tempAlarm.setmAlarmType(cursor.getInt(cursor.getColumnIndex(COL_ALARMTYPE)));

@@ -10,8 +10,8 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 
 /**
  * Created by gracemiller on 1/31/16.
- * create an entryloader which extends asynctaskloader in order to load
- * the exercises from the database
+ * create an alarmloader which extends asynctaskloader in order to load
+ * the alarms from the database
  */
 public class AlarmLoader extends AsyncTaskLoader<ArrayList<Alarm>> {
 
@@ -24,7 +24,7 @@ public class AlarmLoader extends AsyncTaskLoader<ArrayList<Alarm>> {
         //get a database helper
         AlarmEntryDbHelper helper = new AlarmEntryDbHelper(getContext());
 
-        //fetch all of the exercise entries
+        //fetch all of the alarm entries
         ArrayList<Alarm> recordings = helper.fetchAlarms();
 
         helper.close();

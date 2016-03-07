@@ -13,6 +13,10 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.MainActivity;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
+/*
+this is the activity which is presented after the user sucessfully turns off an alarm
+it presents the reminders associated with the alarm
+ */
 public class AlarmReminderViewActivity extends AppCompatActivity {
     TextView reminderText;
     Button okButton;
@@ -26,18 +30,23 @@ public class AlarmReminderViewActivity extends AppCompatActivity {
         mContext = this;
         AlarmEntryDbHelper helper = new AlarmEntryDbHelper(this);
 
+        //get the id from the alarm activity that called this activity
         long alarmId = getIntent().getLongExtra("id", -1);
 
+        //get the alarm and the reminder associated with it
         Alarm alarm = helper.fetchAlarmByIndex(alarmId);
 
+        //if no reminder, print no reminders
         String reminder = alarm.getmReminder();
         if (alarm.getmReminder().equals("")) {
             reminder = "No Reminders";
         }
 
+        //set text of reminders
         reminderText = (TextView) findViewById(R.id.textView_remindersDay);
         reminderText.setText(reminder);
 
+        //return to main activity when done
         okButton = (Button) findViewById(R.id.button_dayReminder);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override

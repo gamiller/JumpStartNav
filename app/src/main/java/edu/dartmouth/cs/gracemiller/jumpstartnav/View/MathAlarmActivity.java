@@ -85,13 +85,14 @@ public class MathAlarmActivity extends AppCompatActivity {
             }
 
         } else {
-            //else chose two numbers between 1 and 20
+            //else chose two numbers between 1 and 20 for multiplication
             Random numRand = new Random();
             num1 = numRand.nextInt(20 - 1 + 1) + 1;
             num2 = numRand.nextInt(20 - 1 + 1) + 1;
         }
 
-        //int mSolution = 0;
+        //chose operation depending on the random
+        // 0 is addition, 1 is subtraction, 2 is multiplication
         if (operation == 0) {
             mSolution = num1 + num2;
         } else if (operation == 1) {
@@ -103,7 +104,7 @@ public class MathAlarmActivity extends AppCompatActivity {
         String equation = (Integer.toString(num1) + operations[operation] + Integer.toString(num2));
         mEquationText.setText(equation);
 
-        //listener for cancel button
+        //listener for submit button
         mSubmitButton = (Button) findViewById(R.id.submit_math_button);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
 
@@ -116,24 +117,28 @@ public class MathAlarmActivity extends AppCompatActivity {
 
                 if (!mAnswerText.getText().toString().equals("")) {
                     mCurrAnswer = Integer.valueOf(mAnswerText.getText().toString());
+                    //check if the answer is correct
                     check = checkAnswer(mCurrAnswer);
                 } else {
+                    //if string empty, automatically false
                     check = false;
                 }
-                Log.d("current answer", "current answer is: " + mCurrAnswer);
-                Log.d("correct answer is", "correct answer is" + mSolution);
+                //if correct answer
                 if (check) {
                     Toast.makeText(mContext, "CORRECT", Toast.LENGTH_SHORT).show();
                     mNumLeft--;
                     mNumCorrect++;
 
+                    //if the user answered all three questions
                     if (mNumLeft <= 0) {
+                        //stop sound, open up the reminder display for the alarm
                         player.stopSound();
                         Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
                         i.putExtra("id", (long) id);
                         startActivity(i);
 
                     } else {
+                        //call the activity again, restart the alarm sound
                         player.stopSound();
                         Intent intent = new Intent(mContext, MathAlarmActivity.class);
                         intent.putExtra(NUM_CORR, mNumCorrect);
@@ -154,6 +159,8 @@ public class MathAlarmActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    //wrong answer, call the activity again
+                    //update the textview of correct, incorrect
                     Toast.makeText(mContext, "WRONG", Toast.LENGTH_SHORT).show();
 
                     mNumWrong++;
@@ -174,6 +181,7 @@ public class MathAlarmActivity extends AppCompatActivity {
 
     }
 
+    //check that the given answer is the same as the calculated answer
     private boolean checkAnswer(int answer) {
         if (answer == mSolution) {
             return true;

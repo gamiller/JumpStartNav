@@ -1,13 +1,13 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes;
 
 /**
- * Created by TAlbarran on 3/2/16.
+ * Recording class to hold information about the recording
  */
 public class Recording {
 
     int id;
-    String fileName;
-    String alarmName;
+    String fileName;    //name of the file associated with recording
+    String alarmName;   //name of the alarm given by the user
 
     public Recording() {
         this.id = 0;
@@ -15,6 +15,7 @@ public class Recording {
         this.alarmName = null;
     }
 
+    //getters and setters
     public int getId() {
         return id;
     }

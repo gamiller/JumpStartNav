@@ -17,6 +17,9 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.View.GettingStartedFragment;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.View.ReminderFragment;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.View.SoundListFragment;
 
+/*
+Main view of the app, creates the navigation view of the app and loads each fragment
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_holder, mAlarmListFragment).commit();
 
+        //create drawer layout to open and close navigation
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         String title = getString(R.string.app_name);
 
-        // if StressMeter chosen
+        //opens the alarms fragment
         if (id == R.id.nav_alarms) {
             Fragment mAlarmListFragment = null;
             mAlarmListFragment = new AlarmFragment();
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, mAlarmListFragment).commit();
 
         } else if (id == R.id.nav_reminder) {
+            //opens the reminders fragment
             Fragment mReminderFragment = null;
             mReminderFragment = new ReminderFragment();
 
@@ -81,6 +86,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, mReminderFragment).commit();
 
         } else if (id == R.id.nav_addsound) {
+            //opens the recordings fragment
             Fragment mAddSoundFrag = null;
             mAddSoundFrag = new SoundListFragment();
 
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, mAddSoundFrag).commit();
 
         } else if (id == R.id.nav_dreams) {
+            //opens the dreams fragment
             Fragment dreamFrag = null;
             dreamFrag = new DreamFragment();
 
@@ -97,6 +104,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_holder, dreamFrag).commit();
 
         } else if (id == R.id.nav_instructions) {
+            //opens the instructions fragment
             Fragment instructfrag = null;
             instructfrag = new GettingStartedFragment();
 
@@ -112,8 +120,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-//    public void selectFragment(int position){
-//        .setCurrentItem(position, true);
-//// true is to animate the transaction
-//    }
+
 }

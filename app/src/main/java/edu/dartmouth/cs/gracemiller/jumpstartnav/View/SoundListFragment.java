@@ -27,7 +27,10 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.RecordingControllers.RecordingLoader;
 
-
+/*
+fragment to show the recordings that have been created, also allows the user to open dialogue to
+play recordings or delete recordings
+ */
 public class SoundListFragment extends Fragment
         implements android.app.LoaderManager.LoaderCallbacks<ArrayList<Recording>> {
 
@@ -49,9 +52,11 @@ public class SoundListFragment extends Fragment
         loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(2, null, this).forceLoad();
 
+        //inflate the list of recordings
         View mInflateView = inflater.inflate(R.layout.fragment_soundlist, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.recordingEntries);
 
+        //floating action button to add a new recording, opens the recording activity
         FloatingActionButton fab = (FloatingActionButton) mInflateView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +66,7 @@ public class SoundListFragment extends Fragment
             }
         });
 
+        //if user clicks a recording open dialogue with play and delete buttons
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     final int position, long id) {
@@ -69,7 +75,7 @@ public class SoundListFragment extends Fragment
                 final long recordingId = recording.getId();
                 helper = new RecordingEntryDbHelper(mContext);
 
-
+                //dialogue with play and delete buttons
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_twobutton_recording, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -87,6 +93,7 @@ public class SoundListFragment extends Fragment
                 Button playButton = (Button) dialogView.findViewById(R.id.button_play_dialog);
                 Button deleteButton = (Button) dialogView.findViewById(R.id.button_delete_dialog);
 
+                //play the given recording
                 playButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -97,6 +104,7 @@ public class SoundListFragment extends Fragment
 
                 final AlertDialog alert = builder.create();
 
+                //delete the given recording from the database
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -104,6 +112,7 @@ public class SoundListFragment extends Fragment
 
                         helper.removeRecording(removeID);
 
+                        //update the list of recordings
                         FragmentTransaction tr = getFragmentManager().beginTransaction();
                         Fragment mAddSoundFrag = new SoundListFragment();
                         tr.replace(R.id.fragment_holder, mAddSoundFrag).commit();
@@ -126,6 +135,8 @@ public class SoundListFragment extends Fragment
         loaderManager.initLoader(2, null, this).forceLoad();
     }
 
+
+    //loader for the recordings from the recording database
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
         // returns an entry loader using context
@@ -163,13 +174,14 @@ public class SoundListFragment extends Fragment
         //creates db helper
         helper = new RecordingEntryDbHelper(mContext);
 
-        // gets rowId for exercise
+        // gets rowId for recording
         Recording myRecording = myRecordings.get(position);
         long exerciseId = myRecording.getId();
 
-        //gets exercise entry from the rowID
+        //gets recording entry from the rowID
         mRecording = helper.fetchRecordingByIndex(exerciseId);
 
+        //play the sound associated with recording entry
         MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 

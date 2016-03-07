@@ -10,8 +10,8 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 
 /**
  * Created by gracemiller on 1/31/16.
- * create an entryloader which extends asynctaskloader in order to load
- * the exercises from the database
+ * create an recordingloader which extends asynctaskloader in order to load
+ * the recordings from the database
  */
 public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>> {
 
@@ -25,7 +25,7 @@ public class RecordingLoader extends AsyncTaskLoader<ArrayList<Recording>> {
         //get a database helper
         RecordingEntryDbHelper helper = new RecordingEntryDbHelper(getContext());
 
-        //fetch all of the exercise entries
+        //fetch all of the recording entries
         ArrayList<Recording> recordings = helper.fetchRecordings();
 
         helper.close();
