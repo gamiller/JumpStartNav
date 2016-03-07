@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
@@ -92,8 +93,11 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
                 //recordingNames.add(recording.getAlarmName());
                 //recordingNames[i] = recording.getAlarmName();
                 //i++;
-                if(alarm.getmActive() == 1) {
-                    alarmReminders.add(alarm.getmReminder());
+                if((alarm.getmActive()) == 1 && !alarm.getmReminder().isEmpty()) {
+                    Calendar time = alarm.getmDateTime();
+                    String date = android.text.format.DateFormat.format("MMM dd yyyy", time).toString();
+                    String reminderString = (date + ": " + alarm.getmReminder());
+                    alarmReminders.add(reminderString);
                 }
                 //Log.d("in recordings", "recording: " + recordingNames[i]);
                 //Log.d("in recordings", "recording: " + recordingNames.toArray());

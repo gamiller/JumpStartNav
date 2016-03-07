@@ -19,6 +19,10 @@
             android:icon="@drawable/ic_cloud_black_24dp"
             android:title="Your Dreams" />
         <item
+            android:id="@+id/nav_instructions"
+            android:icon="@drawable/ic_gettingstarted"
+            android:title="Getting Started" />
+        <item
             android:id="@+id/nav_testWake"
             android:title="Test Alarm Actvities" />
         <item

@@ -26,4 +26,11 @@
             android:text="Speech Alarm"
             android:id="@+id/button_wakeSpeech"
             android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Reminder"
+        android:id="@+id/reminderButton"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

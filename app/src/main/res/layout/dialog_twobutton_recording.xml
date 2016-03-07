@@ -16,7 +16,12 @@
             android:text="PLAY"
             android:id="@+id/button_play_dialog"
             android:layout_weight="1"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="top|center_horizontal"
+            android:background="#1271e5"
+            android:textColor="#ffffff"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            />
 
         <!--Cancel button-->
         <Button
@@ -26,8 +31,15 @@
             android:text="DELETE"
             android:id="@+id/button_delete_dialog"
             android:layout_weight="1"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="top|center_horizontal"
+            android:textColor="#ffffff"
+            android:background="#1271e5"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp" />
 
 </LinearLayout>
+
+
 
 

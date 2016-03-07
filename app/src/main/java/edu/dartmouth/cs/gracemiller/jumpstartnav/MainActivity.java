@@ -149,6 +149,14 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, dreamFrag).commit();
+        }else if (id == R.id.nav_instructions){
+            // create results fragment
+            Fragment instructfrag = null;
+            instructfrag = new GettingStartedFragment();
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_holder, instructfrag).commit();
 
         }
 

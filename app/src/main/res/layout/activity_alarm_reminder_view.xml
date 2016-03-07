@@ -51,8 +51,6 @@
         android:layout_marginTop="59dp"
         android:background="#2f77e5"
         android:textColor="#ffffff" />
-<<<<<<< HEAD
+
 </RelativeLayout>
-=======
-</RelativeLayout>
->>>>>>> 98441f970639524164287a1cc6c0ca394c5a8591
+

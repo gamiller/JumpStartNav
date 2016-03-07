@@ -31,6 +31,10 @@
     <string name="saveButton">Save</string>
     <string name="wakeup_text">Rise and Shine!</string>
     <string name="remindersday_label">Your reminders for the day:</string>
+    <string name="setting_alarm_text">\nOpen up the Alarms tab\nClick the plus button to add a new alarm\nOpen the alarm to change settings including:\n\t\tDate if you wish for it to not be the current date\n\t\tAlarm Wake up type\n\t\tCustom or default sound\n\t\tReminder for the alarm\n</string>
+    <string name="RecordingInstructions">\nIf you would like to wake up to your own recording record your own alarm\n\t\tIn Your Alarm Recordings tab click the record button\n\t\tOnce you have saved the recording it will show up\n\t\tIn the Alarm tab to select as your alarm sound\n</string>
+    <string name="Remindersinstructions">\nYour Reminders tab lists out every reminder that is associated with your current set alarms!\n</string>
+    <string name="DreamInstructions">\nRecord your dreams right when you wake up!\n\t\tGo to the Dreams tab and click record\n\t\tThe dreams tab shows all your recorded dreams\n</string>
 
 
 </resources>
