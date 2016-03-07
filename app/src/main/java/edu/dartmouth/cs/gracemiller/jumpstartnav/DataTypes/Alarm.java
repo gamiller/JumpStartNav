@@ -1,12 +1,7 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav.Classes;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes;
 
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.media.RingtoneManager;
-import java.util.Calendar;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
+
 import java.util.Calendar;
 
 /**

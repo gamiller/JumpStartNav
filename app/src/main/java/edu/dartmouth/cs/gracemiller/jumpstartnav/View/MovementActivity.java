@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class MovementActivity extends AppCompatActivity {
     private Context mContext;

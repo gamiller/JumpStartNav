@@ -1,15 +1,17 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.MainActivity;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class AlarmReminderViewActivity extends AppCompatActivity {
     TextView reminderText;

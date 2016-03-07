@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.DreamControllers;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Dream;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Dream;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.DreamDbHelper;
 
 /**

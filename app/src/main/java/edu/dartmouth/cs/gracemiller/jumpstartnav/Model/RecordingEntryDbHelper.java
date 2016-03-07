@@ -11,8 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.RecordActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Recording;
 
 /**
  * Created by TAlbarran on 1/30/16.

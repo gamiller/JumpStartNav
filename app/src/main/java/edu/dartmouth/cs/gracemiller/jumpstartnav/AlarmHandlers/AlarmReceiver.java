@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.MathAlarmActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.MovementActivity;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.SpeechTextActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.View.MathAlarmActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.View.MovementActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.View.SpeechTextActivity;
 
 /**
  * Created by TAlbarran on 3/2/16.
