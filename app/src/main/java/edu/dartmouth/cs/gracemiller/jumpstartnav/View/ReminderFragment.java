@@ -82,7 +82,6 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
 
     @Override
     public void onLoaderReset(Loader<ArrayList<Alarm>> loader) {
-        myAdapter.clear();
         myAdapter.notifyDataSetChanged();
     }
 }
