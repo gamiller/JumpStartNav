@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JumpStart Alarm</string>
+    <string name="app_name">JumpStart</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -50,5 +50,6 @@
     <string name="reminders_title_text">Your Active Reminders</string>
     <string name="nav_header_text">JumpStart</string>
     <string name="nav_subheader_text">Get a JumpStart on your day!</string>
+    <string name="dreamTitleDisplay">Dream:</string>
 
 </resources>

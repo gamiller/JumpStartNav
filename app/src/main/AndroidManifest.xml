@@ -39,6 +39,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".View.MathAlarmActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".View.DreamActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".View.DisplayDreamActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".View.AlarmReminderViewActivity"

@@ -42,6 +42,14 @@ public class DreamActivity extends AppCompatActivity {
     String mDreamName;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (recording) {
+            stopRecording();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dream);
@@ -62,7 +70,7 @@ public class DreamActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     cleared = false;
-                    dreamView.setText("");
+                    //dreamView.setText("");
                     recordAudio();
                     checked = true;
                 } else {
@@ -87,7 +95,7 @@ public class DreamActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (speechInput.equals("")) {
+                if (!speechInput.equals("")) {
                     if (!checked) {
                         DialogFragment fileFragment = StringDialog.newInstance("Dream Name:");
                         fileFragment.show(getFragmentManager(), "Set Dream Name");
@@ -135,7 +143,8 @@ public class DreamActivity extends AppCompatActivity {
         dream.setDreamName(mDreamName);
         dream.setDream(speechInput);
 
-        DreamDbHelper helper = new DreamDbHelper(mContext);
+        // saving dream
+        DreamDbHelper helper = new DreamDbHelper(getApplicationContext());
         int id = (int) helper.insertDream(dream);
         helper.close();
 

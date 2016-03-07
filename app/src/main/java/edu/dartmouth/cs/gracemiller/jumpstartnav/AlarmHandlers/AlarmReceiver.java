@@ -40,6 +40,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmType = onAlarm.getmAlarmType();
         dataSource = onAlarm.getmRingToneFile();
         index = onAlarm.getDefaultIndex();
+        helper.close();
 
 //        //start playing the sound
 //        AlarmPlayer player = new AlarmPlayer();

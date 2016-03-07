@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -28,27 +29,43 @@ public class AlarmPlayer {
 
         mediaPlayer = new MediaPlayer();
 
+        Log.d("alarm default index", "default index is " + alarm.getDefaultIndex());
         if (alarm.getDefaultIndex() == 3) {
             try {
+
+                mediaPlayer.reset();
+                mediaPlayer.setLooping(true);
+
 //                Uri soundUri = Uri.parse(alarm.getmRingToneFile());
 //                this.mediaPlayer = (MediaPlayer.create(context, soundUri));
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaPlayer.setDataSource(context, Uri.parse(filename));
-                mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mediaPlayer.start();
-                        startSound();
-                    }
-                });
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                Log.d("default", "default default");
+//                mediaPlayer.setDataSource(context,Uri.parse(filename));
+//                mediaPlayer.prepareAsync();
+//                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        mediaPlayer.start();
+//                        startSound();
+//                    }
+//                });
+
+                mediaPlayer.prepare();
+                startSound();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                this.mediaPlayer.setDataSource(filename);
+                mediaPlayer.reset();
+                mediaPlayer.setLooping(true);
+                mediaPlayer.setDataSource(filename);
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.prepare();
+                startSound();
+                Log.d("custom", "custom custom");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -74,7 +91,7 @@ public class AlarmPlayer {
 //            }
 
             //start the media player
-            this.mediaPlayer.prepare();
+//            this.mediaPlayer.prepare();
             this.mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
