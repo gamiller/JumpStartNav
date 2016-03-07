@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 
 /**

@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav.Classes;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes;
 
 /**
  * Created by TAlbarran on 3/2/16.

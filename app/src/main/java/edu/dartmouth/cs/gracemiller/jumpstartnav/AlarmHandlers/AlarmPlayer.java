@@ -3,14 +3,13 @@ package edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.util.Log;
 
 import java.io.IOException;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 
 /**

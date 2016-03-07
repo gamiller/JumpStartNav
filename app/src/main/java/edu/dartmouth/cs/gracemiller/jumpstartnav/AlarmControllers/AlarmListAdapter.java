@@ -1,8 +1,6 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class AlarmListAdapter  extends ArrayAdapter<CardView> {
     private static final String TAG = "CardArrayAdapter";

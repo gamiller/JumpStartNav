@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,9 @@ import android.widget.Toast;
 import java.util.Random;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class MathAlarmActivity extends AppCompatActivity {
 
@@ -149,7 +150,9 @@ public class MathAlarmActivity extends AppCompatActivity {
                         Log.d("numtosolve0", "last q");
                         //Intent intent = new Intent(mContext, TestWakeFragment.class);
                         player.stopSound();
-                        finish();
+                        Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
+                        i.putExtra("id", (long) id);
+                        startActivity(i);
                         //startActivity(intent);
                     }else {
                         player.stopSound();

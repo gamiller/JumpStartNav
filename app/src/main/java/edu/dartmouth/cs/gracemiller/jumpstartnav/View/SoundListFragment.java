@@ -1,6 +1,7 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,17 +9,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,8 +23,10 @@ import android.widget.ListView;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Recording;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.RecordingControllers.RecordingLoader;
 
 
 public class SoundListFragment extends Fragment
@@ -51,12 +47,6 @@ public class SoundListFragment extends Fragment
 
         //create new view
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);//Make sure you have this line of code.
-
-
-
-
-
 
         // set the static variables when created
         mContext = getActivity();

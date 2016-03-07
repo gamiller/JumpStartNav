@@ -1,30 +1,22 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
-import android.app.AlertDialog;
-import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.Loader;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.FloatingActionButton;
+import android.content.Context;
+import android.content.Loader;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers.AlarmLoader;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 
 public class ReminderFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<ArrayList<Alarm>> {
@@ -43,7 +35,6 @@ public class ReminderFragment extends Fragment implements android.app.LoaderMana
 
         //create new view
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);//Make sure you have this line of code.
 
         // set the static variables when created
         mContext = getActivity();

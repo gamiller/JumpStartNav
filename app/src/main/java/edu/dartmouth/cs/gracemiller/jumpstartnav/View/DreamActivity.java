@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,10 +23,9 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Dream;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Dream;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.DreamDbHelper;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class DreamActivity extends AppCompatActivity {
     SpeechRecognizer mRecognizer;

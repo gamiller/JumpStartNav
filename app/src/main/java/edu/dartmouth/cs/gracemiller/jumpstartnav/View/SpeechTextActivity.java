@@ -1,13 +1,12 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +18,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class SpeechTextActivity extends Activity {
 
@@ -208,7 +208,9 @@ public class SpeechTextActivity extends Activity {
             // end notification here
             Toast.makeText(this, "matches!", Toast.LENGTH_SHORT).show();
             player.stopSound();
-            finish();
+            Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
+            i.putExtra("id", (long)mId);
+            startActivity(i);
         } else {
             Log.d("TAGG", "doesn't match!! WAKE UP");
             Toast.makeText(this, "Doesn't match.  Try again!", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,21 +11,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
-import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -33,30 +25,28 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers.AlarmListAdapter;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers.AlarmLoader;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Recording;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.RecordingControllers.RecordingLoader;
 
 
 public class AlarmFragment extends Fragment  {
@@ -178,12 +168,13 @@ public class AlarmFragment extends Fragment  {
                         break;
                 }
 
-                mReminder = alarm.getmReminder();
-
-
                 String oldAlarmRingtone = alarm.getmRingToneFile();
-
+                if(alarm.getmRingToneFile().equals(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())){
+                    oldAlarmRingtone = "Default";
+                }
                 mRingtone = alarm.getmRingToneFile();
+
+                mReminder = alarm.getmReminder();
 
 
                 Log.d("hit alarm", "alarm hit is position " + position + " and id " + alarmId);
@@ -370,7 +361,7 @@ public class AlarmFragment extends Fragment  {
             alarm.setmActive(active);
         } else {
             AlarmScheduler.deleteAlarm(mContext,(int) alarm.getId());
-            AlarmScheduler.setAlarm(mContext,(int)alarm.getId(),alarm.getmDateTime());
+            AlarmScheduler.setAlarm(mContext, (int) alarm.getId(), alarm.getmDateTime());
             alarm.setmActive(oldAlarm.getmActive());
         }
 
@@ -617,73 +608,6 @@ public class AlarmFragment extends Fragment  {
 
     };
 
-//    private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
-//            = new LoaderManager.LoaderCallbacks<ArrayList<Alarm>>() {
-//        @Override
-//        public Loader onCreateLoader(int id, Bundle args) {
-//            Log.d("onALARMLOADERCREATE()", "onALARM LOADER CREATE()");
-//
-//            // returns an entry loader using context
-//            return new AlarmLoader(mContext);
-//        }
-//
-//        @Override
-//        public void onLoadFinished(Loader<ArrayList<Alarm>> loader, ArrayList<Alarm> data) {
-//            Log.d("onLoaderFinished()", "onLoaderFinishALARM()");
-//
-//            //sets global variable
-//            mDataset = data;
-//
-////            if(!data.isEmpty()) {
-////                Log.d("onLoadFinished()", "not empty");
-////
-////                //String[] recordingNames = new String[40];
-////                ArrayList<String> recordingNames = new ArrayList<String>();
-////                int i = 0;
-////                for (Recording recording : data) {
-////                    Log.d("in recordings", "recording: " + recording.getAlarmName());
-////                    //recordingNames.add(recording.getAlarmName());
-////                    //recordingNames[i] = recording.getAlarmName();
-////                    //i++;
-////                    recordingNames.add(recording.getAlarmName());
-////                    //Log.d("in recordings", "recording: " + recordingNames[i]);
-////                    Log.d("in recordings", "recording: " + recordingNames.toArray());
-////
-////
-////                }
-//
-//            //sets adapter to array list of exercises
-//
-//            // Define a new adapter
-////                myAdapter = new ArrayAdapter<String>(mContext,
-////                        R.layout.listview_layout, recordingNames);
-//
-//            mAlarmAdapter = new AlarmAdapter(mDataset);
-//            Log.d("onalarmLoadFinished()", "got adapter");
-//
-//
-//            // Assign the adapter to ListView
-//            //setListAdapter(mAdapter);
-//            //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
-//            //mListView.setListAdapter(myAdapter);
-//            mRecyclerView.setAdapter(mAlarmAdapter);
-//            Log.d("onalarmLoadFinished()", "set adapter");
-//        }
-//
-//        @Override
-//        public void onLoaderReset(Loader<ArrayList<Alarm>> loader) {
-//            Log.d("onalarmLoaderReset()", "onLoaderReset()");
-//
-//            //reloads exercises into adapter
-//           // mAlarmAdapter.clear();
-//            mAlarmAdapter.notifyDataSetChanged();
-//
-//
-//        }
-//
-//
-//    };
-
 private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
         = new LoaderManager.LoaderCallbacks<ArrayList<Alarm>>() {
     @Override
@@ -700,30 +624,6 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
 
         //sets global variable
         mDataset = data;
-
-//            if(!data.isEmpty()) {
-//                Log.d("onLoadFinished()", "not empty");
-//
-//                //String[] recordingNames = new String[40];
-//                ArrayList<String> recordingNames = new ArrayList<String>();
-//                int i = 0;
-//                for (Recording recording : data) {
-//                    Log.d("in recordings", "recording: " + recording.getAlarmName());
-//                    //recordingNames.add(recording.getAlarmName());
-//                    //recordingNames[i] = recording.getAlarmName();
-//                    //i++;
-//                    recordingNames.add(recording.getAlarmName());
-//                    //Log.d("in recordings", "recording: " + recordingNames[i]);
-//                    Log.d("in recordings", "recording: " + recordingNames.toArray());
-//
-//
-//                }
-
-        //sets adapter to array list of exercises
-
-        // Define a new adapter
-//                myAdapter = new ArrayAdapter<String>(mContext,
-//                        R.layout.listview_layout, recordingNames);
 
         aListAdapter = new AlarmListAdapter(mContext, R.layout.cardview_layout, mDataset);
         //View view = getView().findViewById(R.layout.cardview_layout);
@@ -830,14 +730,14 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
         mReminderDialog.setView(inputText);
         mReminderDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
         mReminderDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 mReminder = inputText.getText().toString();
                 Log.d("mReminder text is now", "" + mReminder);
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
         mReminderDialog.show();
@@ -865,33 +765,14 @@ private LoaderManager.LoaderCallbacks<ArrayList<Alarm>> alarmLoaderListener
         }
     }
 
-
-            @Override
-        public void onResume() {
-            Log.d("onResume()", "onResume()");
-
-            super.onResume();
-
-            //reloads the list when onResume is called
-            //loaderManager.initLoader(1, null, this).forceLoad();
-        }
-
-
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void onResume() {
+        Log.d("onResume()", "onResume()");
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Log.d("adding alarm", "add");
-            addNewAlarm();
-        }
+        super.onResume();
 
-        return super.onOptionsItemSelected(item);
+        //reloads the list when onResume is called
+        //loaderManager.initLoader(1, null, this).forceLoad();
     }
 }
 

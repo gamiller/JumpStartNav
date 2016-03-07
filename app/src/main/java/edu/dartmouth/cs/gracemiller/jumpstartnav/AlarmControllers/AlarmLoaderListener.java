@@ -1,11 +1,11 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmControllers;
 
 import android.content.Loader;
 import android.os.Bundle;
 
 import java.util.ArrayList;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Recording;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Recording;
 
 /**
  * Created by gracemiller on 3/4/16.

@@ -1,7 +1,9 @@
-package edu.dartmouth.cs.gracemiller.jumpstartnav;
+package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class DisplayDreamActivity extends AppCompatActivity {
 

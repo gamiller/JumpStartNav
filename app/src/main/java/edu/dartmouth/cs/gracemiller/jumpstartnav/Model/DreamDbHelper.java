@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Dream;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.DreamActivity;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Dream;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.View.DreamActivity;
 
 /**
  * Created by TAlbarran on 1/30/16.

@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
+
 //import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmScheduler;
-import edu.dartmouth.cs.gracemiller.jumpstartnav.Classes.Alarm;
 
 /**
  * Created by TAlbarran on 3/2/16.
