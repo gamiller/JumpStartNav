@@ -50,5 +50,6 @@
     <string name="reminders_title_text">Your Active Reminders</string>
     <string name="nav_header_text">JumpStart</string>
     <string name="nav_subheader_text">Get a JumpStart on your day!</string>
+    <string name="dreamTitleDisplay">Dream:</string>
 
 </resources>

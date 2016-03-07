@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -40,15 +41,18 @@ public class AlarmPlayer {
                 mediaPlayer.setDataSource(context, Uri.parse(filename));
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 Log.d("default", "default default");
-                mediaPlayer.setDataSource(context,Uri.parse(filename));
-                mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mediaPlayer.start();
-                        startSound();
-                    }
-                });
+//                mediaPlayer.setDataSource(context,Uri.parse(filename));
+//                mediaPlayer.prepareAsync();
+//                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        mediaPlayer.start();
+//                        startSound();
+//                    }
+//                });
+
+                mediaPlayer.prepare();
+                startSound();
 
             } catch (IOException e) {
                 e.printStackTrace();

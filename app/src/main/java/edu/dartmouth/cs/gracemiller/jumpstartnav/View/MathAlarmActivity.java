@@ -112,8 +112,6 @@ public class MathAlarmActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mCurrAnswer = Integer.valueOf(mAnswerText.getText().toString());
 
-                if (checkAnswer(mCurrAnswer)) {
-
                 boolean check = false;
 
                 if (!mAnswerText.getText().toString().equals("")) {
@@ -173,6 +171,7 @@ public class MathAlarmActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private boolean checkAnswer(int answer) {

@@ -1,9 +1,15 @@
 package edu.dartmouth.cs.gracemiller.jumpstartnav.View;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,18 +54,20 @@ public class DreamFragment extends android.app.Fragment {
             if (data.size() != 0) {
                 //String[] recordingNames = new String[40];
                 ArrayList<String> dreamNames = new ArrayList<String>();
-                for (Dream dream : myDreams) {
-
+                for (Dream dream : data) {
                     Calendar cal = dream.getDate();
                     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-                    String finalString = dream.getDreamName() + " " + formatDate.format(cal.getTime());
+                    String finalString = formatDate.format(cal.getTime()) + " | " + dream.getDreamName();
 
+
+                    Log.d("adding a dream","adding a dream");
                     dreamNames.add(finalString);
                 }
 
                 //sets adapter to array list of dreams
                 myAdapter = new ArrayAdapter<String>(mContext,
                         R.layout.listview_layout, dreamNames);
+
 
                 // Assign the adapter to ListView
                 mListView.setAdapter(myAdapter);
@@ -69,8 +77,11 @@ public class DreamFragment extends android.app.Fragment {
         @Override
         public void onLoaderReset(Loader<ArrayList<Dream>> loader) {
             //reloads exercises into adapter
-            myAdapter.clear();
-            myAdapter.notifyDataSetChanged();
+
+            if (myAdapter != null) {
+                myAdapter.clear();
+                myAdapter.notifyDataSetChanged();
+            }
         }
     };
 
@@ -94,9 +105,19 @@ public class DreamFragment extends android.app.Fragment {
                 Dream dream = myDreams.get(position);
                 final long dreamID = dream.getId();
 
-//                Intent intent = new Intent(mContext,DisplayDreamActivity);
-//                intent.putExtra("id",dreamID);
-//                startActivity(intent);
+                Intent intent = new Intent(mContext,DisplayDreamActivity.class);
+                Log.d("the id is", " the dream id is " + dreamID);
+                intent.putExtra("id", (int) dreamID);
+                startActivityForResult(intent,1);
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) mInflateView.findViewById(R.id.fabDream);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, DreamActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -112,4 +133,13 @@ public class DreamFragment extends android.app.Fragment {
         //reloads the list when onResume is called
         loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            onResume();
+        }
+    }
+
+
 }

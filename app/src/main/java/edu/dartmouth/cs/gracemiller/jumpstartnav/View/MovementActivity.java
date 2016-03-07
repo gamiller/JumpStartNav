@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.dartmouth.cs.gracemiller.jumpstartnav.AlarmHandlers.AlarmPlayer;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Alarm;
+import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class MovementActivity extends AppCompatActivity {
@@ -124,6 +126,13 @@ public class MovementActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Done!", Toast.LENGTH_SHORT).show();
                 player.stopSound();
+
+                AlarmEntryDbHelper helper = new AlarmEntryDbHelper(getApplicationContext());
+                Alarm alarm = helper.fetchAlarmByIndex((long) mId);
+                alarm.setmActive(0);
+                helper.updateAlarm(alarm);
+                helper.close();
+
                 Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
                 i.putExtra("id", (long) mId);
                 startActivity(i);

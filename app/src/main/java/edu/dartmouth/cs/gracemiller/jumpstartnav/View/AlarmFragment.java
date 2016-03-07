@@ -14,6 +14,7 @@ import android.content.Loader;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -230,8 +231,10 @@ public class AlarmFragment extends Fragment {
         if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
 
             Uri ringtoneURI = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            if (ringtoneURI.toString().equals("")) {
-                mRingtone = RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI;
+//            Log.d("ringtone",ringtoneURI.toString());
+            if (ringtoneURI == null) {
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                mRingtone = notification.toString();
             } else {
                 mRingtone = ringtoneURI.toString();
             }
@@ -297,6 +300,10 @@ public class AlarmFragment extends Fragment {
                 }
 
                 String oldAlarmRingtone = alarm.getmRingToneFile();
+
+//                RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
+//                ArrayList<Recording> recordings = helper.fetchRecordings();
+
                 if (alarm.getmRingToneFile().equals(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())) {
                     oldAlarmRingtone = "Default";
                 }
