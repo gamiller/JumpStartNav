@@ -10,8 +10,7 @@ import java.util.Calendar;
 public class Alarm {
 
     private long id;
-    private Calendar mDateTime;    // When does this alarm happen
-
+    private Calendar mDateTime;    // When the alarm happens
     private int mAlarmType;
     private String mRingToneFile;
     private int mActive;
@@ -19,17 +18,14 @@ public class Alarm {
     private int defaultIndex;
 
     public Alarm() {
-
         this.id = 0;
         this.mDateTime = Calendar.getInstance();
-
         this.mAlarmType = 0;
         this.mActive = 0;
         this.mReminder = "";
         this.mRingToneFile = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString();
         this.defaultIndex = 3;
     }
-
 
     public long getId() {
         return id;
@@ -46,10 +42,6 @@ public class Alarm {
     public void setmDateTime(Calendar mDateTime) {
         this.mDateTime = mDateTime;
     }
-
-
-
-
 
     public int getmAlarmType() {
         return mAlarmType;
@@ -90,6 +82,4 @@ public class Alarm {
     public void setDefaultIndex(int defaultIndex) {
         this.defaultIndex = defaultIndex;
     }
-
-
 }

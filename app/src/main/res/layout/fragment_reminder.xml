@@ -3,15 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.dartmouth.cs.gracemiller.jumpstartnav.ReminderFragment">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Your Active Reminders"
+            android:text="@string/reminders_title_text"
             android:id="@+id/textView2"
             android:padding="5dp"
             android:background="#25b0d7"
@@ -24,6 +26,6 @@
             android:id="@+id/reminderEntries"
             android:layout_gravity="center_horizontal|top" />
 
-</LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

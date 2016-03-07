@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -22,9 +21,7 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class SpeechTextActivity extends Activity {
 
-    private int mId;
-    private AlarmPlayer player;
-
+    public static Context mContext;
     SpeechRecognizer mRecognizer;
     ToggleButton recordButton;
     TextView textView;
@@ -35,21 +32,21 @@ public class SpeechTextActivity extends Activity {
     boolean cleared = false;
     Button redoButton;
     String speechInput;
-    public static Context mContext;
+    private int mId;
+    private AlarmPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_speech_text);
 
-        Intent intent = getIntent();
-        mId = intent.getIntExtra("id",0);
-
-        player = new AlarmPlayer(this,mId);
-        player.startSound();
-
         mContext = this;
+
+        Intent intent = getIntent();
+        mId = intent.getIntExtra("id", 0);
+
+        player = new AlarmPlayer(this, mId);
+        player.startSound();
 
         speechInput = "";
 
@@ -61,23 +58,17 @@ public class SpeechTextActivity extends Activity {
         redoButton = (Button) findViewById(R.id.redoButton);
         textView = (TextView) findViewById(R.id.speechInput);
         readView = (TextView) findViewById(R.id.readTextView);
-        Log.d("onCreate()", "read data is " + readData);
         readView.setText(readData);
 
         recordButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     cleared = false;
-                    Log.d("Speechin", "Speech input is" + speechInput);
                     textView.setText("");
                     recordAudio();
+
                 } else {
                     recording = false;
-//                    stopRecording();
-//                    if (!cleared) {
-//                        Log.d("comparing","comparing");
-//                        compareStrings();
-//                    }
                 }
             }
         });
@@ -85,28 +76,26 @@ public class SpeechTextActivity extends Activity {
         redoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("redoing","redone");
                 cleared = true;
                 speechInput = "";
                 textView.setText(speechInput);
+
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
             }
         });
-
-
     }
 
     private void recordAudio() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,this.getPackageName());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
 
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
-        mRecognizer.startListening(intent);
 
+        mRecognizer.startListening(intent);
         recording = true;
     }
 
@@ -115,6 +104,34 @@ public class SpeechTextActivity extends Activity {
         recording = false;
     }
 
+    private void compareStrings() {
+        int compareResult = speechInput.compareTo(readData);
+
+        if ((compareResult > -5) && (compareResult < 5)) {
+            Toast.makeText(this, "matches!", Toast.LENGTH_SHORT).show();
+
+            player.stopSound();
+            Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
+            i.putExtra("id", (long) mId);
+            startActivity(i);
+
+        } else {
+            Toast.makeText(this, "Doesn't match.  Try again!", Toast.LENGTH_SHORT).show();
+        }
+
+        speechInput = "";
+    }
+
+    private void setInput(String input) {
+
+        if (speechInput.equals("")) {
+            speechInput = input;
+        } else {
+            speechInput += (" " + input);
+        }
+
+        textView.setText(speechInput);
+    }
 
     public class SpeechListener implements RecognitionListener {
 
@@ -132,28 +149,30 @@ public class SpeechTextActivity extends Activity {
             errorCount = 0;
         }
 
-        public void onReadyForSpeech(Bundle params)
-        {
-            Log.d(TAG, "Listening");
+        public void onReadyForSpeech(Bundle params) {
             ready = true;
             errorCount = 0;
         }
 
-        public void onBeginningOfSpeech() {}
-        public void onRmsChanged(float rmsdB) {}
-        public void onBufferReceived(byte[] buffer) {}
+        public void onBeginningOfSpeech() {
+        }
 
-        public void onEndOfSpeech()
-        {
-            Log.d(TAG, "Done");
+        public void onRmsChanged(float rmsdB) {
+        }
+
+        public void onBufferReceived(byte[] buffer) {
+        }
+
+        public void onEndOfSpeech() {
             this.done = true;
         }
-        public void onError(int error)
-        {
-            Log.d(TAG, "error " + error);
+
+        public void onError(int error) {
             textInput = "error";
+
             if (error == 7) {
                 errorCount++;
+
             } else if (error == 6) {
                 Toast.makeText(SpeechTextActivity.mContext, "Couldn't hear you"
                         , Toast.LENGTH_SHORT).show();
@@ -162,24 +181,19 @@ public class SpeechTextActivity extends Activity {
                 }
             }
 
-
             if (errorCount > 1) {
-                Toast.makeText(SpeechTextActivity.mContext,"Couldn't understand you"
-                        ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(SpeechTextActivity.mContext, "Couldn't understand you"
+                        , Toast.LENGTH_SHORT).show();
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
             }
         }
-        public void onResults(Bundle results)
-        {
-            data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            Log.d(TAG, "onResults " + data);
 
+        public void onResults(Bundle results) {
+            data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             mInput = (String) data.get(0);
-
-            Log.d("data","this is the data: "+ mInput);
             setInput(mInput);
 
             dataAvailable = true;
@@ -191,45 +205,11 @@ public class SpeechTextActivity extends Activity {
                 compareStrings();
             }
         }
-        public void onPartialResults(Bundle partialResults) {}
-        public void onEvent(int eventType, Bundle params) {}
 
-    }
-
-    private void compareStrings() {
-        int compareResult;
-
-        compareResult = speechInput.compareTo(readData);
-        Log.d("speechINput","speech input is: " + speechInput);
-        Log.d("compare result", "The compared result is: " + compareResult);
-
-        if ((compareResult > -5) && (compareResult < 5)) {
-            Log.d("TAGG", "matches!!");
-            // end notification here
-            Toast.makeText(this, "matches!", Toast.LENGTH_SHORT).show();
-            player.stopSound();
-            Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
-            i.putExtra("id", (long)mId);
-            startActivity(i);
-        } else {
-            Log.d("TAGG", "doesn't match!! WAKE UP");
-            Toast.makeText(this, "Doesn't match.  Try again!", Toast.LENGTH_SHORT).show();
-            // resetText
-            // ???
+        public void onPartialResults(Bundle partialResults) {
         }
 
-        speechInput = "";
-
-    }
-
-    private void setInput(String input) {
-
-        if (speechInput.equals("")) {
-            speechInput = input;
-        } else {
-            speechInput += (" " + input);
+        public void onEvent(int eventType, Bundle params) {
         }
-        textView.setText(speechInput);
     }
-
 }

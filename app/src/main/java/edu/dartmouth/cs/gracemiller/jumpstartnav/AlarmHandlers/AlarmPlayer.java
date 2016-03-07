@@ -5,7 +5,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Vibrator;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -16,13 +15,12 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.AlarmEntryDbHelper;
  * Created by TAlbarran on 3/2/16.
  */
 public class AlarmPlayer {
-        private MediaPlayer mediaPlayer;
-        private Vibrator vibrator;
-        Uri notification;
+    Uri notification;
+    private MediaPlayer mediaPlayer;
+    private Vibrator vibrator;
 
     public AlarmPlayer(Context context, int id) {
-        this.notification = notification;
-        this.vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         AlarmEntryDbHelper helper = new AlarmEntryDbHelper(context);
         Alarm alarm = helper.fetchAlarmByIndex((long) id);
@@ -35,8 +33,7 @@ public class AlarmPlayer {
 //                Uri soundUri = Uri.parse(alarm.getmRingToneFile());
 //                this.mediaPlayer = (MediaPlayer.create(context, soundUri));
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                Log.d("default", "default default");
-                mediaPlayer.setDataSource(context,Uri.parse(filename));
+                mediaPlayer.setDataSource(context, Uri.parse(filename));
                 mediaPlayer.prepareAsync();
                 mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
@@ -45,7 +42,6 @@ public class AlarmPlayer {
                         startSound();
                     }
                 });
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -53,7 +49,6 @@ public class AlarmPlayer {
             try {
                 this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 this.mediaPlayer.setDataSource(filename);
-                Log.d("custom", "custom custom");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -71,14 +66,13 @@ public class AlarmPlayer {
 //            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
 //            if (defaultIndex == 3) {
-////                notification = RingtoneManager.getDefaultUri(defaultIndex);
+//                notification = RingtoneManager.getDefaultUri(defaultIndex);
 //                notification = Uri.parse(dataSource);
 //                mediaPlayer.setDataSource(context, notification);
 //            } else {
 //                mediaPlayer.setDataSource(dataSource);
 //            }
 
-            Log.d("playing sound", "playing sound");
             //start the media player
             this.mediaPlayer.prepare();
             this.mediaPlayer.start();
@@ -96,7 +90,6 @@ public class AlarmPlayer {
 
         //repeat the pattern from the beginning
         this.vibrator.vibrate(pattern, 0);
-
     }
 
     public void stopSound() {
@@ -104,8 +97,4 @@ public class AlarmPlayer {
         this.mediaPlayer.release();
         this.vibrator.cancel();
     }
-
-
-
-
 }

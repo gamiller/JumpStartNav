@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="@string/recordRing"
             android:id="@+id/ringtoneText"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="20px"
@@ -54,7 +54,7 @@
         <Button
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="@string/save_button_text"
             android:id="@+id/saveButton"
             android:layout_gravity="center_horizontal" />
 

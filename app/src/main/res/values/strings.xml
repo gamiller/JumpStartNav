@@ -1,13 +1,8 @@
 <resources>
-    <string name="app_name">JumpStartNav</string>
+    <string name="app_name">JumpStart Alarm</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="readTextString">Read the text:</string>
     <string name="speechTextString">What you said:</string>
@@ -35,6 +30,25 @@
     <string name="RecordingInstructions">\nIf you would like to wake up to your own recording record your own alarm\n\t\tIn Your Alarm Recordings tab click the record button\n\t\tOnce you have saved the recording it will show up\n\t\tIn the Alarm tab to select as your alarm sound\n</string>
     <string name="Remindersinstructions">\nYour Reminders tab lists out every reminder that is associated with your current set alarms!\n</string>
     <string name="DreamInstructions">\nRecord your dreams right when you wake up!\n\t\tGo to the Dreams tab and click record\n\t\tThe dreams tab shows all your recorded dreams\n</string>
-
+    <string name="no_reminders_text">No Reminders</string>
+    <string name="back_to_alarms_button_text">Back To Alarms</string>
+    <string name="default_problems_remaining_text">Problems Remaining: 3</string>
+    <string name="default_correct_answers_text">Correct Answers: 2</string>
+    <string name="default_wrong_answers_text">Wrong Answers: 1</string>
+    <string name="solve_this_math_problem_text">Solve This Math Problem</string>
+    <string name="enter_answer_hint">Enter Answer Here</string>
+    <string name="submit_button_text">Submit</string>
+    <string name="save_button_text">Save</string>
+    <string name="sample_alarm_time_text">8:00am</string>
+    <string name="play_button_text">PLAY</string>
+    <string name="delete_button_text">DELETE</string>
+    <string name="getting_started_title">Getting Started With JumpStart Alarm</string>
+    <string name="setting_alarm_title">Setting An Alarm</string>
+    <string name="accessing_alarm_title">Accessing Your Alarms</string>
+    <string name="creating_custom_alarm_title">Creating Custom Alarm Sound</string>
+    <string name="your_dream_journal_title">Your Dream Journal</string>
+    <string name="reminders_title_text">Your Active Reminders</string>
+    <string name="nav_header_text">JumpStart</string>
+    <string name="nav_subheader_text">Get a JumpStart on your day!</string>
 
 </resources>

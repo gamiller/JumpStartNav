@@ -4,7 +4,6 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,17 +26,57 @@ public class DreamFragment extends android.app.Fragment {
     // tabs and orientation
     public static ArrayAdapter<String> myAdapter;
     public static ListView mListView;
+    public static android.app.LoaderManager loaderManager;
+    public static Context mContext;
     DreamDbHelper helper;
     Dream mDream;
     ArrayList<Dream> myDreams;
-    public static android.app.LoaderManager loaderManager;
-    public static Context mContext;
 
+    private LoaderManager.LoaderCallbacks<ArrayList<Dream>> dreamLoaderListener
+            = new LoaderManager.LoaderCallbacks<ArrayList<Dream>>() {
+        @Override
+        public Loader onCreateLoader(int id, Bundle args) {
+            // returns an entry loader using context
+            return new DreamLoader(mContext);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<ArrayList<Dream>> loader, ArrayList<Dream> data) {
+            //sets global variable
+            myDreams = data;
+
+            if (data.size() != 0) {
+                //String[] recordingNames = new String[40];
+                ArrayList<String> dreamNames = new ArrayList<String>();
+                for (Dream dream : myDreams) {
+
+                    Calendar cal = dream.getDate();
+                    SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+                    String finalString = dream.getDreamName() + " " + formatDate.format(cal.getTime());
+
+                    dreamNames.add(finalString);
+                }
+
+                //sets adapter to array list of dreams
+                myAdapter = new ArrayAdapter<String>(mContext,
+                        R.layout.listview_layout, dreamNames);
+
+                // Assign the adapter to ListView
+                mListView.setAdapter(myAdapter);
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<ArrayList<Dream>> loader) {
+            //reloads exercises into adapter
+            myAdapter.clear();
+            myAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         //create new view
         super.onCreate(savedInstanceState);
 
@@ -47,7 +86,6 @@ public class DreamFragment extends android.app.Fragment {
         loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
         View mInflateView = inflater.inflate(R.layout.fragment_dream, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.dreamEntries);
-
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -69,76 +107,9 @@ public class DreamFragment extends android.app.Fragment {
 
     @Override
     public void onResume() {
-        Log.d("onResume()", "onResume()");
-
         super.onResume();
 
         //reloads the list when onResume is called
         loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
     }
-
-    private LoaderManager.LoaderCallbacks<ArrayList<Dream>> dreamLoaderListener
-            = new LoaderManager.LoaderCallbacks<ArrayList<Dream>>() {
-        @Override
-        public Loader onCreateLoader(int id, Bundle args) {
-            Log.d("onCreateLoader()", "onCreateLoader()");
-
-            // returns an entry loader using context
-            return new DreamLoader(mContext);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<ArrayList<Dream>> loader, ArrayList<Dream> data) {
-            Log.d("onLoadFinished()", "onLoadFinished()");
-
-
-            //sets global variable
-            myDreams = data;
-
-            if (data.size() != 0) {
-                Log.d("onLoadFinished()", "not empty");
-                Log.d("onLoadFinished()", "data size = " + data.size());
-
-
-                //String[] recordingNames = new String[40];
-                ArrayList<String> dreamNames = new ArrayList<String>();
-                for (Dream dream : myDreams) {
-
-                    Calendar cal = dream.getDate();
-                    SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-                    String finalString = dream.getDreamName() + " " + formatDate.format(cal.getTime());
-
-                    dreamNames.add(finalString);
-
-                }
-
-                //sets adapter to array list of exercises
-
-                // Define a new adapter
-
-                // check this
-                myAdapter = new ArrayAdapter<String>(mContext,
-                        R.layout.listview_layout, dreamNames);
-                Log.d("onLoadFinished()", "got adapter");
-
-
-                // Assign the adapter to ListView
-                //setListAdapter(mAdapter);
-                //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
-                //mListView.setListAdapter(myAdapter);
-                mListView.setAdapter(myAdapter);
-                Log.d("onLoadFinished()", "set adapter");
-
-            }
-        }
-
-        @Override
-        public void onLoaderReset(Loader<ArrayList<Dream>> loader) {
-            Log.d("onLoaderReset()", "onLoaderReset()");
-
-            //reloads exercises into adapter
-            myAdapter.clear();
-            myAdapter.notifyDataSetChanged();
-        }
-    };
 }

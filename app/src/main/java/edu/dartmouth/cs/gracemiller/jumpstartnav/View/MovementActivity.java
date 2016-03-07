@@ -25,10 +25,6 @@ public class MovementActivity extends AppCompatActivity {
     private SensorsService mSensorService;
     private SensorsService.SensorBinder mBinder;
     private Boolean mBound;
-    private SensorsServiceReceiver broadcastRx;
-
-    private TextView mMotivateText;
-    private TextView mTimerText;
 
     // connection between service and activity
     public ServiceConnection mConnection = new ServiceConnection() {
@@ -38,11 +34,16 @@ public class MovementActivity extends AppCompatActivity {
             mSensorService = mBinder.getService();
             mBound = true;
         }
+
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mSensorService = null;
         }
     };
+
+    private SensorsServiceReceiver broadcastRx;
+    private TextView mMotivateText;
+    private TextView mTimerText;
 
     @Override
     public void onBackPressed() {
@@ -63,9 +64,9 @@ public class MovementActivity extends AppCompatActivity {
         mContext = this;
 
         Intent recvIntent = getIntent();
-        mId = recvIntent.getIntExtra("id",0);
+        mId = recvIntent.getIntExtra("id", 0);
 
-        player = new AlarmPlayer(this,mId);
+        player = new AlarmPlayer(this, mId);
 //        player.startSound();
 
         mMotivateText = (TextView) findViewById(R.id.movementText);
@@ -100,7 +101,7 @@ public class MovementActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(isFinishing()) {
+        if (isFinishing()) {
             Intent i = new Intent(this, SensorsService.class);
             stopService(i);
         }
@@ -124,7 +125,7 @@ public class MovementActivity extends AppCompatActivity {
                         "Done!", Toast.LENGTH_SHORT).show();
                 player.stopSound();
                 Intent i = new Intent(mContext, AlarmReminderViewActivity.class);
-                i.putExtra("id", (long)mId);
+                i.putExtra("id", (long) mId);
                 startActivity(i);
             }
         };
@@ -135,20 +136,25 @@ public class MovementActivity extends AppCompatActivity {
 
             if (movementType == 0) { // sleeping
                 movementTimer.cancel();
-                if(isRunning) {
+
+                if (isRunning) {
                     Toast.makeText(getApplicationContext(),
                             "Don't give up!", Toast.LENGTH_SHORT).show();
                 }
+
                 isRunning = false;
                 mMotivateText.setText(R.string.start_moving_text);
                 mTimerText.setText(R.string.get_jumpstart_day_text);
+
             } else if (movementType == 1) { // moving
                 mMotivateText.setText(R.string.keep_moving_text);
                 movementTimer.cancel();
-                if(!isRunning) {
+
+                if (!isRunning) {
                     movementTimer.start();
                     isRunning = true;
                 }
+
             } else {
                 mMotivateText.setText("Error");
             }

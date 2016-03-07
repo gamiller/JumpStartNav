@@ -28,13 +28,13 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.RecordingEntryDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class RecordActivity extends AppCompatActivity {
+    public static Context mContext;
     private ToggleButton mRecordButton;
     private Button mSaveButton;
     private Button mPlayButton;
     private TextView mFeedbackTextView;
     private MediaRecorder mRecorder;
     private MediaPlayer mPlayer;
-    public static Context mContext;
     private String mFilePath;
     private String mAlarmName;
     private boolean mAudioSet, checked;
@@ -83,11 +83,12 @@ public class RecordActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     checked = true;
+
                     if (mAudioSet) {
                         resetFile();
                     }
-
                     startRecording();
+
                 } else {
                     stopRecording();
                     checked = false;
@@ -101,8 +102,8 @@ public class RecordActivity extends AppCompatActivity {
                 if (mAudioSet) {
                     playAudio();
                 } else {
-                    Toast.makeText(mContext, "You need to make an alarm first!", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(mContext, "You need to make an alarm first!",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,7 +118,7 @@ public class RecordActivity extends AppCompatActivity {
                         fileFragment.show(getFragmentManager(), "Set Alarm Name");
                     }
                 } else {
-                    Toast.makeText(mContext,"You need to make an alarm first!",Toast.LENGTH_SHORT)
+                    Toast.makeText(mContext, "You need to make an alarm first!", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -131,7 +132,6 @@ public class RecordActivity extends AppCompatActivity {
         if (file.exists()) {
             file.delete();
         }
-
     }
 
     private void startRecording() {
@@ -149,7 +149,6 @@ public class RecordActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void stopRecording() {
@@ -182,6 +181,19 @@ public class RecordActivity extends AppCompatActivity {
         this.mAlarmName = alarm;
     }
 
+    private void finishActivity() {
+        Recording recording = new Recording();
+        recording.setFileName(mFilePath);
+        recording.setAlarmName(mAlarmName);
+
+        RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
+        helper.insertRecording(recording);
+        helper.close();
+
+        Toast.makeText(mContext, "Saved!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
     // retreives the users comment input from a text alert dialog box
     public static class StringDialog extends DialogFragment {
 
@@ -209,7 +221,6 @@ public class RecordActivity extends AppCompatActivity {
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,
                                     int whichButton) {
-
                     // calls set comment
                     String alarmName = comment_text.getText().toString();
                     ((RecordActivity) getActivity()).setAlarmName(alarmName);
@@ -222,29 +233,10 @@ public class RecordActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog,
                                     int whichButton) {
                     dialog.cancel();
-
                 }
             });
 
             return builder.create();
-
         }
-
-    }
-
-    private void finishActivity() {
-        Recording recording = new Recording();
-        recording.setFileName(mFilePath);
-        recording.setAlarmName(mAlarmName);
-
-        RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
-        helper.insertRecording(recording);
-        helper.close();
-
-        Toast.makeText(mContext,"Saved!",Toast.LENGTH_SHORT)
-                .show();
-
-
-        finish();
     }
 }

@@ -28,23 +28,23 @@
         android:layout_below="@+id/risenshinetext"
         android:layout_centerHorizontal="true"
         android:textColor="#1771de"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:paddingTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Reminders"
+        android:text="@string/no_reminders_text"
         android:id="@+id/textView_remindersDay"
         android:layout_below="@+id/reminderdaytext"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
-        android:textSize="17dp" />
+        android:textSize="17sp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back To Alarms"
+        android:text="@string/back_to_alarms_button_text"
         android:id="@+id/button_dayReminder"
         android:layout_below="@+id/textView_remindersDay"
         android:layout_centerHorizontal="true"

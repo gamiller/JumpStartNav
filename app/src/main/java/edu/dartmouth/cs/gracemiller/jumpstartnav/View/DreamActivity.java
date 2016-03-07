@@ -28,6 +28,7 @@ import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.DreamDbHelper;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.R;
 
 public class DreamActivity extends AppCompatActivity {
+    public static Context mContext;
     SpeechRecognizer mRecognizer;
     ToggleButton recordButton;
     TextView dreamView;
@@ -37,7 +38,6 @@ public class DreamActivity extends AppCompatActivity {
     boolean checked = false;
     Button redoButton;
     String speechInput;
-    public static Context mContext;
     Button saveButton;
     String mDreamName;
 
@@ -75,7 +75,6 @@ public class DreamActivity extends AppCompatActivity {
         redoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("redoing", "redone");
                 cleared = true;
                 speechInput = "";
                 dreamView.setText(speechInput);
@@ -94,13 +93,11 @@ public class DreamActivity extends AppCompatActivity {
                         fileFragment.show(getFragmentManager(), "Set Dream Name");
                     }
                 } else {
-                    Toast.makeText(mContext,"You need to tell me about your dream!",Toast.LENGTH_SHORT)
+                    Toast.makeText(mContext, "You need to tell me about your dream!", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
         });
-
-
     }
 
     private void recordAudio() {
@@ -108,10 +105,10 @@ public class DreamActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,500);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 500);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
-        mRecognizer.startListening(intent);
 
+        mRecognizer.startListening(intent);
         recording = true;
     }
 
@@ -120,6 +117,76 @@ public class DreamActivity extends AppCompatActivity {
         recording = false;
     }
 
+    private void setInput(String input) {
+        if (speechInput.equals("")) {
+            speechInput = input;
+        } else {
+            speechInput += (" " + input);
+        }
+        dreamView.setText(speechInput);
+    }
+
+    public void setDreamName(String dream) {
+        this.mDreamName = dream;
+    }
+
+    private void finishActivity() {
+        Dream dream = new Dream();
+        dream.setDreamName(mDreamName);
+        dream.setDream(speechInput);
+
+        DreamDbHelper helper = new DreamDbHelper(mContext);
+        int id = (int) helper.insertDream(dream);
+        helper.close();
+
+        Toast.makeText(mContext, "Saved!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    // retreives the users comment input from a text alert dialog box
+    public static class StringDialog extends DialogFragment {
+
+        public static StringDialog newInstance(String title) {
+            StringDialog newFragment = new StringDialog();
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            newFragment.setArguments(args);
+            return newFragment;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            String title = getArguments().getString("title");
+
+            //Sets up the edit text
+            final EditText comment_text = new EditText(mContext);
+            comment_text.setInputType(InputType.TYPE_CLASS_TEXT);
+            comment_text.setHint("What do you want to call your dream?");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(title);
+            builder.setView(comment_text);
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,
+                                    int whichButton) {
+                    // calls set comment
+                    String dreamName = comment_text.getText().toString();
+                    ((DreamActivity) getActivity()).setDreamName(dreamName);
+                    ((DreamActivity) getActivity()).finishActivity();
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,
+                                    int whichButton) {
+                    dialog.cancel();
+                }
+            });
+
+            return builder.create();
+        }
+    }
 
     public class SpeechListener implements RecognitionListener {
 
@@ -168,7 +235,6 @@ public class DreamActivity extends AppCompatActivity {
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
-//                recordAudio();
             }
 
             if (errorCount > 1 && error != 6) {
@@ -177,24 +243,13 @@ public class DreamActivity extends AppCompatActivity {
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
-//                recordAudio();
             }
-//            // MAY MAKE IT CRASH???
-//            if (error == 6) {
-//                recordAudio();
-//            }
-
-            // recordAudio();
         }
 
         public void onResults(Bundle results) {
             data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            Log.d(TAG, "onResults " + data);
-
 
             mInput = (String) data.get(0);
-
-            Log.d("data", "this is the data: " + mInput);
             setInput(mInput);
 
             dataAvailable = true;
@@ -203,7 +258,6 @@ public class DreamActivity extends AppCompatActivity {
                 recordAudio();
             } else {
                 stopRecording();
-//                compareStrings();
             }
         }
 
@@ -212,87 +266,5 @@ public class DreamActivity extends AppCompatActivity {
 
         public void onEvent(int eventType, Bundle params) {
         }
-
     }
-
-    private void setInput(String input) {
-
-        if (speechInput.equals("")) {
-            speechInput = input;
-        } else {
-            speechInput += (" " + input);
-        }
-        dreamView.setText(speechInput);
-    }
-
-    public void setDreamName(String dream) {
-        this.mDreamName = dream;
-    }
-
-    // retreives the users comment input from a text alert dialog box
-    public static class StringDialog extends DialogFragment {
-
-        public static StringDialog newInstance(String title) {
-            StringDialog newFragment = new StringDialog();
-            Bundle args = new Bundle();
-            args.putString("title", title);
-            newFragment.setArguments(args);
-            return newFragment;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            String title = getArguments().getString("title");
-
-            //Sets up the edit text
-            final EditText comment_text = new EditText(mContext);
-            comment_text.setInputType(InputType.TYPE_CLASS_TEXT);
-            comment_text.setHint("What do you want to call your dream?");
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(title);
-            builder.setView(comment_text);
-
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-
-                    // calls set comment
-                    String dreamName = comment_text.getText().toString();
-                    ((DreamActivity) getActivity()).setDreamName(dreamName);
-                    ((DreamActivity) getActivity()).finishActivity();
-                }
-            });
-
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                    dialog.cancel();
-
-                }
-            });
-
-            return builder.create();
-
-        }
-
-    }
-
-    private void finishActivity() {
-        Dream dream = new Dream();
-        dream.setDreamName(mDreamName);
-        dream.setDream(speechInput);
-
-        DreamDbHelper helper = new DreamDbHelper(mContext);
-        int id = (int) helper.insertDream(dream);
-        helper.close();
-
-        Toast.makeText(mContext,"Saved!",Toast.LENGTH_SHORT)
-                .show();
-
-
-        finish();
-    }
-
-
 }

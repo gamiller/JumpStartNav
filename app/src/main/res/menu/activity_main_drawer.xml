@@ -20,7 +20,7 @@
             android:title="Your Dreams" />
         <item
             android:id="@+id/nav_instructions"
-            android:icon="@drawable/ic_gettingstarted"
+            android:icon="@drawable/ic_gear_black_24dp"
             android:title="Getting Started" />
     </group>
 

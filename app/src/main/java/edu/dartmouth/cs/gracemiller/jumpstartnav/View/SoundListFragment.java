@@ -11,7 +11,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,22 +35,20 @@ public class SoundListFragment extends Fragment
     // tabs and orientation
     public static ArrayAdapter<String> myAdapter;
     public static ListView mListView;
+    public static android.app.LoaderManager loaderManager;
+    public static Context mContext;
     RecordingEntryDbHelper helper;
     Recording mRecording;
     ArrayList<Recording> myRecordings;
-    public static android.app.LoaderManager loaderManager;
-    public static Context mContext;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        Log.d("onCreateView()", "onCreateView()");
-
-        //create new view
         super.onCreate(savedInstanceState);
 
         // set the static variables when created
         mContext = getActivity();
         loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(2, null, this).forceLoad();
+
         View mInflateView = inflater.inflate(R.layout.fragment_soundlist, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.recordingEntries);
 
@@ -73,11 +70,9 @@ public class SoundListFragment extends Fragment
                 helper = new RecordingEntryDbHelper(mContext);
 
 
-
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_twobutton_recording, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
 
                 builder.setCancelable(true)
                         .setView(dialogView);
@@ -89,28 +84,23 @@ public class SoundListFragment extends Fragment
                             }
                         });
 
-                Button playButton =  (Button) dialogView.findViewById(R.id.button_play_dialog);
-                Button deleteButton =  (Button) dialogView.findViewById(R.id.button_delete_dialog);
+                Button playButton = (Button) dialogView.findViewById(R.id.button_play_dialog);
+                Button deleteButton = (Button) dialogView.findViewById(R.id.button_delete_dialog);
 
                 playButton.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View view) {
-                           playRecoding(position);
+                    @Override
+                    public void onClick(View view) {
+                        playRecoding(position);
 
-                       }
-                   });
-
+                    }
+                });
 
                 final AlertDialog alert = builder.create();
 
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.d("remove id is","remove id is" + recordingId );
-                        Log.d("remove pos is","remove pos is" + position );
                         long removeID = recordingId;
-
-
 
                         helper.removeRecording(removeID);
 
@@ -122,10 +112,6 @@ public class SoundListFragment extends Fragment
                     }
                 });
                 alert.show();
-
-
-
-
             }
         });
 
@@ -134,8 +120,6 @@ public class SoundListFragment extends Fragment
 
     @Override
     public void onResume() {
-        Log.d("onResume()", "onResume()");
-
         super.onResume();
 
         //reloads the list when onResume is called
@@ -144,71 +128,38 @@ public class SoundListFragment extends Fragment
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        Log.d("onCreateLoader()", "onCreateLoader()");
-
         // returns an entry loader using context
         return new RecordingLoader(mContext);
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Recording>> loader, ArrayList<Recording> data) {
-        Log.d("onLoadFinished()", "onLoadFinished()");
-
-
         //sets global variable
         myRecordings = data;
 
-        if(!data.isEmpty()) {
-            Log.d("onLoadFinished()", "not empty");
-
-            //String[] recordingNames = new String[40];
+        if (!data.isEmpty()) {
             ArrayList<String> recordingNames = new ArrayList<String>();
-            int i = 0;
+
             for (Recording recording : data) {
-                Log.d("in recordings", "recording: " + recording.getAlarmName());
-                //recordingNames.add(recording.getAlarmName());
-                //recordingNames[i] = recording.getAlarmName();
-                //i++;
                 recordingNames.add(recording.getAlarmName());
-                //Log.d("in recordings", "recording: " + recordingNames[i]);
-                Log.d("in recordings", "recording: " + recordingNames.toArray());
-
-
             }
 
-            //sets adapter to array list of exercises
-
-            // Define a new adapter
+            //sets adapter to array list of sounds
             myAdapter = new ArrayAdapter<String>(mContext,
                     R.layout.listview_layout, recordingNames);
-            Log.d("onLoadFinished()", "got adapter");
 
-
-            // Assign the adapter to ListView
-            //setListAdapter(mAdapter);
-            //myAdapter = new ExerciseLineArrayAdapter(mContext, data);
-            //mListView.setListAdapter(myAdapter);
             mListView.setAdapter(myAdapter);
-            Log.d("onLoadFinished()", "set adapter");
-
         }
     }
 
     @Override
     public void onLoaderReset(Loader<ArrayList<Recording>> loader) {
-        Log.d("onLoaderReset()", "onLoaderReset()");
-
         //reloads exercises into adapter
         myAdapter.clear();
         myAdapter.notifyDataSetChanged();
-
-
     }
 
-
-
-
-    private void playRecoding(int position){
+    private void playRecoding(int position) {
         //creates db helper
         helper = new RecordingEntryDbHelper(mContext);
 
@@ -230,5 +181,4 @@ public class SoundListFragment extends Fragment
             e.printStackTrace();
         }
     }
-
 }

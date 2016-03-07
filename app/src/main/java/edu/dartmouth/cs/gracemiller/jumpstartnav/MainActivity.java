@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, mAlarmListFragment).commit();
-        // else if results is chosen
+
         } else if (id == R.id.nav_reminder) {
             Fragment mReminderFragment = null;
             mReminderFragment = new ReminderFragment();
@@ -80,9 +80,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, mReminderFragment).commit();
 
-
-        } else if (id == R.id.nav_addsound){
-            // create results fragment
+        } else if (id == R.id.nav_addsound) {
             Fragment mAddSoundFrag = null;
             mAddSoundFrag = new SoundListFragment();
 
@@ -90,16 +88,15 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, mAddSoundFrag).commit();
 
-        }else if (id == R.id.nav_dreams){
-            // create results fragment
+        } else if (id == R.id.nav_dreams) {
             Fragment dreamFrag = null;
             dreamFrag = new DreamFragment();
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_holder, dreamFrag).commit();
-        }else if (id == R.id.nav_instructions){
-            // create results fragment
+
+        } else if (id == R.id.nav_instructions) {
             Fragment instructfrag = null;
             instructfrag = new GettingStartedFragment();
 
