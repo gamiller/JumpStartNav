@@ -79,11 +79,13 @@ public class DreamFragment extends android.app.Fragment {
         @Override
         public void onLoaderReset(Loader<ArrayList<Dream>> loader) {
             //reloads exercises into adapter
+            myAdapter.notifyDataSetChanged();
 
-            if (myAdapter != null) {
-                myAdapter.clear();
-                myAdapter.notifyDataSetChanged();
-            }
+
+//            if (myAdapter != null) {
+//                myAdapter.clear();
+//                myAdapter.notifyDataSetChanged();
+//            }
         }
     };
 
