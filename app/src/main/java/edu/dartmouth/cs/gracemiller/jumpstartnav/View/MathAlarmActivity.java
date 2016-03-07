@@ -137,10 +137,18 @@ public class MathAlarmActivity extends AppCompatActivity {
             //when it is clicked, exit the app
             @Override
             public void onClick(View v) {
-                mCurrAnswer = Integer.valueOf(mAnswerText.getText().toString());
+
+                boolean check = false;
+
+                if (!mAnswerText.getText().toString().equals("")) {
+                    mCurrAnswer = Integer.valueOf(mAnswerText.getText().toString());
+                    check = checkAnswer(mCurrAnswer);
+                } else {
+                    check = false;
+                }
                 Log.d("current answer", "current answer is: " + mCurrAnswer);
                 Log.d("correct answer is", "correct answer is" + mSolution);
-                if (checkAnswer(mCurrAnswer)) {
+                if (check) {
                     Toast.makeText(mContext, "CORRECT", Toast.LENGTH_SHORT).show();
                     Log.d("checkAnswer", "answer is correct");
                     mNumLeft--;
@@ -160,7 +168,13 @@ public class MathAlarmActivity extends AppCompatActivity {
                         intent.putExtra(NUM_CORR, mNumCorrect);
                         intent.putExtra(NUM_WRONG, mNumWrong);
                         intent.putExtra(NUM_LEFT, mNumLeft);
-                        intent.putExtra("id",id);
+                        intent.putExtra("id", id);
+
+                        AlarmEntryDbHelper helper = new AlarmEntryDbHelper(getApplicationContext());
+                        Alarm alarm = helper.fetchAlarmByIndex((long) id);
+                        alarm.setmActive(0);
+                        helper.updateAlarm(alarm);
+
                         finish();
 
                         startActivity(intent);

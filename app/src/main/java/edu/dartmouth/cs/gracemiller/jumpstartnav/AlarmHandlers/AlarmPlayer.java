@@ -30,29 +30,41 @@ public class AlarmPlayer {
 
         mediaPlayer = new MediaPlayer();
 
+        Log.d("alarm default index", "default index is " + alarm.getDefaultIndex());
         if (alarm.getDefaultIndex() == 3) {
             try {
+
+                mediaPlayer.reset();
+                mediaPlayer.setLooping(true);
+
 //                Uri soundUri = Uri.parse(alarm.getmRingToneFile());
 //                this.mediaPlayer = (MediaPlayer.create(context, soundUri));
+                mediaPlayer.setDataSource(context, Uri.parse(filename));
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                Log.d("default", "default default");
-                mediaPlayer.setDataSource(context,Uri.parse(filename));
-                mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mediaPlayer.start();
-                        startSound();
-                    }
-                });
+//                Log.d("default", "default default");
+//                mediaPlayer.prepareAsync();
+//                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        mediaPlayer.start();
+//                        startSound();
+//                    }
+//                });
+
+                mediaPlayer.prepare();
+                startSound();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                this.mediaPlayer.setDataSource(filename);
+                mediaPlayer.reset();
+                mediaPlayer.setLooping(true);
+                mediaPlayer.setDataSource(filename);
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.prepare();
+                startSound();
                 Log.d("custom", "custom custom");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -80,7 +92,7 @@ public class AlarmPlayer {
 
             Log.d("playing sound", "playing sound");
             //start the media player
-            this.mediaPlayer.prepare();
+//            this.mediaPlayer.prepare();
             this.mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
