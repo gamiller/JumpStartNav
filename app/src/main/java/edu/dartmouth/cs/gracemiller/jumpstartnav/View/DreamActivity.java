@@ -54,53 +54,69 @@ public class DreamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dream);
 
+        // instantiate variables
         mContext = this;
         speechInput = "";
 
+        // get recognizer
         mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         mListener = new SpeechListener();
         mRecognizer.setRecognitionListener(mListener);
 
+        // get view objects
         recordButton = (ToggleButton) findViewById(R.id.DreamRecord);
         redoButton = (Button) findViewById(R.id.dreamRedo);
         dreamView = (TextView) findViewById(R.id.dreamInput);
         saveButton = (Button) findViewById(R.id.saveButtonDream);
 
+
+        // handle record button
         recordButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    // not empty and note that it is checked
                     cleared = false;
-                    //dreamView.setText("");
                     recordAudio();
                     checked = true;
                 } else {
+                    // note not checked and not recording
                     recording = false;
                     checked = false;
                 }
             }
         });
 
+        // handle redo button
         redoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // set cleared
                 cleared = true;
                 speechInput = "";
                 dreamView.setText(speechInput);
+
+                // undo check
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
             }
         });
 
+
+        // handle save button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // if speech is not null
                 if (!speechInput.equals("")) {
+                    // and if not checked
                     if (!checked) {
+                        // set dream name
                         DialogFragment fileFragment = StringDialog.newInstance("Dream Name:");
                         fileFragment.show(getFragmentManager(), "Set Dream Name");
                     }
                 } else {
+                    // tell user to set dream
                     Toast.makeText(mContext, "You need to tell me about your dream!", Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -108,6 +124,7 @@ public class DreamActivity extends AppCompatActivity {
         });
     }
 
+    // intent to record audio
     private void recordAudio() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
@@ -116,15 +133,18 @@ public class DreamActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 500);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
 
+        // start listening
         mRecognizer.startListening(intent);
         recording = true;
     }
 
+    // stop listening
     private void stopRecording() {
         mRecognizer.stopListening();
         recording = false;
     }
 
+    // sets the dream input
     private void setInput(String input) {
         if (speechInput.equals("")) {
             speechInput = input;
@@ -134,16 +154,19 @@ public class DreamActivity extends AppCompatActivity {
         dreamView.setText(speechInput);
     }
 
+    // set the dream name
     public void setDreamName(String dream) {
         this.mDreamName = dream;
     }
 
+    // finishes the dream activity
     private void finishActivity() {
+        // new dream variable
         Dream dream = new Dream();
         dream.setDreamName(mDreamName);
         dream.setDream(speechInput);
 
-        // saving dream
+        // save new dream
         DreamDbHelper helper = new DreamDbHelper(getApplicationContext());
         int id = (int) helper.insertDream(dream);
         helper.close();
@@ -172,20 +195,23 @@ public class DreamActivity extends AppCompatActivity {
             comment_text.setInputType(InputType.TYPE_CLASS_TEXT);
             comment_text.setHint("What do you want to call your dream?");
 
+            // set title and view
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(title);
             builder.setView(comment_text);
 
+            // if yes
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,
                                     int whichButton) {
-                    // calls set comment
+                    // calls set dream name and finish
                     String dreamName = comment_text.getText().toString();
                     ((DreamActivity) getActivity()).setDreamName(dreamName);
                     ((DreamActivity) getActivity()).finishActivity();
                 }
             });
 
+            // cancel dialog
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,
                                     int whichButton) {
@@ -197,6 +223,7 @@ public class DreamActivity extends AppCompatActivity {
         }
     }
 
+    // handle speech input
     public class SpeechListener implements RecognitionListener {
 
         String TAG = "TAGG";
@@ -214,19 +241,15 @@ public class DreamActivity extends AppCompatActivity {
         }
 
         public void onReadyForSpeech(Bundle params) {
-            Log.d(TAG, "Listening");
             ready = true;
             errorCount = 0;
         }
 
-        public void onBeginningOfSpeech() {
-        }
+        public void onBeginningOfSpeech() {}
 
-        public void onRmsChanged(float rmsdB) {
-        }
+        public void onRmsChanged(float rmsdB) {}
 
-        public void onBufferReceived(byte[] buffer) {
-        }
+        public void onBufferReceived(byte[] buffer) {}
 
         public void onEndOfSpeech() {
             Log.d(TAG, "Done");
@@ -236,33 +259,45 @@ public class DreamActivity extends AppCompatActivity {
         public void onError(int error) {
             Log.d(TAG, "error " + error);
             textInput = "error";
+
+            // if not understood
             if (error == 7) {
                 errorCount++;
+                // if not heard
             } else if (error == 6) {
                 Toast.makeText(DreamActivity.mContext, "Speak up!"
                         , Toast.LENGTH_SHORT).show();
+                // set unchecked
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
             }
 
+            // if too many errors
             if (errorCount > 1 && error != 6) {
                 Toast.makeText(DreamActivity.mContext, "What?"
                         , Toast.LENGTH_SHORT).show();
+
+                // set unchecked
                 if (recordButton.isChecked()) {
                     recordButton.setChecked(false);
                 }
             }
         }
 
+        // on get result
         public void onResults(Bundle results) {
-            data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
+            // grab data
+            data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             mInput = (String) data.get(0);
+
+            // set dream input
             setInput(mInput);
 
             dataAvailable = true;
 
+            // if recording keep recording else stop
             if (recording) {
                 recordAudio();
             } else {
@@ -270,10 +305,8 @@ public class DreamActivity extends AppCompatActivity {
             }
         }
 
-        public void onPartialResults(Bundle partialResults) {
-        }
+        public void onPartialResults(Bundle partialResults) {}
 
-        public void onEvent(int eventType, Bundle params) {
-        }
+        public void onEvent(int eventType, Bundle params) {}
     }
 }

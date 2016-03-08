@@ -14,10 +14,8 @@ import java.util.Calendar;
  */
 public class AlarmScheduler {
 
-    // how to handle unique id
+    // add alarm to scheduler
     public static void setAlarm(Context context, int id, Calendar dateTime) {
-
-        Log.d("adding alarm", "adding alarm");
 
         // create intent and store id
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -37,51 +35,22 @@ public class AlarmScheduler {
 
         // create alarm manager and set alarm with pending intent
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, dateTime.getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY, pi);
         alarmManager.set(AlarmManager.RTC_WAKEUP,dateTime.getTimeInMillis(),pi);
-//        AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(dateTime.getTimeInMillis(),pi);
-//        alarmManager.setAlarmClock(info,pi);
 
-        int i,sum;
-        i=0;
-        sum=0;
-        while (i != -1) {
-            AlarmManager.AlarmClockInfo info2 = alarmManager.getNextAlarmClock();
-            if (info2 == null) {
-                i = -1;
-            } else {
-                sum++;
-            }
-        }
-
-        String alarmNUm = "" + sum + " alarms have been added";
-        Toast.makeText(context,alarmNUm,Toast.LENGTH_SHORT);
     }
 
+    // delete alarm from scheduler
     public static void deleteAlarm(Context context, int id) {
-        Log.d("deleting alarm", "deleting");
+        // create intent for receiver
         Intent intent = new Intent(context, AlarmReceiver.class);
 
+        // pending intent to start alarm
         PendingIntent deleteIntent = PendingIntent.getBroadcast(context, id, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT); //set pending intent to call EMAAlarmReceiver.
 
+        // cancel alarm
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(deleteIntent);
-
-//        int i,sum;
-//        i=0;
-//        sum=0;
-//        while (i != -1) {
-//            AlarmManager.AlarmClockInfo info = alarmManager.getNextAlarmClock();
-//            if (info == (null)) {
-//                i = -1;
-//            } else {
-//                sum++;
-//            }
-//        }
-//
-//        Toast.makeText(context, sum + " alarms left", Toast.LENGTH_SHORT);
 
     }
 

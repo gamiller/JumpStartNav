@@ -54,16 +54,16 @@ public class DreamFragment extends android.app.Fragment {
             //sets global variable
             myDreams = data;
 
+            // if data not empty
             if (data.size() != 0) {
-                //String[] recordingNames = new String[40];
                 ArrayList<String> dreamNames = new ArrayList<String>();
+
+                // set up list view
                 for (Dream dream : data) {
                     Calendar cal = dream.getDate();
                     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
                     String finalString = formatDate.format(cal.getTime()) + " | " + dream.getDreamName();
 
-
-                    Log.d("adding a dream","adding a dream");
                     dreamNames.add(finalString);
                 }
 
@@ -82,11 +82,6 @@ public class DreamFragment extends android.app.Fragment {
             //reloads exercises into adapter
             myAdapter.notifyDataSetChanged();
 
-
-//            if (myAdapter != null) {
-//                myAdapter.clear();
-//                myAdapter.notifyDataSetChanged();
-//            }
         }
     };
 
@@ -103,13 +98,16 @@ public class DreamFragment extends android.app.Fragment {
         View mInflateView = inflater.inflate(R.layout.fragment_dream, container, false);
         mListView = (ListView) mInflateView.findViewById(R.id.dreamEntries);
 
+        // set listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     final int position, long id) {
 
+                // get dream id
                 Dream dream = myDreams.get(position);
                 final long dreamID = dream.getId();
 
+                // start display dream activity
                 Intent intent = new Intent(mContext,DisplayDreamActivity.class);
                 Log.d("the id is", " the dream id is " + dreamID);
                 intent.putExtra("id", (int) dreamID);
@@ -117,6 +115,7 @@ public class DreamFragment extends android.app.Fragment {
             }
         });
 
+        // set floating action button for setting a dream
         FloatingActionButton fab = (FloatingActionButton) mInflateView.findViewById(R.id.fabDream);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,43 +135,8 @@ public class DreamFragment extends android.app.Fragment {
         Log.d("onResume()", "onResume()");
         super.onResume();
 
-
         //reloads the list when onResume is called
         loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //if (requestCode == 1) {
-            Log.d("in request code", "in request");
-//            FragmentTransaction tr = getFragmentManager().beginTransaction();
-//            Fragment mdeleteDream = new DreamFragment();
-//            tr.replace(R.id.fragment_holder, mdeleteDream).commit();
-
-
-//        Fragment frg = null;
-//        frg = getFragmentManager().findFragmentByTag("Your_Fragment_TAG");
-//        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.detach(frg);
-//        ft.attach(frg);
-//        loaderManager.initLoader(3, null, dreamLoaderListener).forceLoad();
-
-
-//        Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.dreamFrag);
-//            FragmentTransaction fragTransaction =  (getActivity()).getFragmentManager().beginTransaction();
-//            fragTransaction.detach(currentFragment);
-//            fragTransaction.attach(currentFragment);
-//            fragTransaction.commit();
-
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.fragment_holder, this).commit();
-
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.detach(this).attach(this).commit();
-            //onResume();
-        //}
-    }
-
 
 }

@@ -65,6 +65,7 @@ public class RecordActivity extends AppCompatActivity {
 
         mAlarmId = operation; // temporary
 
+        // get file path
         mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/recording" + mAlarmId + ".3gp";
 
@@ -74,46 +75,63 @@ public class RecordActivity extends AppCompatActivity {
         mSaveButton = (Button) findViewById(R.id.saveButton);
         mPlayButton = (Button) findViewById(R.id.playButton);
 
+        // handle record button
         mRecordButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     checked = true;
 
+                    // if audio was set reset file path
                     if (mAudioSet) {
                         resetFile();
                     }
+
+                    // start recording
                     startRecording();
 
                 } else {
+
+                    // stop recording
                     stopRecording();
                     checked = false;
                 }
             }
         });
 
+
+        // handle play button
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // if audio exists play
                 if (mAudioSet) {
                     playAudio();
                 } else {
+                    // else notify user
                     Toast.makeText(mContext, "You need to make an alarm first!",
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        // handle save button
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // if audio not null
                 if (mAudioSet) {
+
+                    // if not recording
                     if (!checked) {
+                        // set recording name
                         DialogFragment fileFragment = StringDialog.newInstance("Alarm Name:");
                         fileFragment.show(getFragmentManager(), "Set Alarm Name");
                     }
                 } else {
+                    // else notify user
                     Toast.makeText(mContext, "You need to make an alarm first!", Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -122,6 +140,7 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
+    // delete file
     private void resetFile() {
         File file = new File(mFilePath);
 
@@ -130,13 +149,17 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
+    // record audio
     private void startRecording() {
+
+        // set up recorder
         mRecorder = new MediaRecorder();
         mRecorder.setOutputFile(mFilePath);
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
 
+        // atempt start
         try {
             mRecorder.prepare();
             mRecorder.start();
@@ -147,6 +170,7 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
+    // stop recording
     private void stopRecording() {
         try {
             mRecorder.stop();
@@ -159,6 +183,7 @@ public class RecordActivity extends AppCompatActivity {
         mFeedbackTextView.setText("Recording done. Hit record to redo recording.");
     }
 
+    // play back the media recording
     private void playAudio() {
         mPlayer = new MediaPlayer();
         try {
@@ -172,20 +197,24 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-
+    // set name of alarm
     public void setAlarmName(String alarm) {
         this.mAlarmName = alarm;
     }
 
+    // save and finish
     private void finishActivity() {
+        // create new recording
         Recording recording = new Recording();
         recording.setFileName(mFilePath);
         recording.setAlarmName(mAlarmName);
 
+        // save ew recording
         RecordingEntryDbHelper helper = new RecordingEntryDbHelper(mContext);
         helper.insertRecording(recording);
         helper.close();
 
+        // finish
         Toast.makeText(mContext, "Saved!", Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -219,8 +248,9 @@ public class RecordActivity extends AppCompatActivity {
                                     int whichButton) {
                     // calls set comment
                     String alarmName = comment_text.getText().toString();
-                    ((RecordActivity) getActivity()).setAlarmName(alarmName);
 
+                    // sets alarm name and finishes
+                    ((RecordActivity) getActivity()).setAlarmName(alarmName);
                     ((RecordActivity) getActivity()).finishActivity();
                 }
             });

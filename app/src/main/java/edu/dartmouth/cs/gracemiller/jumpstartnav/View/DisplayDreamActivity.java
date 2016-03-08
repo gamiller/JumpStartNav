@@ -32,26 +32,21 @@ public class DisplayDreamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_dream);
 
+        // grab text views
         dreamContent = (TextView) findViewById(R.id.DreamContent);
         dreamTitle = (TextView) findViewById(R.id.dreamTitleDisplay);
 
+        // grab id
         Intent intent = getIntent();
         mId = intent.getIntExtra("id",0);
 
-        Log.d("receive", "received id is " + mId);
-
+        // get dream
         DreamDbHelper helper = new DreamDbHelper(getApplicationContext());
         Dream dream = helper.fetchDreamByIndex((long) mId);
         helper.close();
 
-//        Calendar cal = dream.getDate();
-//        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-//        String finalString = formatDate.format(cal.getTime()) + " " + dream.getDreamName();
+        // set dream title and dream text
         String finalString = dream.getDreamName() + ":";
-
-
-//        String titleString = "" + dream.getDreamName()+ ": "+ dream.getDate();
-
         dreamTitle.setText(finalString);
         dreamContent.setText(dream.getDream());
 
@@ -61,6 +56,7 @@ public class DisplayDreamActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate delete button
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dream_menu, menu);
         return true;
@@ -70,6 +66,7 @@ public class DisplayDreamActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            // delete dream
             case R.id.delete:
                 deleteDream();
                 return true;
@@ -78,16 +75,17 @@ public class DisplayDreamActivity extends AppCompatActivity {
         }
     }
 
+
+    // delete dream from db
     private void deleteDream() {
 
         DreamDbHelper helper = new DreamDbHelper(getApplicationContext());
         helper.removeEntry((long) mId);
         helper.close();
 
+        // ends and returns to main activity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
-
         finish();
 
     }

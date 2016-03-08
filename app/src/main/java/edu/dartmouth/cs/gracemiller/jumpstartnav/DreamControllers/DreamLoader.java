@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.DataTypes.Dream;
 import edu.dartmouth.cs.gracemiller.jumpstartnav.Model.DreamDbHelper;
 
-/**
- * Created by gracemiller on 1/31/16.
- * create an entryloader which extends asynctaskloader in order to load
- * the exercises from the database
+/*
+ * Loads dreams from db and returns an arraylist
  */
 public class DreamLoader extends AsyncTaskLoader<ArrayList<Dream>> {
 

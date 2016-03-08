@@ -7,10 +7,10 @@ import java.util.Calendar;
  */
 public class Dream {
 
-    private int id;
-    private String dream;
-    private Calendar date;
-    private String dreamName;
+    private int id;                 // dream id
+    private String dream;           // dream text
+    private Calendar date;          // date of dream
+    private String dreamName;       // title of dream
 
     public Dream() {
         this.id = 0;

@@ -22,8 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     //Receive broadcast
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Log.d("receiving alarm", "receiving alarm");
-
+        // grab id and pass along
         int id = intent.getIntExtra("id",0);
         startAlarmUnlock(context, id);
     }
@@ -31,20 +30,14 @@ public class AlarmReceiver extends BroadcastReceiver {
     // start the activity for alarm
     private void startAlarmUnlock(Context context, int id) {
         Class classtype = null;
-        int alarmType,index;
-        String dataSource;
+        int alarmType;
 
         //get alarm and data from db
         AlarmEntryDbHelper helper = new AlarmEntryDbHelper(context);
         Alarm onAlarm = helper.fetchAlarmByIndex((long) id);
         alarmType = onAlarm.getmAlarmType();
-        dataSource = onAlarm.getmRingToneFile();
-        index = onAlarm.getDefaultIndex();
         helper.close();
 
-//        //start playing the sound
-//        AlarmPlayer player = new AlarmPlayer();
-//        player.startSound(context,dataSource,index);
 
         /*
         Start the designated activity
@@ -61,12 +54,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
 
+        // create intent to start activity
         Intent unlockIntent = new Intent(context,classtype);
         unlockIntent.putExtra(NUM_CORR, 0);
         unlockIntent.putExtra(NUM_WRONG, 0);
         unlockIntent.putExtra(NUM_LEFT, 3);
-
         unlockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // put alarm id in intent
         unlockIntent.putExtra("id",id);
         context.startActivity(unlockIntent);
 

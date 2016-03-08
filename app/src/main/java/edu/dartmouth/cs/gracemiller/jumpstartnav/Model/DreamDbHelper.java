@@ -62,7 +62,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = DbHelper.getWritableDatabase();
 
         //create a new content value and put all of the information
-        //from the exercise into it
+        //from the dream into it
         ContentValues cv = new ContentValues();
         //get the time in milliseconds
         cv.put(DbHelper.COL_DREAM, dream.getDream());
@@ -111,7 +111,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         //move to the first column in that row
         cursor.moveToFirst();
 
-        //create a temporary exercise from the cursor to return
+        //create a temporary dream from the cursor to return
         Dream tempDream = getDreamFromCursor(cursor);
         database.close();
         return tempDream;
@@ -132,7 +132,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         //move the cursor over the items starting at the top
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            //for each item create a new exercise
+            //for each item create a new dream
             Dream tempDream = getDreamFromCursor(cursor);
             dreams.add(tempDream);
             cursor.moveToNext();
@@ -144,12 +144,12 @@ public class DreamDbHelper extends SQLiteOpenHelper {
 
     }
 
-    //get a exercise from a cursor
+    //get a dream from a cursor
     public Dream getDreamFromCursor(Cursor cursor) {
-        //create temporary exercise
+        //create temporary dream
         Dream tempDream = new Dream();
 
-        // set all of the data in the exercise
+        // set all of the data in the dream
         tempDream.setId(cursor.getInt(cursor.getColumnIndex(COL_ID)));
         tempDream.setDream(cursor.getString(cursor.getColumnIndex(COL_DREAM)));
         tempDream.setDate(getDate(cursor.getLong(cursor.getColumnIndex(COL_DATE))));
@@ -211,7 +211,7 @@ class insertDream extends AsyncTask<sqlObjectDream, Void, Void> {
 }
 
 //edu.dartmouth.cs.gracemiller.jumpstartnav.Model.sqlObject which can be passed into the asynctasks
-//bundles up the context, exercise, and dbhelper
+//bundles up the context, dream, and dbhelper
 class sqlObjectDream {
     DreamDbHelper helper;
     Dream dream;
